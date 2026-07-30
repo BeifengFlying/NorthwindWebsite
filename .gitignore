@@ -1,0 +1,32 @@
+# Dependencies and generated output
+node_modules/
+dist/
+build/
+.cache/
+coverage/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Private source media is kept locally and never published
+private/
+private-assets/
+*.mp3
+*.wav
+*.flac
+*.psd
+*.raw
+*.dng
+*.cr2
+*.nef
+*.arw
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+*.log

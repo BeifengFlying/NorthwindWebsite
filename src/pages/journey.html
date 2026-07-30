@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Northwind 网站从想法到上线的开发旅程">
+<title>Development Journey · Northwind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles/journey.css">
+<link rel="stylesheet" href="assets/styles/border-glow.css">
+<link rel="stylesheet" href="assets/styles/page-transition.css">
+<link rel="stylesheet" href="assets/styles/motion-system.css">
+<link rel="stylesheet" href="assets/styles/legal.css">
+<script src="assets/scripts/shared/page-transition.js" defer></script>
+<script src="assets/scripts/shared/motion-system.js" defer></script>
+</head>
+<body>
+  <div class="journey-noise" aria-hidden="true"></div>
+  <header class="journey-nav">
+    <a href="index.html#projects" class="journey-logo">Flying<span>.</span></a>
+    <div class="journey-nav-right">
+      <a href="index.html#projects" class="journey-back"><span aria-hidden="true">↙</span> 返回作品</a>
+      <a href="https://github.com/BeifengFlying" class="journey-github" target="_blank" rel="noopener" aria-label="在 GitHub 打开 Northwind 作者主页">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.14.68-3.8-1.33-3.8-1.33-.5-1.27-1.22-1.61-1.22-1.61-1-.68.08-.67.08-.67 1.1.08 1.68 1.14 1.68 1.14.98 1.67 2.58 1.19 3.21.91.1-.71.38-1.2.7-1.48-2.51-.28-5.15-1.25-5.15-5.59 0-1.23.44-2.24 1.15-3.03-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.09 1.16a10.72 10.72 0 0 1 5.63 0c2.15-1.46 3.09-1.16 3.09-1.16.61 1.55.23 2.7.11 2.98.71.79 1.15 1.8 1.15 3.03 0 4.35-2.65 5.3-5.17 5.58.39.34.74 1.02.74 2.06v3.06c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="journey-hero section-shell">
+      <div class="hero-grid-mark" aria-hidden="true"></div>
+      <div class="journey-kicker">项目档案 / 2026</div>
+      <h1>Building A<br><em>Digital Identity</em></h1>
+      <p class="journey-lead">一个个人网站的诞生过程</p>
+      <p class="journey-intro">从最初的想法，到设计、编码、部署，<br>记录一个 Web 项目的完整成长轨迹</p>
+      <a class="scroll-cue" href="#overview"><span>↓</span> 向下探索</a>
+    </section>
+
+    <section class="overview section-shell" id="overview" data-reveal>
+      <div class="section-heading"><span class="eyebrow">00 / 项目概览</span><h2>A digital space<br>with room to grow.</h2></div>
+      <div class="overview-grid">
+        <article class="overview-card overview-card--wide" data-border-glow data-border-glow-palette="acid" data-border-glow-radius="12"><span class="card-label">项目</span><strong>Northwind<br>个人网站</strong><span class="card-note">记录想法、代码与创作的持续档案</span></article>
+        <article class="overview-card"><span class="card-label">类型</span><strong>个人<br>作品集</strong><span class="card-note">让作品被看见的地方</span></article>
+        <article class="overview-card overview-card--accent"><span class="card-label">技术栈</span><strong>HTML<br>CSS<br>JavaScript</strong><span class="card-note">Cloudflare Pages · GitHub</span></article>
+        <article class="overview-card overview-card--goal"><span class="card-label">目标</span><strong>创建个人<br>数字空间</strong><span class="card-note">不是简历，而是过程记录</span></article>
+      </div>
+    </section>
+
+    <section class="menu-section section-shell" id="menu" data-reveal>
+      <div class="section-heading section-heading--row"><div><span class="eyebrow">01 / 路径</span><h2>Follow the<br>making process.</h2></div><p>拖动或滑动查看每一个阶段<br>每一张卡片都对应下面的一段记录</p></div>
+      <div class="infinite-menu" id="infiniteMenu">
+        <canvas id="infiniteMenuCanvas" aria-label="开发旅程阶段导航"></canvas>
+        <div class="menu-side menu-side--left"><span class="menu-index" id="menuIndex">01 / 06</span><h3 id="menuTitle">想法</h3></div>
+        <div class="menu-side menu-side--right"><p id="menuDescription">从一个属于自己的数字空间开始</p></div>
+        <a class="menu-action" id="menuAction" href="#idea" aria-label="查看当前开发阶段"><span aria-hidden="true">↗</span></a>
+        <span class="menu-hint">拖动旋转</span>
+      </div>
+    </section>
+
+    <section class="timeline-section section-shell" id="timeline">
+      <div class="section-heading" data-reveal><span class="eyebrow">02 / 开发时间线</span><h2>From a thought<br>to a living site.</h2></div>
+      <div class="timeline">
+        <article class="timeline-item timeline-item--pink" id="idea" data-reveal><div class="timeline-marker"><span>01</span></div><div class="timeline-copy"><span class="eyebrow">想法 / 起点</span><h3>先创建一个<br>属于自己的数字空间</h3><p>最初的想法很简单：记录技术学习、算法成长以及个人创作，网站不是一份静态简历，而是一个会持续生长的个人档案</p></div><div class="timeline-aside"><span>原因</span><strong>保持个人<br>特色</strong></div></article>
+        <article class="timeline-item timeline-item--orange" id="planning" data-reveal><div class="timeline-marker"><span>02</span></div><div class="timeline-copy"><span class="eyebrow">规划 / 结构</span><h3>让不同兴趣<br>拥有自己的入口</h3><p>主页、关于、项目、创作和博客构成基础骨架，每个页面先承担清晰的角色，再决定它应该长什么样</p></div><div class="site-map" aria-label="网站页面规划"><span>主页</span><span>关于</span><span>项目</span><span>创作</span><span>博客</span></div></article>
+        <article class="timeline-item timeline-item--yellow" id="design" data-reveal><div class="timeline-marker"><span>03</span></div><div class="timeline-copy"><span class="eyebrow">设计 / 视觉</span><h3>把秩序、颜色<br>和情绪放在一起</h3><p>米白底色保留阅读感，彩色光晕负责情绪，清晰的网格和留白负责秩序，动效只在需要的时候出现，让页面有呼吸感</p></div><div class="design-swatch" aria-label="设计色板"><i></i><i></i><i></i><i></i><i></i></div></article>
+        <article class="timeline-item timeline-item--green" id="development" data-reveal><div class="timeline-marker"><span>04</span></div><div class="timeline-copy"><span class="eyebrow">开发 / 实现</span><h3>把设计变成<br>真实可用的交互</h3><p>从 HTML 结构到 CSS 系统，再到 JavaScript 的细节交互，每一次编码，都是把抽象的体验变成可以被点击、滚动和使用的东西</p></div><div class="flow-stack"><span>组件</span><b>↓</b><span>交互</span><b>↓</b><span>优化</span></div></article>
+        <article class="timeline-item timeline-item--cyan" id="optimization" data-reveal><div class="timeline-marker"><span>05</span></div><div class="timeline-copy"><span class="eyebrow">打磨 / 优化</span><h3>让细节更轻，<br>让体验更顺</h3><p>调整布局比例、优化图片加载、补齐移动端适配，也为每个页面补上明确的返回路径和错误状态</p></div><div class="optimization-list"><span>界面 / 布局</span><span>性能</span><span>响应式</span></div></article>
+        <article class="timeline-item timeline-item--blue" id="deployment" data-reveal><div class="timeline-marker"><span>06</span></div><div class="timeline-copy"><span class="eyebrow">上线 / 发布</span><h3>从本地文件，<br>到公开的地址</h3><p>代码进入 GitHub，页面通过 Cloudflare Pages 发布，上线不是终点，而是下一次迭代真正开始的地方</p></div><div class="deployment-flow"><span>本地</span><b>→</b><span>GitHub</span><b>→</b><span>Cloudflare</span><strong><i></i> 在线</strong></div></article>
+      </div>
+    </section>
+
+    <section class="future-section section-shell" id="future" data-reveal><div class="future-copy"><span class="eyebrow">03 / 未来</span><h2>Keep<br>building.</h2><p>网站会继续变化，新的作品、新的学习记录，以及更多从想法走向现实的尝试，都会在这里留下痕迹</p></div><div class="future-list"><span>持续改进 <b>+</b></span><span>增加新的创作 <b>+</b></span><span>记录学习旅程 <b>+</b></span><span>构建更好的体验 <b>+</b></span></div></section>
+  </main>
+
+  <footer class="journey-footer"><a href="index.html#projects" class="journey-logo">Flying<span>.</span></a><span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span><a href="https://github.com/BeifengFlying" target="_blank" rel="noopener">在 GitHub 查看源码 ↗</a></footer>
+  <script src="assets/scripts/shared/border-glow.js" defer></script>
+  <script src="assets/scripts/pages/journey.js" defer></script>
+</body>
+</html>

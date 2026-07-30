@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Northwind 页面未找到">
+<title>404 · Northwind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles/style.css">
+<link rel="stylesheet" href="assets/styles/404.css">
+<link rel="stylesheet" href="assets/styles/border-glow.css">
+<link rel="stylesheet" href="assets/styles/page-transition.css">
+<link rel="stylesheet" href="assets/styles/motion-system.css">
+<link rel="stylesheet" href="assets/styles/legal.css">
+<script src="assets/scripts/shared/page-transition.js" defer></script>
+<script src="assets/scripts/shared/motion-system.js" defer></script>
+</head>
+<body class="error-page">
+<div class="site-noise" aria-hidden="true"></div>
+
+<div class="ambient-shapes" aria-hidden="true">
+  <div class="ambient-blob ambient-blob--pink"></div>
+  <div class="ambient-blob ambient-blob--cyan"></div>
+  <div class="ambient-blob ambient-blob--green"></div>
+</div>
+
+<nav class="nav error-nav" aria-label="主导航">
+  <a href="/" class="nav-logo" data-transition>Flying</a>
+  <div class="error-nav-meta">
+    <span>Northwind / 404</span>
+    <span class="error-nav-dot" aria-hidden="true"></span>
+    <a href="/" data-transition>返回主页</a>
+  </div>
+</nav>
+
+<main class="error-main">
+  <section class="error-stage" aria-labelledby="error-title">
+    <div class="error-orbit error-orbit--outer" aria-hidden="true"></div>
+    <div class="error-orbit error-orbit--inner" aria-hidden="true"></div>
+    <div class="error-glow glow glow-pink" aria-hidden="true"></div>
+    <div class="error-glow error-glow--cyan glow glow-cyan" aria-hidden="true"></div>
+
+    <div class="error-index">ERROR / 404</div>
+    <h1 id="error-title" class="error-number" aria-label="404">
+      <span>4</span><span>0</span><span>4</span>
+    </h1>
+    <div class="error-copy">
+      <p class="error-message">迷失在数字空间的某处</p>
+      <p class="error-detail">这条路径暂时没有通往北风的方向</p>
+    </div>
+    <a href="/" class="btn btn-primary error-home-button" data-transition>
+      返回首页
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h13"></path><path d="m13 6 6 6-6 6"></path>
+      </svg>
+    </a>
+  </section>
+</main>
+
+<footer class="error-footer">
+  <span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span>
+  <span>继续探索</span>
+</footer>
+
+<script src="assets/scripts/pages/404.js" defer></script>
+</body>
+</html>

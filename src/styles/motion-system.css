@@ -1,0 +1,98 @@
+/* Shared motion layer. Elements are only hidden after JavaScript confirms it
+   can reveal them, so content remains accessible when scripts are unavailable. */
+:root {
+  --motion-ease: cubic-bezier(.22, 1, .36, 1);
+  --motion-duration: 760ms;
+}
+
+body.motion-ready [data-motion-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0) scale(.985);
+  transition: opacity var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease), filter 700ms var(--motion-ease);
+  transition-delay: var(--motion-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+body.motion-ready [data-motion-reveal="heading"] { transform: translate3d(0, 40px, 0); }
+body.motion-ready [data-motion-reveal="image"] { filter: blur(9px); transform: translate3d(0, 24px, 0) scale(1.045); }
+body.motion-ready [data-motion-reveal="nav"] { transform: translate3d(0, -24px, 0); }
+body.motion-ready [data-motion-reveal].is-motion-visible { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0) scale(1); will-change: auto; }
+
+/* Fixed navigation bars use translateX(-50%) for centering. Keep that layout
+   transform intact even for pages restored from an earlier motion state. */
+body.motion-ready .solutions-nav[data-motion-reveal],
+body.motion-ready .workflow-nav[data-motion-reveal],
+body.motion-ready .journey-nav[data-motion-reveal],
+body.motion-ready .lab-nav[data-motion-reveal],
+body.motion-ready .error-nav[data-motion-reveal] { transform: translateX(-50%) !important; }
+
+body.motion-ready [data-motion-reveal].motion-fade { transform: none; }
+
+/* Homepage modules replay in both directions. Delays apply only on entry so
+   content leaves promptly once it has passed outside the active viewport. */
+body.home-section-motion.motion-ready .home-motion-item {
+  --home-active-delay: 0ms;
+  opacity: 0;
+  filter: blur(5px);
+  translate: 0 34px;
+  scale: .985;
+  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), filter 620ms var(--motion-ease) var(--home-active-delay);
+  will-change: opacity, translate, scale, filter;
+}
+
+body.home-section-motion.motion-ready .home-motion-item[data-home-motion="heading"] {
+  translate: 0 44px;
+  scale: 1;
+}
+
+body.home-section-motion.motion-ready .home-motion-item[data-home-motion="image"] {
+  filter: blur(10px);
+  translate: 0 28px;
+  scale: 1.035;
+}
+
+body.home-section-motion.motion-ready .home-motion-item.is-home-motion-visible {
+  --home-active-delay: var(--home-motion-delay, 0ms);
+  opacity: 1;
+  filter: none;
+  translate: none;
+  scale: none;
+  will-change: auto;
+}
+
+/* Interactive cards keep their original zero-delay hover transitions. Motion
+   delays apply only to opacity/translate/scale during viewport entry. */
+body.home-section-motion.motion-ready .explore-card.home-motion-item {
+  filter: none;
+  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), transform .6s cubic-bezier(.25, .1, .25, 1), box-shadow .6s cubic-bezier(.25, .1, .25, 1);
+}
+
+body.home-section-motion.motion-ready .project.home-motion-item {
+  filter: none;
+  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), transform .5s var(--ease-out), background .4s ease, box-shadow .4s ease, border-color .4s ease;
+}
+
+body.home-section-motion.motion-ready .music-group-toggle.home-motion-item {
+  filter: none;
+  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), color .2s ease, background .2s ease, border-color .2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.motion-ready [data-motion-reveal],
+  body.motion-ready [data-motion-reveal="image"],
+  body.motion-ready [data-motion-reveal="nav"] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  body.home-section-motion.motion-ready .home-motion-item,
+  body.home-section-motion.motion-ready .home-motion-item.is-home-motion-visible {
+    opacity: 1;
+    filter: none;
+    translate: none;
+    scale: none;
+    transition: none;
+  }
+}
