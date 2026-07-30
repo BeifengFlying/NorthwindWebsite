@@ -3,6 +3,7 @@
   'use strict';
 
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var compactViewport = window.matchMedia('(max-width: 768px)').matches;
   var selector = [
     '.solutions-hero > *', '.workflow-hero .hero-copy', '.workflow-hero .card-swap-stage',
     '.journey-hero > :not(.hero-grid-mark)', '.lab-hero > *',
@@ -62,7 +63,9 @@
       Array.prototype.forEach.call(document.querySelectorAll(group.selector), function (element, index) {
         element.classList.add('home-motion-item');
         element.setAttribute('data-home-motion', element.matches(group.heading || ':not(*)') ? 'heading' : element.matches(group.image || ':not(*)') ? 'image' : 'content');
-        element.style.setProperty('--home-motion-delay', Math.min(index * 85, 425) + 'ms');
+        var delayStep = compactViewport ? 45 : 85;
+        var maxDelay = compactViewport ? 135 : 425;
+        element.style.setProperty('--home-motion-delay', Math.min(index * delayStep, maxDelay) + 'ms');
         items.push(element);
       });
     });
