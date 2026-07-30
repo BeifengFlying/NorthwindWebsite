@@ -246,6 +246,38 @@ section { position: relative; overflow: visible; }
 }
 .nav-link.active::after { transform: translateX(-50%) scale(1); }
 
+.sound-toggle {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .2s ease, background-color .2s ease;
+}
+
+.sound-toggle:hover,
+.sound-toggle:focus-visible {
+  color: var(--ink);
+  background: rgba(17, 17, 17, .07);
+  outline: none;
+}
+
+.sound-toggle svg {
+  width: 19px;
+  height: 19px;
+}
+
+.sound-toggle__on { display: none; }
+.sound-toggle.is-enabled { color: var(--ink); }
+.sound-toggle.is-enabled .sound-toggle__off { display: none; }
+.sound-toggle.is-enabled .sound-toggle__on { display: block; }
+
 .nav-toggle {
   display: none; flex-direction: column; gap: 5px;
   cursor: pointer; background: none; border: none;
@@ -1201,6 +1233,7 @@ section { position: relative; overflow: visible; }
     transition: background .25s ease, box-shadow .25s ease;
   }
   .nav-links { display: none; }
+  .sound-toggle { margin-left: auto; margin-right: 2px; }
   .nav-toggle {
     display: flex;
     width: 44px;
@@ -1230,6 +1263,13 @@ section { position: relative; overflow: visible; }
     position: absolute;
     top: 12px;
     right: 18px;
+  }
+  .nav.is-menu-open .sound-toggle {
+    position: absolute;
+    top: 12px;
+    right: 66px;
+    margin: 0;
+    z-index: 102;
   }
   .nav.is-menu-open .nav-toggle span:first-child { transform: translateY(7px) rotate(45deg); }
   .nav.is-menu-open .nav-toggle span:nth-child(2) { opacity: 0; }

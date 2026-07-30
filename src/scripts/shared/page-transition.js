@@ -5,13 +5,25 @@ var NorthwindSound = window.NorthwindSound || (function () {
   var AudioContextClass = window.AudioContext || window.webkitAudioContext;
   var context;
   var resumePromise;
+  var contextPrimed = false;
   var lastWindAt = -Infinity;
   var assetBuffers = Object.create(null);
   var assetPromises = Object.create(null);
   var assetUrls = {
-    tick: '/assets/audio/wheel-tick.wav',
-    wind: '/assets/audio/paper-plane-wind.wav'
+    tick: '/assets/audio/wheel-tick.wav?v=sfx-20260731-2',
+    wind: '/assets/audio/paper-plane-wind.wav?v=sfx-20260731-2'
   };
+
+  function reflectSoundState() {
+    var toggle = document.getElementById('soundToggle');
+    if (!toggle) return;
+    var enabled = Boolean(context && context.state === 'running');
+    var label = enabled ? '声音已开启' : '开启声音';
+    toggle.classList.toggle('is-enabled', enabled);
+    toggle.setAttribute('aria-pressed', String(enabled));
+    toggle.setAttribute('aria-label', label);
+    toggle.title = label;
+  }
 
   function getContext() {
     if (!AudioContextClass) return null;
@@ -22,16 +34,34 @@ var NorthwindSound = window.NorthwindSound || (function () {
       try { context = new AudioContextClass(); }
       catch (fallbackError) { context = null; }
     }
+    if (context && !context._northwindStateListener) {
+      context.addEventListener('statechange', reflectSoundState);
+      context._northwindStateListener = true;
+    }
     return context;
+  }
+
+  function primeContext(audioContext) {
+    if (!audioContext || contextPrimed) return;
+    contextPrimed = true;
+    try {
+      var silentBuffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
+      var silentSource = audioContext.createBufferSource();
+      silentSource.buffer = silentBuffer;
+      silentSource.connect(audioContext.destination);
+      silentSource.start(0);
+    } catch (error) { /* Resuming still works when priming is unavailable. */ }
   }
 
   function unlock() {
     var audioContext = getContext();
+    primeContext(audioContext);
     if (!audioContext || audioContext.state === 'running') return Promise.resolve(audioContext);
     if (audioContext.state === 'closed') return Promise.resolve(null);
     if (!resumePromise) {
       resumePromise = audioContext.resume().then(function () {
         resumePromise = null;
+        reflectSoundState();
         return audioContext;
       }).catch(function () {
         resumePromise = null;
@@ -105,7 +135,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
     unlock().then(function (audioContext) {
       if (!audioContext) return;
       var start = audioContext.currentTime + Math.max(delay || 0, 0);
-      var duration = .64;
+      var duration = .44;
       var end = start + duration;
       var noise = createNoise(audioContext, duration);
       var filter = audioContext.createBiquadFilter();
@@ -115,7 +145,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
       filter.frequency.setValueAtTime(480, start);
       filter.frequency.exponentialRampToValueAtTime(2800, end);
       noiseGain.gain.setValueAtTime(.0001, start);
-      noiseGain.gain.linearRampToValueAtTime(.09, start + .16);
+      noiseGain.gain.linearRampToValueAtTime(.09, start + .10);
       noiseGain.gain.exponentialRampToValueAtTime(.0001, end);
       noise.connect(filter);
       filter.connect(noiseGain);
@@ -129,7 +159,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
       tone.frequency.setValueAtTime(340, start);
       tone.frequency.exponentialRampToValueAtTime(1500, end - .06);
       toneGain.gain.setValueAtTime(.0001, start);
-      toneGain.gain.linearRampToValueAtTime(.022, start + .12);
+      toneGain.gain.linearRampToValueAtTime(.022, start + .08);
       toneGain.gain.exponentialRampToValueAtTime(.0001, end - .03);
       tone.connect(toneGain);
       toneGain.connect(audioContext.destination);
@@ -148,10 +178,25 @@ var NorthwindSound = window.NorthwindSound || (function () {
   if (document.getElementById('optionWheel')) loadAsset('tick');
   if (document.getElementById('hero') && document.getElementById('about')) loadAsset('wind');
 
-  document.addEventListener('pointerdown', unlock, { capture: true });
-  document.addEventListener('touchstart', unlock, { capture: true, passive: true });
-  document.addEventListener('keydown', unlock, { capture: true });
-  window.addEventListener('wheel', unlock, { capture: true, passive: true });
+  function unlockFromGesture() {
+    unlock().then(reflectSoundState);
+  }
+
+  var soundToggle = document.getElementById('soundToggle');
+  if (soundToggle) {
+    soundToggle.addEventListener('click', function () {
+      unlock().then(function (audioContext) {
+        reflectSoundState();
+        if (audioContext && audioContext.state === 'running') playTick(.72);
+      });
+    });
+  }
+
+  document.addEventListener('pointerdown', unlockFromGesture, { capture: true });
+  document.addEventListener('touchstart', unlockFromGesture, { capture: true, passive: true });
+  document.addEventListener('keydown', unlockFromGesture, { capture: true });
+  window.addEventListener('wheel', unlockFromGesture, { capture: true, passive: true });
+  reflectSoundState();
 
   return {
     playPageWhoosh: playPageWhoosh,
@@ -390,7 +435,10 @@ window.NorthwindSound = NorthwindSound;
     locked = true;
     document.documentElement.classList.add('page-transition-active');
     overlay.className = 'page-wipe is-covering';
-    NorthwindSound.playPageWhoosh(.40);
+    NorthwindSound.unlock();
+    window.setTimeout(function () {
+      NorthwindSound.playPageWhoosh(0);
+    }, 620);
 
     try { window.sessionStorage.setItem(storageKey, url); }
     catch (error) { /* Navigation still works when storage is unavailable. */ }

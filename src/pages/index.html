@@ -8,12 +8,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles/style.css">
+<link rel="stylesheet" href="assets/styles/style.css?v=sfx-20260731-2">
 <link rel="stylesheet" href="assets/styles/border-glow.css">
-<link rel="stylesheet" href="assets/styles/page-transition.css">
+<link rel="stylesheet" href="assets/styles/page-transition.css?v=sfx-20260731-2">
 <link rel="stylesheet" href="assets/styles/motion-system.css">
 <link rel="stylesheet" href="assets/styles/legal.css">
-<script src="assets/scripts/shared/page-transition.js" defer></script>
+<script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-2" defer></script>
 <script src="assets/scripts/shared/motion-system.js" defer></script>
 </head>
 <body class="home-section-motion">
@@ -41,6 +41,14 @@
     <li><a href="#now" class="nav-link">当下</a></li>
     <li><a href="#contact" class="nav-link">联系</a></li>
   </ul>
+  <button type="button" class="sound-toggle" id="soundToggle" aria-label="开启声音" aria-pressed="false" title="开启声音">
+    <svg class="sound-toggle__off" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="m22 9-6 6"></path><path d="m16 9 6 6"></path>
+    </svg>
+    <svg class="sound-toggle__on" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+    </svg>
+  </button>
   <button type="button" class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-controls="navLinks" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
@@ -558,6 +566,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
 <script src="assets/scripts/shared/border-glow.js" defer></script>
-<script src="assets/scripts/pages/script.js" defer></script>
+<script src="assets/scripts/pages/script.js?v=sfx-20260731-2" defer></script>
 </body>
 </html>
