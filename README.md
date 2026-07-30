@@ -71,15 +71,16 @@ npm run optimize:images  # 从本机私有原片生成公开 WebP
 
 ## Git Workflow
 
-提交标题使用 `类型: 修改内容`，推荐类型为 `feat`、`fix`、`style`、`perf`、`refactor`、`docs` 和 `chore`。每次提交前运行：
+提交标题使用 `类型: 修改内容`，推荐类型为 `feat`、`fix`、`style`、`perf`、`refactor`、`docs` 和 `chore`。每次推送前必须先在根目录更新 [changed.md](changed.md)，记录本次功能、修复或样式变更；每次提交前运行：
 
 ```bash
 git status
 git diff
+git diff --check
 npm run check
 ```
 
-确认无私有文件后再提交并推送。版本标签遵循语义化版本，例如 `v1.0.0`、`v1.1.0`、`v1.1.1`。详细流程见 [docs/development/WORKFLOW.md](docs/development/WORKFLOW.md)。
+确认无私有文件、`changed.md` 已更新后再提交并推送。版本标签遵循语义化版本，例如 `v1.0.0`、`v1.1.0`、`v1.1.1`。详细流程见 [docs/development/WORKFLOW.md](docs/development/WORKFLOW.md)。
 
 ## Deployment
 
