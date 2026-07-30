@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BeifengFlying 的算法题解">
+<title>Algorithm Solutions · Flying</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles/solutions.css">
+<link rel="stylesheet" href="assets/styles/border-glow.css">
+<link rel="stylesheet" href="assets/styles/page-transition.css">
+<link rel="stylesheet" href="assets/styles/motion-system.css">
+<link rel="stylesheet" href="assets/styles/legal.css">
+<script src="assets/scripts/shared/page-transition.js" defer></script>
+<script src="assets/scripts/shared/motion-system.js" defer></script>
+</head>
+<body>
+<div class="site-noise"></div>
+<div class="grid-field" aria-hidden="true"></div>
+
+<nav class="solutions-nav" aria-label="主导航">
+  <a href="index.html#projects" class="nav-logo">Flying<span>.</span></a>
+  <div class="nav-links">
+    <a href="index.html#projects">主页</a>
+    <a href="solutions.html" class="active" aria-current="page">题解</a>
+  </div>
+  <a href="index.html#projects" class="nav-back" aria-label="返回作品展示">
+    <span aria-hidden="true">↙</span> 返回
+  </a>
+</nav>
+
+<main>
+  <header class="solutions-hero">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> 题解仓库 / 算法</div>
+      <h1>Algorithm<br><em>Solutions</em></h1>
+      <div class="hero-rule"></div>
+      <div class="hero-bottomline">
+        <span>BeifengFlying / solutions</span>
+        <span class="live-state" id="syncState"><i></i> 正在同步仓库</span>
+      </div>
+    </div>
+
+    <div class="hero-aside" data-border-glow data-border-glow-palette="acid" data-border-glow-radius="0" data-border-glow-fill=".12">
+      <a class="repo-mark" href="https://github.com/BeifengFlying/solutions" target="_blank" rel="noopener" aria-label="在 GitHub 打开题解仓库">
+        <span class="repo-mark-label">题解仓库</span>
+        <strong>github.com/<br>BeifengFlying/solutions</strong>
+        <span class="repo-mark-arrow">↗</span>
+      </a>
+      <div class="stat-grid" aria-label="题解统计">
+        <div class="stat"><span>题目</span><strong id="problemCount">--</strong></div>
+        <div class="stat"><span>平台</span><strong id="platformCount">04</strong></div>
+        <div class="stat"><span>最近更新</span><strong id="lastUpdate">----</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="solutions-toolbar" aria-label="题解筛选">
+    <div class="toolbar-label">索引 <span id="resultCount">--</span></div>
+    <div class="platform-filters" id="platformFilters">
+      <button class="filter-button active" type="button" data-filter="all">全部</button>
+      <button class="filter-button" type="button" data-filter="Online Judge">DLUOJ</button>
+      <button class="filter-button" type="button" data-filter="Luogu">Luogu</button>
+      <button class="filter-button" type="button" data-filter="LeetCode">LeetCode</button>
+      <button class="filter-button" type="button" data-filter="Codeforces">Codeforces</button>
+    </div>
+    <label class="search-box">
+      <span aria-hidden="true">⌕</span>
+      <input id="solutionSearch" type="search" placeholder="搜索题解" autocomplete="off">
+    </label>
+  </section>
+
+  <section class="platform-list" id="platformList" aria-live="polite">
+    <!-- Platform sections are generated from GitHub data. -->
+  </section>
+</main>
+
+<footer class="solutions-footer">
+  <span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span>
+  <span>源码公开 / GitHub 同步</span>
+</footer>
+
+<script src="assets/scripts/shared/border-glow.js" defer></script>
+<script src="assets/scripts/pages/solutions.js" defer></script>
+</body>
+</html>

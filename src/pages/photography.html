@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photography · Northwind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles/photography.css">
+<link rel="stylesheet" href="assets/styles/border-glow.css">
+<link rel="stylesheet" href="assets/styles/page-transition.css">
+<link rel="stylesheet" href="assets/styles/motion-system.css">
+<link rel="stylesheet" href="assets/styles/legal.css">
+<script src="assets/scripts/shared/page-transition.js" defer></script>
+<script src="assets/scripts/shared/motion-system.js" defer></script>
+</head>
+<body>
+
+<div class="site-noise"></div>
+
+<div class="ambient-shapes">
+  <div class="ambient-blob ambient-blob--pink"></div>
+  <div class="ambient-blob ambient-blob--cyan"></div>
+  <div class="ambient-blob ambient-blob--green"></div>
+</div>
+
+<!-- ========================
+     NAV
+     ======================== -->
+<nav class="nav" id="nav">
+  <a href="index.html#projects" class="nav-logo">Flying</a>
+  <ul class="nav-links">
+    <li><a href="index.html#projects" class="nav-link">主页</a></li>
+    <li><a href="photography.html" class="nav-link active" aria-current="page">摄影</a></li>
+  </ul>
+  <a href="index.html#projects" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    返回
+  </a>
+</nav>
+
+<!-- ========================
+     HERO
+     ======================== -->
+<section class="photo-hero">
+  <img
+    class="photo-hero-media"
+    src="assets/images/photography/1785261471285-1280.webp"
+    srcset="assets/images/photography/1785261471285-640.webp 640w, assets/images/photography/1785261471285-1280.webp 1280w, assets/images/photography/1785261471285-1920.webp 1920w"
+    sizes="100vw"
+    width="4096"
+    height="3072"
+    alt="雪山与云层的远景"
+    decoding="async"
+    fetchpriority="high"
+  >
+  <div class="photo-hero-shade"></div>
+  <div class="photo-hero-top">
+    <span>现场笔记 / 2025</span>
+    <span>6 张照片 / 02 个地点</span>
+  </div>
+  <div class="photo-hero-inner">
+    <div class="color-line"></div>
+    <div class="photo-hero-label">摄影</div>
+    <h1 class="photo-hero-title">光影<br><em>切片</em></h1>
+    <p class="photo-hero-subtitle">把经过的地方留在光里，六个瞬间，来自昆明与乌鲁木齐</p>
+  </div>
+  <div class="photo-hero-side"><strong>01</strong><span>雨后山野</span></div>
+  <div class="photo-hero-scroll">向下浏览</div>
+</section>
+
+<!-- ========================
+     GALLERY
+     ======================== -->
+<div class="gallery-wrap">
+  <div class="gallery-intro" data-border-glow data-border-glow-palette="warm" data-border-glow-radius="0" data-border-glow-fill=".12">
+    <div>
+      <div class="gallery-intro-kicker">胶片索引 / 01—06</div>
+      <h2>视线从植物开始，<br>最后落在远山</h2>
+    </div>
+    <div class="gallery-intro-copy">
+      不急着解释一张照片，让花、云、雪线和城市自己说话，像一卷还没有冲洗完的胶片
+      <span class="gallery-intro-count">6 张照片 · 2025</span>
+    </div>
+  </div>
+  <div class="gallery" id="gallery">
+    <!-- Photos injected by JS -->
+  </div>
+  <div class="gallery-end"><span>胶卷末尾</span><span>继续观看</span></div>
+</div>
+
+<!-- ========================
+     LIGHTBOX
+     ======================== -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox-bg"></div>
+  <button class="lightbox-close" id="lightboxClose" aria-label="关闭">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button class="lightbox-nav lightbox-nav--prev" id="lightboxPrev" aria-label="上一张">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="lightbox-nav lightbox-nav--next" id="lightboxNext" aria-label="下一张">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <div class="lightbox-content">
+    <div class="lightbox-img-wrap">
+      <img src="" alt="" id="lightboxImg" decoding="async">
+    </div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
+<!-- ========================
+     FOOTER
+     ======================== -->
+<footer class="footer">
+  <span class="footer-brand">Flying</span>
+  <span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span>
+</footer>
+
+<script src="assets/scripts/pages/photography.js" defer></script>
+<script src="assets/scripts/shared/border-glow.js" defer></script>
+
+</body>
+</html>

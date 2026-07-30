@@ -1,0 +1,131 @@
+/* BorderGlow: a restrained, pointer-driven edge light for selected surfaces. */
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 30;
+  --color-sensitivity: calc(var(--edge-sensitivity) + 20);
+  --border-radius: 20px;
+  --fill-opacity: .22;
+  position: relative;
+  isolation: isolate;
+}
+
+.border-glow-card > .border-glow-mesh,
+.border-glow-card > .border-glow-fill,
+.border-glow-card > .border-glow-edge {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--border-radius);
+  pointer-events: none;
+}
+
+.border-glow-card > .border-glow-mesh,
+.border-glow-card > .border-glow-fill {
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .35s ease-out;
+}
+
+.border-glow-card > .border-glow-mesh {
+  /* Safari may ignore the compound mask and paint this layer across the card. */
+  display: none;
+}
+
+/* React Bits-style mesh border for selected card surfaces. */
+.gallery-intro.border-glow-card,
+.solution-card.border-glow-card {
+  --border-glow-surface: var(--photo-bg, var(--night, #120f17));
+}
+
+.solution-card.border-glow-card {
+  --border-glow-surface: var(--night);
+}
+
+.gallery-intro.border-glow-card > .border-glow-mesh,
+.solution-card.border-glow-card > .border-glow-mesh {
+  display: block;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--border-glow-surface), var(--border-glow-surface)) padding-box,
+    linear-gradient(rgb(255 255 255 / 0%) 0 100%) border-box,
+    var(--gradient-one) border-box,
+    var(--gradient-two) border-box,
+    var(--gradient-three) border-box,
+    var(--gradient-four) border-box,
+    var(--gradient-five) border-box,
+    var(--gradient-six) border-box,
+    var(--gradient-seven) border-box,
+    var(--gradient-base) border-box;
+  opacity: calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  -webkit-mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    #000 calc(var(--cone-spread) * 1%),
+    transparent calc((var(--cone-spread) + 15) * 1%),
+    transparent calc((100 - var(--cone-spread) - 15) * 1%),
+    #000 calc((100 - var(--cone-spread)) * 1%)
+  );
+  mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    #000 calc(var(--cone-spread) * 1%),
+    transparent calc((var(--cone-spread) + 15) * 1%),
+    transparent calc((100 - var(--cone-spread) - 15) * 1%),
+    #000 calc((100 - var(--cone-spread)) * 1%)
+  );
+}
+
+.border-glow-card > .border-glow-fill {
+  display: none;
+}
+
+.border-glow-card > .border-glow-edge {
+  z-index: 2;
+  box-shadow:
+    inset 0 0 0 1px var(--glow-color),
+    0 0 8px var(--glow-color-30);
+  -webkit-mask: conic-gradient(from var(--cursor-angle) at center, #000 2.5%, transparent 10%, transparent 90%, #000 97.5%);
+  mask: conic-gradient(from var(--cursor-angle) at center, #000 2.5%, transparent 10%, transparent 90%, #000 97.5%);
+  mix-blend-mode: plus-lighter;
+  opacity: calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+  transition: opacity .25s ease-out;
+}
+
+.gallery-intro.border-glow-card > .border-glow-edge,
+.solution-card.border-glow-card > .border-glow-edge {
+  inset: calc(var(--glow-padding) * -1);
+  box-shadow: none;
+  -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, #000 2.5%, transparent 10%, transparent 90%, #000 97.5%);
+  mask-image: conic-gradient(from var(--cursor-angle) at center, #000 2.5%, transparent 10%, transparent 90%, #000 97.5%);
+}
+
+.gallery-intro.border-glow-card > .border-glow-edge::before,
+.solution-card.border-glow-card > .border-glow-edge::before {
+  content: '';
+  position: absolute;
+  inset: var(--glow-padding);
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--glow-color),
+    inset 0 0 3px var(--glow-color-50),
+    inset 0 0 15px var(--glow-color-30),
+    inset 0 0 25px 2px var(--glow-color-20),
+    0 0 3px var(--glow-color-50),
+    0 0 15px var(--glow-color-30),
+    0 0 25px 2px var(--glow-color-20);
+}
+
+.solution-card.border-glow-card:not(:hover) > .border-glow-mesh,
+.solution-card.border-glow-card:not(:hover) > .border-glow-edge {
+  opacity: 0;
+  transition: opacity .45s ease-out;
+}
+
+.border-glow-card > :not(.border-glow-mesh):not(.border-glow-fill):not(.border-glow-edge):not(.music-cover-image) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-glow-card > .border-glow-mesh,
+  .border-glow-card > .border-glow-fill,
+  .border-glow-card > .border-glow-edge { transition: none; }
+}

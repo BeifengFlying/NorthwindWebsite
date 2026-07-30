@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Northwind 的个人开发工作流系统">
+<title>个人开发工作流系统 · Northwind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles/workflow.css">
+<link rel="stylesheet" href="assets/styles/border-glow.css">
+<link rel="stylesheet" href="assets/styles/page-transition.css">
+<link rel="stylesheet" href="assets/styles/motion-system.css">
+<link rel="stylesheet" href="assets/styles/legal.css">
+<script src="assets/scripts/shared/page-transition.js" defer></script>
+<script src="assets/scripts/shared/motion-system.js" defer></script>
+</head>
+<body>
+  <div class="workflow-noise" aria-hidden="true"></div>
+  <header class="workflow-nav">
+    <a href="index.html#projects" class="workflow-logo">Flying<span>.</span></a>
+    <nav class="workflow-nav-links" aria-label="工作流导航"><a href="#loop">闭环</a><a href="#process">流程</a><a href="#algorithm">题解</a><a href="#archive">资产</a></nav>
+    <div class="workflow-nav-right"><a href="index.html#projects" class="workflow-back"><span>↙</span> 返回作品</a><a href="https://github.com/BeifengFlying" class="workflow-github" target="_blank" rel="noopener" aria-label="在 GitHub 打开作者主页"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.14.68-3.8-1.33-3.8-1.33-.5-1.27-1.22-1.61-1.22-1.61-1-.68.08-.67.08-.67 1.1.08 1.68 1.14 1.68 1.14.98 1.67 2.58 1.19 3.21.91.1-.71.38-1.2.7-1.48-2.51-.28-5.15-1.25-5.15-5.59 0-1.23.44-2.24 1.15-3.03-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.09 1.16a10.72 10.72 0 0 1 5.63 0c2.15-1.46 3.09-1.16 3.09-1.16.61 1.55.23 2.7.11 2.98.71.79 1.15 1.8 1.15 3.03 0 4.35-2.65 5.3-5.17 5.58.39.34.74 1.02.74 2.06v3.06c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/></svg> GitHub</a></div>
+  </header>
+
+  <main>
+    <section class="workflow-hero">
+      <div class="hero-rings" aria-hidden="true"></div>
+      <div class="hero-inner page-width">
+        <div class="hero-copy"><p class="kicker">个人系统 / 2026</p><h1>MY<br><em>WORKFLOW</em></h1><p class="hero-lead">从想法到作品，构建个人技术资产体系</p><p class="hero-intro">算法刷题、项目开发、技术学习、内容创作，<br>最后都沉淀成可以继续使用的个人资产</p><a class="scroll-cue" href="#loop"><span>↓</span> 查看工作闭环</a></div>
+        <div class="card-swap-stage" aria-label="个人工作流循环">
+          <div class="card-swap-container" id="workflowCardSwap">
+            <button class="workflow-card card-learning" type="button" data-target="#loop"><span class="card-top"><small>01 / 学习</small><b>01</b></span><span class="card-mark">↘</span><strong>学习</strong><span>算法 · 阅读 · 课程</span><i class="card-photo photo-one"></i></button>
+            <button class="workflow-card card-solving" type="button" data-target="#algorithm"><span class="card-top"><small>02 / 解题</small><b>02</b></span><span class="card-mark">⌁</span><strong>解题</strong><span>刷题 · 分析 · 证明</span><i class="card-photo photo-two"></i></button>
+            <button class="workflow-card card-building" type="button" data-target="#building"><span class="card-top"><small>03 / 开发</small><b>03</b></span><span class="card-mark">↗</span><strong>开发</strong><span>项目 · Web · 工具</span><i class="card-photo photo-three"></i></button>
+            <button class="workflow-card card-creating" type="button" data-target="#creating"><span class="card-top"><small>04 / 创作</small><b>04</b></span><span class="card-mark">↑</span><strong>创作</strong><span>摄影 · 音乐 · 视频</span><i class="card-photo photo-four"></i></button>
+            <button class="workflow-card card-sharing" type="button" data-target="#archive"><span class="card-top"><small>05 / 分享</small><b>05</b></span><span class="card-mark">＋</span><strong>分享</strong><span>GitHub · 网站 · 复盘</span><i class="card-photo photo-five"></i></button>
+          </div>
+          <div class="swap-status"><i></i> 自动循环 <b>↻</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="loop-section page-width reveal" id="loop"><div class="section-heading row-heading"><div><span class="eyebrow">01 / 工作闭环</span><h2>把兴趣连成<br>一条路</h2></div><p>不同方向并不是彼此分散的标签，而是同一套学习、实践、表达和归档系统</p></div><div class="loop-grid"><article class="loop-card loop-learn"><span>01 / 学习</span><strong>技术学习</strong><p>算法、阅读、课程、项目研究</p><b>→</b></article><article class="loop-card loop-solve"><span>02 / 解题</span><strong>算法刷题</strong><p>完成 OJ 题目，整理思路与证明</p><b>→</b></article><article class="loop-card loop-build"><span>03 / 开发</span><strong>项目开发</strong><p>C++、Python、Web 和工具实践</p><b>→</b></article><article class="loop-card loop-create"><span>04 / 创作</span><strong>内容创作</strong><p>摄影、音乐、视频和个人表达</p><b>→</b></article><article class="loop-card loop-share"><span>05 / 分享</span><strong>公开沉淀</strong><p>GitHub、网站、题解与复盘</p><b>↻</b></article></div></section>
+
+    <section class="phase-section page-width reveal" id="process"><div class="section-heading row-heading"><div><span class="eyebrow">02 / 核心流程</span><h2>从想法开始，<br>把成果留下</h2></div><p>需求、实现、判断和沉淀共同组成一套个人开发工作体系</p></div><div class="phase-grid"><article class="phase-card phase-idea"><span class="phase-number">01</span><h3>想法输入</h3><p>一个想法、一个需求、一个问题，或学习与创作过程中突然出现的灵感</p><small>学习想法 · 项目需求 · 算法问题 · 创作灵感</small></article><article class="phase-card phase-gpt"><span class="phase-number">02</span><h3>GPT 需求分析</h3><p>通过多轮交流拆解目标、功能、场景和页面结构，整理成清晰的开发需求文档</p><small>产品分析 · 功能拆解 · 视觉规划</small></article><article class="phase-card phase-codex"><span class="phase-number">03</span><h3>Codex 工程实现</h3><p>读取项目结构，分析已有代码，完成 HTML、CSS、JavaScript 与组件开发，并运行测试</p><small>结构 · 样式 · 交互 · 文件管理</small></article><article class="phase-card phase-review"><span class="phase-number">04</span><h3>人工审美复核</h3><p>查看真实效果，调整页面比例、空间布局、动画节奏和内容表达，去掉模板化痕迹</p><small>查看效果 → 提出意见 → GPT 整理 → Codex 优化</small></article><article class="phase-card phase-github"><span class="phase-number">05</span><h3>GitHub 资产沉淀</h3><p>把源代码、文档、算法题解、项目记录和学习笔记保存为长期可检索的技术资产</p><small>代码 · 文档 · 题解 · 笔记</small></article><article class="phase-card phase-site"><span class="phase-number">06</span><h3>个人网站展示</h3><p>将项目作品、算法题解、摄影作品、博客文章和技术记录公开展示，形成个人表达</p><small>GitHub → 网站 → 个人品牌</small></article></div><div class="phase-route"><span>想法</span><b>→</b><span>需求设计</span><b>→</b><span>代码实现</span><b>→</b><span>人工复核</span><b>→</b><span>资产沉淀</span><b>→</b><span>公开展示</span></div></section>
+
+    <section class="algorithm-section" id="algorithm"><div class="page-width"><div class="section-heading light row-heading reveal"><div><span class="eyebrow">03 / 算法题解流程</span><h2>一道题，<br>一份可复用的答案</h2></div><p>刷题不只留下通过记录，也留下能够帮助未来自己的解释</p></div><div class="algorithm-flow reveal"><div class="flow-line"></div><article><span>01</span><strong>完成</strong><p>完成 OJ 题目</p><small>洛谷 · 力扣 · Codeforces · 牛客</small></article><article><span>02</span><strong>分析</strong><p>理解代码与思路</p><small>边界 · 证明 · 复杂度</small></article><article><span>03</span><strong>整理</strong><p>生成题解 Markdown</p><small>题意 · 算法 · 代码解析</small></article><article><span>04</span><strong>上传</strong><p>分类并提交 GitHub</p><small>索引 · 版本 · 仓库</small></article><article><span>05</span><strong>复盘</strong><p>网站同步展示</p><small>阅读 · 复盘 · 再利用</small></article></div><div class="algorithm-output"><span>产出</span><strong>让每一次刷题，都为下一次学习节省时间</strong></div></div></section>
+
+    <section class="streams-section page-width reveal" id="building"><div class="section-heading row-heading"><div><span class="eyebrow">04 / 工作方向</span><h2>学习之外，<br>继续做东西</h2></div><p>项目开发和内容创作是把知识变成作品的两种方式</p></div><div class="streams-grid"><article class="stream-panel"><div class="panel-top"><span>项目开发</span><b>实现</b></div><div class="stream-list"><span>想法</span><i>↓</i><span>需求</span><i>↓</i><span>设计</span><i>↓</i><span>开发</span><i>↓</i><span>测试</span><i>↓</i><span>部署</span><i>↓</i><span>迭代</span></div></article><article class="stream-panel stream-panel-dark" id="creating"><div class="panel-top"><span>内容创作</span><b>表达</b></div><div class="creation-copy"><strong>把观察变成<br>可以分享的作品</strong><p>选题 → 拍摄 / 录制 → 剪辑 → 发布 → 归档</p></div><div class="creation-tags"><span>摄影</span><span>音乐</span><span>视频</span></div></article></div></section>
+
+    <section class="assistant-section page-width reveal"><div class="assistant-box" data-border-glow data-border-glow-palette="acid" data-border-glow-radius="12"><div><span class="eyebrow">05 / 开发辅助</span><h2>工具负责提速，<br><em>我负责方向</em></h2></div><div><p>想法 → 需求文档 → 代码生成 → 人工审查 → 优化 → 上线</p><span class="assistant-note">AI 是工作流中的工具，不是工作流的主角</span></div></div></section>
+
+    <section class="archive-section page-width reveal" id="archive"><div class="archive-copy"><span class="eyebrow">06 / 数字资产</span><h2>把散落的<br><em>痕迹归档</em></h2><p>代码、题解、项目、笔记、照片和音乐，组成一个会持续增长的个人资产库</p></div><div class="archive-map"><div class="archive-root"><small>根目录</small><strong>Northwind</strong></div><div class="archive-item archive-one">算法<br>题解 <b>↘</b></div><div class="archive-item archive-two">项目记录 <b>↗</b></div><div class="archive-item archive-three">学习笔记<br>知识库 <b>↙</b></div><div class="archive-item archive-four">创作<br>作品 <b>↖</b></div></div></section>
+
+    <section class="future-section page-width reveal"><div><span class="eyebrow">07 / 持续迭代</span><h2>Keep<br><em>growing.</em></h2><p>下一轮继续学习、继续做、继续分享，工作流的终点，只是下一次输入的起点</p></div><div class="future-list"><span>增加算法题解 <b>+</b></span><span>完成更好的项目 <b>+</b></span><span>记录新的创作 <b>+</b></span><span>完善个人资产库 <b>+</b></span></div></section>
+  </main>
+  <footer class="workflow-footer"><a href="index.html#projects" class="workflow-logo">Flying<span>.</span></a><span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span><a href="journey.html">查看 Web 项目开发旅程 ↗</a></footer>
+  <script src="assets/scripts/shared/border-glow.js" defer></script>
+  <script src="assets/scripts/pages/workflow.js" defer></script>
+</body>
+</html>

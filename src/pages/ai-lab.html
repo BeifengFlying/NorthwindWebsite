@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI Lab - 本地大模型部署、模型研究与 AI 发展记录">
+<title>AI Lab · Flying</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles/ai-lab.css?v=tree-20260730">
+<link rel="stylesheet" href="assets/styles/page-transition.css">
+<link rel="stylesheet" href="assets/styles/motion-system.css">
+<link rel="stylesheet" href="assets/styles/legal.css">
+<script src="assets/scripts/shared/page-transition.js" defer></script>
+<script src="assets/scripts/shared/motion-system.js" defer></script>
+</head>
+<body>
+<div class="site-noise" aria-hidden="true"></div>
+<div class="grid-field" aria-hidden="true"></div>
+
+<nav class="lab-nav" aria-label="AI Lab 导航">
+  <a href="index.html#projects" class="nav-logo">Flying<span>.</span></a>
+  <div class="nav-links">
+    <a href="index.html#projects">主页</a>
+    <a href="#deployment" class="active" aria-current="page">AI Lab</a>
+  </div>
+  <a href="index.html#projects" class="nav-back"><span aria-hidden="true">↙</span> 返回作品</a>
+</nav>
+
+<main>
+  <header class="lab-hero page-width">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="eyebrow-dot"></span>个人研究 / 本地智能</p>
+      <h1>AI <em>Lab</em></h1>
+      <p class="hero-lede">从本地部署开始，探索开源模型的发展与边界</p>
+      <p class="hero-note">探索开源模型的本地能力</p>
+    </div>
+    <div class="hero-signal" aria-label="实验状态">
+      <span class="signal-line"></span>
+      <div><span class="signal-kicker">当前关注</span><strong>部署 · 观察 · 记录</strong></div>
+      <div class="signal-meta"><span>01</span><span>本地 / 开源</span></div>
+    </div>
+  </header>
+
+  <section class="lab-section page-width" id="deployment">
+      <div class="section-heading reveal-on-scroll">
+      <div><p class="section-index">01 / 本地部署</p><h2>把模型<br><em>跑起来</em></h2></div>
+      <p class="section-intro">第一次真正运行本地模型时，最大的限制不是模型能力，而是显存和推理效率，这里记录我用 LM Studio 把模型从文件变成可交互实例的过程</p>
+    </div>
+    <div class="deployment-strip reveal-on-scroll" aria-label="部署流程概览">
+      <span>选择模型</span><i>→</i><span>下载</span><i>→</i><span>量化</span><i>→</i><span>推理</span>
+    </div>
+    <div class="stepper reveal-on-scroll" id="lmStepper" data-step="1">
+      <div class="stepper-head">
+        <div class="stepper-label">LM STUDIO / FIELD GUIDE</div>
+        <div class="stepper-count"><span id="stepCurrent">01</span> / <span id="stepTotal">04</span></div>
+      </div>
+      <div class="step-indicators" role="tablist" aria-label="LM Studio 部署步骤">
+        <button class="step-indicator active" type="button" role="tab" aria-selected="true" aria-controls="stepPanel1" data-step-target="1"><span>01</span><b>环境配置</b></button>
+        <span class="step-connector" aria-hidden="true"></span>
+        <button class="step-indicator" type="button" role="tab" aria-selected="false" aria-controls="stepPanel2" data-step-target="2"><span>02</span><b>下载模型</b></button>
+        <span class="step-connector" aria-hidden="true"></span>
+        <button class="step-indicator" type="button" role="tab" aria-selected="false" aria-controls="stepPanel3" data-step-target="3"><span>03</span><b>加载模型</b></button>
+        <span class="step-connector" aria-hidden="true"></span>
+        <button class="step-indicator" type="button" role="tab" aria-selected="false" aria-controls="stepPanel4" data-step-target="4"><span>04</span><b>参数调节</b></button>
+      </div>
+      <div class="step-viewport">
+        <article class="step-panel active" id="stepPanel1" role="tabpanel" data-step-panel="1">
+          <div class="step-copy"><p class="step-kicker">步骤 01 / 先准备运行环境</p><h3>环境配置</h3><p>LM Studio 提供了一个可视化本地大模型运行环境，降低模型部署门槛，先确认硬件、运行时和模型格式，再开始下载，后面排查问题会轻松很多</p><div class="step-tags"><span>硬件</span><span>LM Studio</span><span>模型格式</span><span>运行环境</span></div></div>
+          <div class="step-diagram"><div class="diagram-node"><b>01</b><span>硬件</span><small>先看内存</small></div><div class="diagram-arrow">→</div><div class="diagram-node"><b>02</b><span>运行环境</span><small>桌面应用</small></div><div class="diagram-arrow">→</div><div class="diagram-node diagram-node--accent"><b>03</b><span>准备完成</span><small>本地推理</small></div></div>
+        </article>
+        <article class="step-panel" id="stepPanel2" role="tabpanel" data-step-panel="2" hidden>
+          <div class="step-copy"><p class="step-kicker">步骤 02 / 选择模型权重</p><h3>下载模型</h3><p>从 HuggingFace 或 LM Studio 的模型目录选择模型和参数规模，再判断 GGUF、MLX 与量化版本，文件大小决定能否装下，量化等级决定速度和回答质量的平衡</p><div class="step-tags"><span>HuggingFace</span><span>GGUF</span><span>MLX</span><span>量化</span></div></div>
+          <div class="download-checklist"><div><span>01</span><strong>选择模型</strong><small>先看任务，不先看参数</small></div><div><span>02</span><strong>选择规模</strong><small>7B 是容易起步的尺度</small></div><div><span>03</span><strong>选择量化</strong><small>Q4 / Q5 / Q8</small></div><div><span>04</span><strong>下载文件</strong><small>留出缓存空间</small></div></div>
+        </article>
+        <article class="step-panel" id="stepPanel3" role="tabpanel" data-step-panel="3" hidden>
+          <div class="step-copy"><p class="step-kicker">步骤 03 / 加载到内存</p><h3>加载模型</h3><p>加载模型本质是将模型权重放入内存或显存，让计算设备能够完成推理，GPU Offload 越充分，通常响应越快，但可用显存也会成为最先遇到的边界</p><div class="step-tags"><span>内存</span><span>GPU Offload</span><span>上下文</span></div></div>
+          <div class="load-meter"><div class="meter-label"><span>模型权重</span><b>7.2 / 8 GB</b></div><div class="meter-track"><span></span></div><div class="load-stats"><span>CPU <b>18%</b></span><span>GPU <b>92%</b></span><span>状态 <b>就绪</b></span></div></div>
+        </article>
+        <article class="step-panel" id="stepPanel4" role="tabpanel" data-step-panel="4" hidden>
+          <div class="step-copy"><p class="step-kicker">步骤 04 / 调整使用体验</p><h3>参数调节</h3><p>参数没有一组永远正确的答案，先用稳定的默认值跑通，再针对任务调整，我的经验是先调 Temperature 和 Context Length，再处理采样细节</p><div class="step-tags"><span>Temperature</span><span>Context Length</span><span>Top-p</span><span>Repeat Penalty</span></div></div>
+          <div class="parameter-list"><label><span>Temperature <b>0.30</b></span><input type="range" min="0" max="1" step="0.05" value="0.3" data-param="temperature"></label><label><span>Context Length <b>8K</b></span><input type="range" min="2" max="32" step="2" value="8" data-param="context"></label><label><span>Repeat Penalty <b>1.10</b></span><input type="range" min="1" max="1.3" step="0.01" value="1.1" data-param="repeat"></label></div>
+        </article>
+      </div>
+      <div class="stepper-footer"><button type="button" class="step-button step-back" id="stepBack" disabled>← <span>上一步</span></button><p id="stepHint">先确认硬件，再决定模型规模</p><button type="button" class="step-button step-next" id="stepNext"><span>继续</span> →</button></div>
+      <div class="step-complete" id="stepComplete" hidden><span>✓</span><strong>部署路径走通了</strong><p>接下来可以把注意力放到模型本身，而不是安装过程</p><button type="button" class="step-button" id="stepRestart">↺ 重新开始指南</button></div>
+    </div>
+  </section>
+
+  <section class="lab-section page-width" id="models">
+    <div class="section-heading compact reveal-on-scroll"><div><p class="section-index">02 / 我的模型</p><h2>我的<br><em>模型</em></h2></div><p class="section-intro">模型不是越大越好，它和硬件、任务、耐心共同决定一次本地实验是否值得</p></div>
+    <div class="models-grid reveal-on-scroll" id="modelsGrid"><div class="loading-state">正在加载模型记录</div></div>
+  </section>
+
+  <section class="lab-section page-width" id="hardware">
+    <div class="section-heading compact reveal-on-scroll"><div><p class="section-index">03 / 硬件配置</p><h2>硬件<br><em>边界</em></h2></div><p class="section-intro">同一个模型换一台机器，体验可能完全不同，显存、统一内存和生态，往往比纸面参数更先决定结果</p></div>
+    <div class="hardware-grid reveal-on-scroll">
+      <article class="hardware-card reveal-on-scroll"><div class="hardware-top"><span>01 / APPLE SILICON</span><strong>M1 Max</strong></div><div class="hardware-spec">32<span>GB</span> <small>统一内存</small></div><p>M 系列芯片采用统一内存架构，CPU 和 GPU 共享内存，适合运行 MLX 以及量化后的 GGUF 模型</p><div class="hardware-fit"><span>适合</span><b>7B</b><b>14B</b><b>部分 32B 量化模型</b></div></article>
+      <article class="hardware-card reveal-on-scroll"><div class="hardware-top"><span>02 / CUDA DESKTOP</span><strong>RTX 4070</strong></div><div class="hardware-spec">8<span>GB</span> <small>显存</small></div><p>CUDA 生态成熟，但显存容量成为限制模型规模的重要因素，小模型和明确的 GPU Offload 策略更重要</p><div class="hardware-fit"><span>适合</span><b>7B 模型</b><b>部分 14B 量化模型</b></div></article>
+    </div>
+    <div class="size-explorer reveal-on-scroll"><div class="size-copy"><p class="section-index">模型规模探索</p><h3 id="sizeTitle">7B / 实用的起点</h3><p id="sizeDescription">速度、质量和硬件要求之间比较容易取得平衡，适合先验证一条本地工作流</p></div><div class="size-control"><div class="size-scale" id="sizeScale"><button type="button" data-size="1B">1B</button><button type="button" class="active" data-size="7B">7B</button><button type="button" data-size="14B">14B</button><button type="button" data-size="32B">32B</button><button type="button" data-size="70B+">70B+</button></div><input id="sizeRange" type="range" min="0" max="4" value="1" aria-label="模型参数规模"><div class="size-tradeoff"><span>理解能力 ↑</span><span>显存需求 ↑</span><span>推理速度 ↓</span></div></div></div>
+  </section>
+
+  <section class="lab-section page-width" id="formats">
+    <div class="section-heading compact reveal-on-scroll"><div><p class="section-index">04 / 模型格式</p><h2>GGUF<br><em>vs MLX</em></h2></div><p class="section-intro">格式是部署体验的一部分，它不决定模型聪不聪明，却会改变模型如何使用你的硬件</p></div>
+    <div class="format-table reveal-on-scroll"><div class="format-row format-row--head"><span>格式</span><span>优势场景</span><span>取舍</span></div><div class="format-row"><strong>GGUF</strong><p><b>llama.cpp 生态</b><br>兼容性强，资源丰富，Windows / Linux / macOS 均支持</p><p>Apple Silicon 优化不一定最佳</p></div><div class="format-row"><strong>MLX</strong><p><b>Apple Silicon 原生</b><br>M 系列芯片优化明显，内存利用效率高，Mac 本地体验优秀</p><p>生态规模小于 GGUF，平台限制明显</p></div></div>
+  </section>
+
+  <section class="lab-section timeline-section page-width" id="evolution">
+    <div class="section-heading compact reveal-on-scroll"><div><p class="section-index">05 / AI 演进</p><h2>一条仍在<br><em>变化的线</em></h2></div><p class="section-intro">从预训练的一颗种子，到推理、多模态与 Agent 交织成枝。沿着主干向下，看见大语言模型如何一点点长成今天的树冠。</p></div>
+    <div class="timeline-toolbar reveal-on-scroll"><span><i></i> 生长记录 / 2018 - 2026</span><span>向下生长 <b>↓</b></span></div>
+    <div class="timeline-shell reveal-on-scroll"><div class="timeline-track" id="timelineTrack"><div class="loading-state">正在加载时间线</div></div></div>
+  </section>
+
+  <section class="future-section page-width"><p class="section-index reveal-on-scroll">06 / 未来探索</p><div class="future-layout reveal-on-scroll"><h2>继续把<br><em>问题留下</em></h2><div><p>下一步想记录的不只是模型跑分，还有它们在真实工作流里的摩擦：工具调用、记忆、Agent，以及更低成本的多模态部署</p><a class="text-link" href="index.html#contact">交换一个想法 <span>↗</span></a></div></div></section>
+</main>
+
+  <footer class="lab-footer page-width reveal-on-scroll"><span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span><span>个人记录，仍在持续更新</span></footer>
+<script src="assets/scripts/pages/ai-lab.js?v=tree-20260730" defer></script>
+</body>
+</html>
