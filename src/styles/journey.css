@@ -1,6 +1,6 @@
 :root { --paper: #f7f5ee; --paper-deep: #ebe6d9; --ink: #111; --muted: #68675f; --line: rgba(17,17,17,.14); --pink: #ff70e8; --orange: #ff8a3d; --yellow: #ffd84d; --green: #78f58a; --cyan: #62e8e8; --blue: #4d83ff; --mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace; }
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: Inter, Helvetica, Arial, sans-serif; line-height: 1.5; overflow-x: hidden; }
 a { color: inherit; }
 .journey-noise { position: fixed; inset: 0; z-index: 20; pointer-events: none; opacity: .025; mix-blend-mode: multiply; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
@@ -15,3 +15,20 @@ a { color: inherit; }
 [data-reveal] { opacity: 0; transform: translateY(34px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1); }.is-visible { opacity: 1; transform: none; }
 @media (max-width: 760px) { .journey-nav, .section-shell { width: calc(100vw - 40px); }.journey-nav { top: 12px; height: 52px; padding: 0 17px; }.journey-nav.scrolled { width: calc(100vw - 40px); height: 48px; }.journey-back { font-size: 0; }.journey-back span { font-size: 20px; }.journey-github { font-size: 0; }.journey-github svg { width: 19px; height: 19px; }.journey-hero { min-height: 650px; padding-top: 160px; }.hero-grid-mark { top: 180px; right: -210px; width: 390px; height: 390px; opacity: .7; }.journey-hero h1 { font-size: clamp(58px, 16vw, 92px); }.journey-lead { margin-top: 42px; font-size: 17px; }.journey-intro { margin-top: 22px; font-size: 13px; line-height: 1.9; }.scroll-cue { bottom: 48px; }.overview, .menu-section, .timeline-section { padding: 86px 0 105px; }.overview-grid { grid-template-columns: repeat(2, 1fr); margin-top: 50px; }.overview-card, .overview-card--wide { grid-column: span 1; min-height: 190px; padding: 18px; }.overview-card--wide { grid-column: span 2; }.overview-card--wide strong { font-size: 28px; }.overview-card strong { font-size: 18px; }.section-heading--row { display: block; }.section-heading--row > p { margin-top: 24px; text-align: left; }.infinite-menu { height: 650px; min-height: 0; margin-top: 48px; }.menu-side--left { top: 30px; left: 24px; transform: none; }.menu-side--right { top: auto; right: 24px; bottom: 32px; width: 135px; transform: none; }.menu-side h3 { font-size: 50px; }.menu-action { bottom: 28px; left: calc(50% - 28px); }.menu-hint { left: 24px; right: auto; bottom: 18px; font-size: 8px; }.timeline { margin-top: 58px; }.timeline::before { left: 22px; }.timeline-item { grid-template-columns: 46px minmax(0, 1fr); gap: 20px; min-height: 0; padding-bottom: 75px; }.timeline-marker { width: 46px; height: 46px; }.timeline-marker::before { inset: 5px; }.timeline-copy { padding-top: 4px; }.timeline-copy h3 { margin: 14px 0 18px; font-size: 35px; }.timeline-copy p { font-size: 13px; line-height: 1.8; }.timeline-aside, .site-map, .design-swatch, .flow-stack, .optimization-list, .deployment-flow { grid-column: 2; align-self: start; margin-top: 28px; }.timeline-aside { padding-top: 0; }.future-section { display: block; padding: 95px 0 120px; }.future-list { margin-top: 54px; }.future-list span { font-size: 15px; }.journey-footer { display: grid; gap: 15px; padding: 28px 20px 34px; font-size: 9px; }.journey-footer a:last-child { justify-self: start; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } [data-reveal] { opacity: 1; transform: none; transition: none; } }
+
+@media (max-width: 760px) {
+  .journey-nav,
+  .journey-nav.scrolled {
+    right: 20px;
+    left: 20px;
+    width: auto;
+    transform: none;
+  }
+  .journey-nav-right { gap: 2px; }
+  .journey-back,
+  .journey-github {
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+}

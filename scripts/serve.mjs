@@ -37,10 +37,7 @@ const server = createServer(async (request, response) => {
 
   const extension = path.extname(filePath).toLowerCase();
   response.setHeader('Content-Type', contentTypes[extension] || 'application/octet-stream');
-  response.setHeader(
-    'Cache-Control',
-    extension === '.html' ? 'no-cache' : 'public, max-age=3600',
-  );
+  response.setHeader('Cache-Control', 'no-cache');
   createReadStream(filePath).pipe(response);
 });
 

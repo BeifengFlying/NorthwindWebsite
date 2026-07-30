@@ -1,3 +1,163 @@
+/* Shared, gesture-aware sound effects for navigation and tactile interactions. */
+var NorthwindSound = window.NorthwindSound || (function () {
+  'use strict';
+
+  var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  var context;
+  var resumePromise;
+  var lastWindAt = -Infinity;
+
+  function getContext() {
+    if (!AudioContextClass) return null;
+    if (context && context.state !== 'closed') return context;
+    try {
+      context = new AudioContextClass({ latencyHint: 'interactive' });
+    } catch (error) {
+      try { context = new AudioContextClass(); }
+      catch (fallbackError) { context = null; }
+    }
+    return context;
+  }
+
+  function unlock() {
+    var audioContext = getContext();
+    if (!audioContext || audioContext.state === 'running') return Promise.resolve(audioContext);
+    if (audioContext.state === 'closed') return Promise.resolve(null);
+    if (!resumePromise) {
+      resumePromise = audioContext.resume().then(function () {
+        resumePromise = null;
+        return audioContext;
+      }).catch(function () {
+        resumePromise = null;
+        return null;
+      });
+    }
+    return resumePromise;
+  }
+
+  function createNoise(audioContext, duration) {
+    var buffer = audioContext.createBuffer(1, Math.ceil(audioContext.sampleRate * duration), audioContext.sampleRate);
+    var samples = buffer.getChannelData(0);
+    var previous = 0;
+    for (var i = 0; i < samples.length; i += 1) {
+      var white = Math.random() * 2 - 1;
+      previous = previous * .68 + white * .32;
+      samples[i] = previous;
+    }
+    var source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    return source;
+  }
+
+  function playTick(volume) {
+    var requestedAt = performance.now();
+    unlock().then(function (audioContext) {
+      if (!audioContext || performance.now() - requestedAt > 120) return;
+      var start = audioContext.currentTime + .004;
+      var end = start + .052;
+      var oscillator = audioContext.createOscillator();
+      var gain = audioContext.createGain();
+      var normalizedVolume = volume == null ? .4 : volume;
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(1850, start);
+      oscillator.frequency.exponentialRampToValueAtTime(720, end);
+      gain.gain.setValueAtTime(Math.min(Math.max(normalizedVolume, 0), 1) * .11, start);
+      gain.gain.exponentialRampToValueAtTime(.0001, end);
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start(start);
+      oscillator.stop(end);
+    });
+  }
+
+  function playPageWhoosh(delay) {
+    unlock().then(function (audioContext) {
+      if (!audioContext) return;
+      var start = audioContext.currentTime + Math.max(delay || 0, 0);
+      var duration = .64;
+      var end = start + duration;
+      var noise = createNoise(audioContext, duration);
+      var filter = audioContext.createBiquadFilter();
+      var noiseGain = audioContext.createGain();
+      filter.type = 'bandpass';
+      filter.Q.value = .72;
+      filter.frequency.setValueAtTime(480, start);
+      filter.frequency.exponentialRampToValueAtTime(2800, end);
+      noiseGain.gain.setValueAtTime(.0001, start);
+      noiseGain.gain.linearRampToValueAtTime(.09, start + .16);
+      noiseGain.gain.exponentialRampToValueAtTime(.0001, end);
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(audioContext.destination);
+      noise.start(start);
+      noise.stop(end);
+
+      var tone = audioContext.createOscillator();
+      var toneGain = audioContext.createGain();
+      tone.type = 'sine';
+      tone.frequency.setValueAtTime(340, start);
+      tone.frequency.exponentialRampToValueAtTime(1500, end - .06);
+      toneGain.gain.setValueAtTime(.0001, start);
+      toneGain.gain.linearRampToValueAtTime(.022, start + .12);
+      toneGain.gain.exponentialRampToValueAtTime(.0001, end - .03);
+      tone.connect(toneGain);
+      toneGain.connect(audioContext.destination);
+      tone.start(start);
+      tone.stop(end);
+    });
+  }
+
+  function playWind(direction) {
+    var requestedAt = performance.now();
+    if (requestedAt - lastWindAt < 900) return;
+    lastWindAt = requestedAt;
+    unlock().then(function (audioContext) {
+      if (!audioContext || performance.now() - requestedAt > 180) return;
+      var start = audioContext.currentTime + .02;
+      var duration = 1.18;
+      var end = start + duration;
+      var noise = createNoise(audioContext, duration);
+      var filter = audioContext.createBiquadFilter();
+      var gain = audioContext.createGain();
+      var panner = audioContext.createStereoPanner ? audioContext.createStereoPanner() : null;
+      filter.type = 'bandpass';
+      filter.Q.value = .48;
+      filter.frequency.setValueAtTime(340, start);
+      filter.frequency.exponentialRampToValueAtTime(1250, start + .42);
+      filter.frequency.exponentialRampToValueAtTime(430, end);
+      gain.gain.setValueAtTime(.0001, start);
+      gain.gain.linearRampToValueAtTime(.115, start + .22);
+      gain.gain.exponentialRampToValueAtTime(.0001, end);
+      noise.connect(filter);
+      filter.connect(gain);
+      if (panner) {
+        var from = direction < 0 ? .65 : -.65;
+        panner.pan.setValueAtTime(from, start);
+        panner.pan.linearRampToValueAtTime(-from, end);
+        gain.connect(panner);
+        panner.connect(audioContext.destination);
+      } else {
+        gain.connect(audioContext.destination);
+      }
+      noise.start(start);
+      noise.stop(end);
+    });
+  }
+
+  document.addEventListener('pointerdown', unlock, { capture: true });
+  document.addEventListener('touchstart', unlock, { capture: true, passive: true });
+  document.addEventListener('keydown', unlock, { capture: true });
+  window.addEventListener('wheel', unlock, { capture: true, passive: true });
+
+  return {
+    playPageWhoosh: playPageWhoosh,
+    playTick: playTick,
+    playWind: playWind,
+    unlock: unlock
+  };
+}());
+window.NorthwindSound = NorthwindSound;
+
 /* Reversible, scroll-driven paper-plane passage from the hero into About. */
 (function () {
   'use strict';
@@ -75,6 +235,7 @@
     if (!hero || !about) return;
 
     var passage = createPassage();
+    var passageActive;
 
     function render() {
       frame = 0;
@@ -85,6 +246,7 @@
       var speed = clamp(Math.abs(velocity) / 2.4, 0, 1);
       var travelEnd = about.offsetTop + Math.min(about.offsetHeight * .26, window.innerHeight * .28);
       var progress = clamp(scroll / Math.max(travelEnd, 1), 0, 1);
+      var isPassageActive = progress > .025 && progress < .975;
       var largeProgress = easeInOut(progress);
       var smallRaw = clamp((progress - .08) / .86, 0, 1);
       var smallProgress = easeInOut(smallRaw);
@@ -129,6 +291,11 @@
         speed * .82
       );
 
+      if (passageActive === false && isPassageActive && Math.abs(scroll - previousScroll) > .5) {
+        NorthwindSound.playWind(velocity < 0 ? -1 : 1);
+      }
+      passageActive = isPassageActive;
+
       previousScroll = scroll;
       previousTime = now;
     }
@@ -155,7 +322,6 @@
   var locked = false;
   var overlay;
   var arriving = false;
-  var audioContext;
 
   try { arriving = Boolean(window.sessionStorage.getItem(storageKey)); }
   catch (error) { /* Storage can be unavailable in privacy-restricted contexts. */ }
@@ -175,62 +341,6 @@
       '<div class="page-wipe__puzzle"></div>' +
       '<div class="page-wipe__spark"></div>';
     document.body.appendChild(overlay);
-  }
-
-  function playWhoosh() {
-    var AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-
-    try {
-      if (!audioContext) audioContext = new AudioContext();
-
-      var renderSound = function () {
-        var start = audioContext.currentTime + .01;
-        var duration = .42;
-        var end = start + duration;
-        var buffer = audioContext.createBuffer(1, Math.ceil(audioContext.sampleRate * duration), audioContext.sampleRate);
-        var samples = buffer.getChannelData(0);
-
-        for (var i = 0; i < samples.length; i += 1) {
-          var envelope = Math.sin(Math.PI * i / samples.length);
-          samples[i] = (Math.random() * 2 - 1) * envelope;
-        }
-
-        var noise = audioContext.createBufferSource();
-        var filter = audioContext.createBiquadFilter();
-        var noiseGain = audioContext.createGain();
-        noise.buffer = buffer;
-        filter.type = 'bandpass';
-        filter.Q.value = .72;
-        filter.frequency.setValueAtTime(520, start);
-        filter.frequency.exponentialRampToValueAtTime(2600, end);
-        noiseGain.gain.setValueAtTime(.0001, start);
-        noiseGain.gain.linearRampToValueAtTime(.085, start + .07);
-        noiseGain.gain.exponentialRampToValueAtTime(.0001, end);
-        noise.connect(filter);
-        filter.connect(noiseGain);
-        noiseGain.connect(audioContext.destination);
-
-        var tone = audioContext.createOscillator();
-        var toneGain = audioContext.createGain();
-        tone.type = 'sine';
-        tone.frequency.setValueAtTime(380, start);
-        tone.frequency.exponentialRampToValueAtTime(1650, end - .04);
-        toneGain.gain.setValueAtTime(.0001, start);
-        toneGain.gain.linearRampToValueAtTime(.025, start + .045);
-        toneGain.gain.exponentialRampToValueAtTime(.0001, end - .03);
-        tone.connect(toneGain);
-        toneGain.connect(audioContext.destination);
-
-        noise.start(start);
-        noise.stop(end);
-        tone.start(start);
-        tone.stop(end);
-      };
-
-      if (audioContext.state === 'suspended') audioContext.resume().then(renderSound).catch(function () {});
-      else renderSound();
-    } catch (error) { /* Audio is optional when a browser blocks Web Audio. */ }
   }
 
   function isPageNavigation(anchor, event) {
@@ -274,9 +384,9 @@
 
   function navigate(url) {
     locked = true;
-    playWhoosh();
     document.documentElement.classList.add('page-transition-active');
     overlay.className = 'page-wipe is-covering';
+    NorthwindSound.playPageWhoosh(.14);
 
     try { window.sessionStorage.setItem(storageKey, url); }
     catch (error) { /* Navigation still works when storage is unavailable. */ }

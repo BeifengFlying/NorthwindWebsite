@@ -77,6 +77,17 @@ body.home-section-motion.motion-ready .music-group-toggle.home-motion-item {
   transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), color .2s ease, background .2s ease, border-color .2s ease;
 }
 
+@media (max-width: 768px) {
+  body.home-section-motion.motion-ready .home-motion-item,
+  body.home-section-motion.motion-ready .home-motion-item[data-home-motion="heading"],
+  body.home-section-motion.motion-ready .home-motion-item[data-home-motion="image"] {
+    filter: none;
+    translate: 0 18px;
+    scale: 1;
+    transition-duration: 480ms;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body.motion-ready [data-motion-reveal],
   body.motion-ready [data-motion-reveal="image"],
