@@ -17,6 +17,7 @@ private/
 private-assets/
 *.mp3
 *.wav
+!public/assets/audio/*.wav
 *.flac
 *.psd
 *.raw
