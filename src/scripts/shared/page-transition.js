@@ -10,8 +10,8 @@ var NorthwindSound = window.NorthwindSound || (function () {
   var assetBuffers = Object.create(null);
   var assetPromises = Object.create(null);
   var assetUrls = {
-    tick: '/assets/audio/wheel-tick.wav?v=sfx-20260731-2',
-    wind: '/assets/audio/paper-plane-wind.wav?v=sfx-20260731-2'
+    tick: '/assets/audio/wheel-tick.wav?v=sfx-20260731-3',
+    wind: '/assets/audio/paper-plane-wind.wav?v=sfx-20260731-3'
   };
 
   function reflectSoundState() {
@@ -71,20 +71,6 @@ var NorthwindSound = window.NorthwindSound || (function () {
     return resumePromise;
   }
 
-  function createNoise(audioContext, duration) {
-    var buffer = audioContext.createBuffer(1, Math.ceil(audioContext.sampleRate * duration), audioContext.sampleRate);
-    var samples = buffer.getChannelData(0);
-    var previous = 0;
-    for (var i = 0; i < samples.length; i += 1) {
-      var white = Math.random() * 2 - 1;
-      previous = previous * .68 + white * .32;
-      samples[i] = previous;
-    }
-    var source = audioContext.createBufferSource();
-    source.buffer = buffer;
-    return source;
-  }
-
   function loadAsset(name) {
     var audioContext = getContext();
     if (!audioContext || !assetUrls[name]) return Promise.resolve(null);
@@ -131,48 +117,11 @@ var NorthwindSound = window.NorthwindSound || (function () {
     playAsset('tick', normalizedVolume * .9, 180);
   }
 
-  function playPageWhoosh(delay) {
-    unlock().then(function (audioContext) {
-      if (!audioContext) return;
-      var start = audioContext.currentTime + Math.max(delay || 0, 0);
-      var duration = .44;
-      var end = start + duration;
-      var noise = createNoise(audioContext, duration);
-      var filter = audioContext.createBiquadFilter();
-      var noiseGain = audioContext.createGain();
-      filter.type = 'bandpass';
-      filter.Q.value = .72;
-      filter.frequency.setValueAtTime(480, start);
-      filter.frequency.exponentialRampToValueAtTime(2800, end);
-      noiseGain.gain.setValueAtTime(.0001, start);
-      noiseGain.gain.linearRampToValueAtTime(.09, start + .10);
-      noiseGain.gain.exponentialRampToValueAtTime(.0001, end);
-      noise.connect(filter);
-      filter.connect(noiseGain);
-      noiseGain.connect(audioContext.destination);
-      noise.start(start);
-      noise.stop(end);
-
-      var tone = audioContext.createOscillator();
-      var toneGain = audioContext.createGain();
-      tone.type = 'sine';
-      tone.frequency.setValueAtTime(340, start);
-      tone.frequency.exponentialRampToValueAtTime(1500, end - .06);
-      toneGain.gain.setValueAtTime(.0001, start);
-      toneGain.gain.linearRampToValueAtTime(.022, start + .08);
-      toneGain.gain.exponentialRampToValueAtTime(.0001, end - .03);
-      tone.connect(toneGain);
-      toneGain.connect(audioContext.destination);
-      tone.start(start);
-      tone.stop(end);
-    });
-  }
-
   function playWind(direction) {
     var requestedAt = performance.now();
     if (requestedAt - lastWindAt < 900) return;
     lastWindAt = requestedAt;
-    playAsset('wind', direction < 0 ? .68 : .76, 800);
+    playAsset('wind', direction < 0 ? .18 : .20, 800);
   }
 
   if (document.getElementById('optionWheel')) loadAsset('tick');
@@ -187,7 +136,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
     soundToggle.addEventListener('click', function () {
       unlock().then(function (audioContext) {
         reflectSoundState();
-        if (audioContext && audioContext.state === 'running') playTick(.72);
+        if (audioContext && audioContext.state === 'running') playTick(.45);
       });
     });
   }
@@ -199,7 +148,6 @@ var NorthwindSound = window.NorthwindSound || (function () {
   reflectSoundState();
 
   return {
-    playPageWhoosh: playPageWhoosh,
     playTick: playTick,
     playWind: playWind,
     unlock: unlock
@@ -435,10 +383,6 @@ window.NorthwindSound = NorthwindSound;
     locked = true;
     document.documentElement.classList.add('page-transition-active');
     overlay.className = 'page-wipe is-covering';
-    NorthwindSound.unlock();
-    window.setTimeout(function () {
-      NorthwindSound.playPageWhoosh(0);
-    }, 620);
 
     try { window.sessionStorage.setItem(storageKey, url); }
     catch (error) { /* Navigation still works when storage is unavailable. */ }
