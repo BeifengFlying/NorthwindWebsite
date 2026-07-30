@@ -247,15 +247,21 @@ section { position: relative; overflow: visible; }
 .nav-link.active::after { transform: translateX(-50%) scale(1); }
 
 .sound-toggle {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 1000;
   width: 44px;
   height: 44px;
-  flex: 0 0 44px;
   display: grid;
   place-items: center;
   padding: 0;
-  border: 0;
+  border: 1px solid rgba(17, 17, 17, .10);
   border-radius: 50%;
-  background: transparent;
+  background: rgba(247, 245, 238, .82);
+  box-shadow: 0 4px 18px rgba(17, 17, 17, .10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: var(--muted);
   cursor: pointer;
   transition: color .2s ease, background-color .2s ease;
@@ -264,7 +270,7 @@ section { position: relative; overflow: visible; }
 .sound-toggle:hover,
 .sound-toggle:focus-visible {
   color: var(--ink);
-  background: rgba(17, 17, 17, .07);
+  background: rgba(255, 255, 255, .92);
   outline: none;
 }
 
@@ -336,7 +342,7 @@ section { position: relative; overflow: visible; }
 
 .hero-scroll-hint {
   position: absolute;
-  bottom: 36px; right: var(--gutter);
+  bottom: 36px; right: calc(var(--gutter) + 58px);
   font-size: 12px; font-weight: 500;
   color: var(--muted);
   letter-spacing: -0.01em;
@@ -1233,7 +1239,6 @@ section { position: relative; overflow: visible; }
     transition: background .25s ease, box-shadow .25s ease;
   }
   .nav-links { display: none; }
-  .sound-toggle { margin-left: auto; margin-right: 2px; }
   .nav-toggle {
     display: flex;
     width: 44px;
@@ -1264,13 +1269,6 @@ section { position: relative; overflow: visible; }
     top: 12px;
     right: 18px;
   }
-  .nav.is-menu-open .sound-toggle {
-    position: absolute;
-    top: 12px;
-    right: 66px;
-    margin: 0;
-    z-index: 102;
-  }
   .nav.is-menu-open .nav-toggle span:first-child { transform: translateY(7px) rotate(45deg); }
   .nav.is-menu-open .nav-toggle span:nth-child(2) { opacity: 0; }
   .nav.is-menu-open .nav-toggle span:last-child { transform: translateY(-7px) rotate(-45deg); }
@@ -1293,7 +1291,7 @@ section { position: relative; overflow: visible; }
   .hero-title { font-size: 16vw; line-height: .95; }
   .hero-title-line:last-child { padding-left: max(10vw, 80px); }
   .hero-subtitle { font-size: 15px; }
-  .hero-scroll-hint { right: 24px; bottom: 26px; z-index: 2; }
+  .hero-scroll-hint { right: 82px; bottom: 26px; z-index: 2; }
 
 
 
