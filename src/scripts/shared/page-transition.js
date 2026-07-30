@@ -8,22 +8,25 @@ var NorthwindSound = window.NorthwindSound || (function () {
   var contextPrimed = false;
   var masterGain;
   var muteStorageKey = 'northwind-sound-muted';
-  var soundMuted = false;
+  var soundMuted = true;
   var lastWindAt = -Infinity;
   var assetBuffers = Object.create(null);
   var assetPromises = Object.create(null);
   var assetUrls = {
-    tick: '/assets/audio/wheel-tick.wav?v=sfx-20260731-4',
-    wind: '/assets/audio/paper-plane-wind.wav?v=sfx-20260731-4'
+    tick: '/assets/audio/wheel-tick.wav?v=sfx-20260731-5',
+    wind: '/assets/audio/paper-plane-wind.wav?v=sfx-20260731-5'
   };
 
-  try { soundMuted = window.localStorage.getItem(muteStorageKey) === 'true'; }
+  try {
+    var storedMuteState = window.localStorage.getItem(muteStorageKey);
+    soundMuted = storedMuteState === null ? true : storedMuteState === 'true';
+  }
   catch (error) { /* Sound still works when storage is unavailable. */ }
 
   function reflectSoundState() {
     var toggle = document.getElementById('soundToggle');
     if (!toggle) return;
-    var enabled = Boolean(!soundMuted && context && context.state === 'running');
+    var enabled = !soundMuted;
     var label = enabled ? '关闭声音' : '开启声音';
     toggle.classList.toggle('is-enabled', enabled);
     toggle.setAttribute('aria-pressed', String(enabled));
@@ -95,6 +98,10 @@ var NorthwindSound = window.NorthwindSound || (function () {
     }
     return resumePromise;
   }
+
+  // Prepare the suspended context before the control is painted so the first
+  // user click only needs to resume it and can update the UI immediately.
+  getContext();
 
   function createNoise(audioContext, duration) {
     var buffer = audioContext.createBuffer(1, Math.ceil(audioContext.sampleRate * duration), audioContext.sampleRate);
@@ -202,33 +209,36 @@ var NorthwindSound = window.NorthwindSound || (function () {
     playAsset('wind', direction < 0 ? .18 : .20, 800);
   }
 
-  if (document.getElementById('optionWheel')) loadAsset('tick');
-  if (document.getElementById('hero') && document.getElementById('about')) loadAsset('wind');
-
   function unlockFromGesture(event) {
     if (event.target && event.target.closest && event.target.closest('#soundToggle')) return;
     if (soundMuted) return;
     unlock().then(reflectSoundState);
   }
 
-  var soundToggle = document.getElementById('soundToggle');
-  if (soundToggle) {
-    soundToggle.addEventListener('click', function () {
-      var currentlyEnabled = soundToggle.getAttribute('aria-pressed') === 'true';
-      if (currentlyEnabled) {
-        setSoundMuted(true);
-        return;
-      }
-      setSoundMuted(false);
-      unlock().then(reflectSoundState);
-    });
+  function toggleSound() {
+    var shouldEnable = soundMuted;
+    setSoundMuted(!shouldEnable);
+    if (!shouldEnable) return;
+    unlock().then(reflectSoundState);
   }
 
+  document.addEventListener('click', function (event) {
+    if (!event.target || !event.target.closest || !event.target.closest('#soundToggle')) return;
+    toggleSound();
+  });
   document.addEventListener('pointerdown', unlockFromGesture, { capture: true });
   document.addEventListener('touchstart', unlockFromGesture, { capture: true, passive: true });
   document.addEventListener('keydown', unlockFromGesture, { capture: true });
   window.addEventListener('wheel', unlockFromGesture, { capture: true, passive: true });
-  reflectSoundState();
+
+  function finishSoundBoot() {
+    reflectSoundState();
+    if (document.getElementById('optionWheel')) loadAsset('tick');
+    if (document.getElementById('hero') && document.getElementById('about')) loadAsset('wind');
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', finishSoundBoot);
+  else finishSoundBoot();
 
   return {
     playPageWhoosh: playPageWhoosh,
