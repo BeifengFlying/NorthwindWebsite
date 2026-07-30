@@ -286,24 +286,6 @@ if (!reduceMotion && !compactViewport) {
 })();
 
 /* --------------------------------
-   AMBIENT BLOB PARALLAX
-   -------------------------------- */
-if (!reduceMotion) {
-  gsap.to('.ambient-blob--pink', {
-    y: '8%', x: '3%',
-    scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1 },
-  });
-  gsap.to('.ambient-blob--cyan', {
-    y: '-6%', x: '-4%',
-    scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1 },
-  });
-  gsap.to('.ambient-blob--green', {
-    y: '-4%', x: '4%',
-    scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1.2 },
-  });
-}
-
-/* --------------------------------
    ANIMATIONS
    -------------------------------- */
 var usesSectionMotion = document.body.classList.contains('home-section-motion');
