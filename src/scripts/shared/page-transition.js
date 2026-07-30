@@ -10,6 +10,8 @@ var NorthwindSound = window.NorthwindSound || (function () {
   var muteStorageKey = 'northwind-sound-muted';
   var soundMuted = true;
   var lastWindAt = -Infinity;
+  var assetData = Object.create(null);
+  var assetDataPromises = Object.create(null);
   var assetBuffers = Object.create(null);
   var assetPromises = Object.create(null);
   var assetUrls = {
@@ -99,10 +101,6 @@ var NorthwindSound = window.NorthwindSound || (function () {
     return resumePromise;
   }
 
-  // Prepare the suspended context before the control is painted so the first
-  // user click only needs to resume it and can update the UI immediately.
-  getContext();
-
   function createNoise(audioContext, duration) {
     var buffer = audioContext.createBuffer(1, Math.ceil(audioContext.sampleRate * duration), audioContext.sampleRate);
     var samples = buffer.getChannelData(0);
@@ -117,21 +115,43 @@ var NorthwindSound = window.NorthwindSound || (function () {
     return source;
   }
 
+  function fetchAssetData(name) {
+    if (!assetUrls[name]) return Promise.resolve(null);
+    if (assetData[name]) return Promise.resolve(assetData[name]);
+    if (assetDataPromises[name]) return assetDataPromises[name];
+
+    assetDataPromises[name] = window.fetch(assetUrls[name], { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Unable to load sound effect: ' + response.status);
+        return response.arrayBuffer();
+      })
+      .then(function (data) {
+        assetData[name] = data;
+        assetDataPromises[name] = null;
+        return data;
+      })
+      .catch(function () {
+        assetDataPromises[name] = null;
+        return null;
+      });
+    return assetDataPromises[name];
+  }
+
   function loadAsset(name) {
     var audioContext = getContext();
     if (!audioContext || !assetUrls[name]) return Promise.resolve(null);
     if (assetBuffers[name]) return Promise.resolve(assetBuffers[name]);
     if (assetPromises[name]) return assetPromises[name];
 
-    assetPromises[name] = window.fetch(assetUrls[name], { credentials: 'same-origin' })
-      .then(function (response) {
-        if (!response.ok) throw new Error('Unable to load sound effect: ' + response.status);
-        return response.arrayBuffer();
+    assetPromises[name] = fetchAssetData(name)
+      .then(function (data) {
+        if (!data) return null;
+        return audioContext.decodeAudioData(data.slice(0));
       })
-      .then(function (data) { return audioContext.decodeAudioData(data); })
       .then(function (buffer) {
-        assetBuffers[name] = buffer;
         assetPromises[name] = null;
+        if (!buffer) return null;
+        assetBuffers[name] = buffer;
         return buffer;
       })
       .catch(function () {
@@ -209,21 +229,41 @@ var NorthwindSound = window.NorthwindSound || (function () {
     playAsset('wind', direction < 0 ? .18 : .20, 800);
   }
 
+  function preparePageAssets(decode) {
+    var prepare = decode ? loadAsset : fetchAssetData;
+    if (document.getElementById('optionWheel')) prepare('tick');
+    if (document.getElementById('hero') && document.getElementById('about')) prepare('wind');
+  }
+
   function unlockFromGesture(event) {
     if (event.target && event.target.closest && event.target.closest('#soundToggle')) return;
     if (soundMuted) return;
-    unlock().then(reflectSoundState);
+    unlock().then(function (audioContext) {
+      reflectSoundState();
+      if (audioContext) preparePageAssets(true);
+    });
   }
 
   function toggleSound() {
     var shouldEnable = soundMuted;
     setSoundMuted(!shouldEnable);
     if (!shouldEnable) return;
-    unlock().then(reflectSoundState);
+    unlock().then(function (audioContext) {
+      reflectSoundState();
+      if (audioContext) preparePageAssets(true);
+    });
   }
 
+  var lastTogglePointerAt = -Infinity;
+  document.addEventListener('pointerdown', function (event) {
+    if (!event.target || !event.target.closest || !event.target.closest('#soundToggle')) return;
+    if (event.isPrimary === false || (typeof event.button === 'number' && event.button !== 0)) return;
+    lastTogglePointerAt = performance.now();
+    toggleSound();
+  }, { capture: true });
   document.addEventListener('click', function (event) {
     if (!event.target || !event.target.closest || !event.target.closest('#soundToggle')) return;
+    if (performance.now() - lastTogglePointerAt < 800) return;
     toggleSound();
   });
   document.addEventListener('pointerdown', unlockFromGesture, { capture: true });
@@ -233,8 +273,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
 
   function finishSoundBoot() {
     reflectSoundState();
-    if (document.getElementById('optionWheel')) loadAsset('tick');
-    if (document.getElementById('hero') && document.getElementById('about')) loadAsset('wind');
+    preparePageAssets(false);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', finishSoundBoot);
