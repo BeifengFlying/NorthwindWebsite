@@ -6,6 +6,12 @@ var NorthwindSound = window.NorthwindSound || (function () {
   var context;
   var resumePromise;
   var lastWindAt = -Infinity;
+  var assetBuffers = Object.create(null);
+  var assetPromises = Object.create(null);
+  var assetUrls = {
+    tick: '/assets/audio/wheel-tick.wav',
+    wind: '/assets/audio/paper-plane-wind.wav'
+  };
 
   function getContext() {
     if (!AudioContextClass) return null;
@@ -49,25 +55,50 @@ var NorthwindSound = window.NorthwindSound || (function () {
     return source;
   }
 
-  function playTick(volume) {
+  function loadAsset(name) {
+    var audioContext = getContext();
+    if (!audioContext || !assetUrls[name]) return Promise.resolve(null);
+    if (assetBuffers[name]) return Promise.resolve(assetBuffers[name]);
+    if (assetPromises[name]) return assetPromises[name];
+
+    assetPromises[name] = window.fetch(assetUrls[name], { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Unable to load sound effect: ' + response.status);
+        return response.arrayBuffer();
+      })
+      .then(function (data) { return audioContext.decodeAudioData(data); })
+      .then(function (buffer) {
+        assetBuffers[name] = buffer;
+        assetPromises[name] = null;
+        return buffer;
+      })
+      .catch(function () {
+        assetPromises[name] = null;
+        return null;
+      });
+    return assetPromises[name];
+  }
+
+  function playAsset(name, volume, maxWait) {
     var requestedAt = performance.now();
     unlock().then(function (audioContext) {
-      if (!audioContext || performance.now() - requestedAt > 120) return;
-      var start = audioContext.currentTime + .004;
-      var end = start + .052;
-      var oscillator = audioContext.createOscillator();
-      var gain = audioContext.createGain();
-      var normalizedVolume = volume == null ? .4 : volume;
-      oscillator.type = 'triangle';
-      oscillator.frequency.setValueAtTime(1850, start);
-      oscillator.frequency.exponentialRampToValueAtTime(720, end);
-      gain.gain.setValueAtTime(Math.min(Math.max(normalizedVolume, 0), 1) * .11, start);
-      gain.gain.exponentialRampToValueAtTime(.0001, end);
-      oscillator.connect(gain);
-      gain.connect(audioContext.destination);
-      oscillator.start(start);
-      oscillator.stop(end);
+      if (!audioContext) return;
+      loadAsset(name).then(function (buffer) {
+        if (!buffer || performance.now() - requestedAt > maxWait) return;
+        var source = audioContext.createBufferSource();
+        var gain = audioContext.createGain();
+        source.buffer = buffer;
+        gain.gain.value = Math.min(Math.max(volume, 0), 1);
+        source.connect(gain);
+        gain.connect(audioContext.destination);
+        source.start(audioContext.currentTime + .004);
+      });
     });
+  }
+
+  function playTick(volume) {
+    var normalizedVolume = volume == null ? .4 : volume;
+    playAsset('tick', normalizedVolume * .9, 180);
   }
 
   function playPageWhoosh(delay) {
@@ -111,38 +142,11 @@ var NorthwindSound = window.NorthwindSound || (function () {
     var requestedAt = performance.now();
     if (requestedAt - lastWindAt < 900) return;
     lastWindAt = requestedAt;
-    unlock().then(function (audioContext) {
-      if (!audioContext || performance.now() - requestedAt > 180) return;
-      var start = audioContext.currentTime + .02;
-      var duration = 1.18;
-      var end = start + duration;
-      var noise = createNoise(audioContext, duration);
-      var filter = audioContext.createBiquadFilter();
-      var gain = audioContext.createGain();
-      var panner = audioContext.createStereoPanner ? audioContext.createStereoPanner() : null;
-      filter.type = 'bandpass';
-      filter.Q.value = .48;
-      filter.frequency.setValueAtTime(340, start);
-      filter.frequency.exponentialRampToValueAtTime(1250, start + .42);
-      filter.frequency.exponentialRampToValueAtTime(430, end);
-      gain.gain.setValueAtTime(.0001, start);
-      gain.gain.linearRampToValueAtTime(.115, start + .22);
-      gain.gain.exponentialRampToValueAtTime(.0001, end);
-      noise.connect(filter);
-      filter.connect(gain);
-      if (panner) {
-        var from = direction < 0 ? .65 : -.65;
-        panner.pan.setValueAtTime(from, start);
-        panner.pan.linearRampToValueAtTime(-from, end);
-        gain.connect(panner);
-        panner.connect(audioContext.destination);
-      } else {
-        gain.connect(audioContext.destination);
-      }
-      noise.start(start);
-      noise.stop(end);
-    });
+    playAsset('wind', direction < 0 ? .68 : .76, 800);
   }
+
+  if (document.getElementById('optionWheel')) loadAsset('tick');
+  if (document.getElementById('hero') && document.getElementById('about')) loadAsset('wind');
 
   document.addEventListener('pointerdown', unlock, { capture: true });
   document.addEventListener('touchstart', unlock, { capture: true, passive: true });
@@ -386,7 +390,7 @@ window.NorthwindSound = NorthwindSound;
     locked = true;
     document.documentElement.classList.add('page-transition-active');
     overlay.className = 'page-wipe is-covering';
-    NorthwindSound.playPageWhoosh(.14);
+    NorthwindSound.playPageWhoosh(.40);
 
     try { window.sessionStorage.setItem(storageKey, url); }
     catch (error) { /* Navigation still works when storage is unavailable. */ }

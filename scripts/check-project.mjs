@@ -54,7 +54,11 @@ for (const file of files) {
   if (path.basename(file) === '.DS_Store' || /^\.env(?:\.|$)/.test(path.basename(file))) {
     failures.push(`Local-only file published: ${relativePath}`);
   }
+  const isPublicSoundEffect =
+    relativePath.startsWith(`assets${path.sep}audio${path.sep}`) &&
+    extension === '.wav';
   if (
+    !isPublicSoundEffect &&
     [
       '.arw',
       '.cr2',
