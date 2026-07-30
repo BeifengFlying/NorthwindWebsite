@@ -13,9 +13,15 @@
     "optimize:images": "node scripts/optimize-images.cjs"
   },
   "devDependencies": {
+    "esbuild": "^0.28.1",
     "sharp": "^0.34.3"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "gl-matrix": "^3.4.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }
