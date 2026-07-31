@@ -22,7 +22,7 @@
   align-items: center;
   gap: 12px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: .02em;
 }
@@ -83,7 +83,7 @@
   position: relative;
   z-index: 2;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -194,7 +194,7 @@
   padding: 18px 0 28px;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: .03em;
   animation: error-rise .8s var(--ease-expo) 1.05s both;
@@ -249,7 +249,7 @@
   .error-nav { padding-inline: 18px; }
   .error-nav-meta span:first-child,
   .error-nav-dot { display: none; }
-  .error-nav-meta { font-size: 11px; }
+  .error-nav-meta { font-size: 12px; }
   .error-main { padding: 104px 20px 48px; }
   .error-number { margin-top: 20px; font-size: clamp(126px, 39vw, 220px); }
   .error-detail { padding-inline: 16px; }

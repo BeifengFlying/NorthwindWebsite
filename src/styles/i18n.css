@@ -4,7 +4,7 @@
   gap: 5px;
   margin-left: auto;
   padding-left: 14px;
-  font: 10px/1 var(--font-mono, monospace);
+  font: 12px/1 var(--font-mono, monospace);
   white-space: nowrap;
 }
 
@@ -30,8 +30,8 @@ body.language-switching main,
 body.language-switching footer { opacity: .18; transition: opacity .18s ease; }
 
 h1, h2, h3, h4, p, a, button, span, small, strong, em, label {
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .nav-links, .nav-links a, .nav-back, .journey-nav a, .workflow-nav a,
@@ -114,7 +114,7 @@ body:not(.home-section-motion):not(.error-page) .nav .nav-links {
 .journey-nav-links a,
 .workflow-nav-links a {
   color: var(--muted);
-  font: 11px var(--mono, monospace);
+  font: 12px var(--mono, monospace);
   text-decoration: none;
   transition: color .2s ease;
 }
@@ -147,7 +147,7 @@ body:not(.home-section-motion):not(.error-page) .nav .nav-actions,
   display: flex;
   justify-content: flex-start;
   gap: 24px;
-  overflow: hidden;
+  overflow: visible;
 }
 .journey-nav .journey-logo,
 .workflow-nav .workflow-logo { flex: 0 0 auto; }
@@ -375,7 +375,7 @@ body:not(.home-section-motion):not(.error-page) .nav .language-switch {
     margin-right: 24px;
     padding-right: 0;
     font-size: 14px;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
     word-break: normal;
   }
 }
@@ -391,4 +391,184 @@ body:not(.home-section-motion):not(.error-page) .nav .language-switch {
     opacity: 1;
     animation: none;
   }
+}
+
+/* ============================================================
+   RESPONSIVE TYPE CONTRACT
+   Keep translated copy readable without changing the site's visual language.
+   ============================================================ */
+:root {
+  --font-body: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    Helvetica, Arial, sans-serif;
+  --display: 'Space Grotesk', 'Inter', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', Helvetica, Arial, sans-serif;
+  --font-mono-accessible: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+body {
+  min-width: 320px;
+  font-family: var(--display, var(--font-body));
+}
+
+button, input, textarea, select { font-family: inherit; }
+
+/* These labels are supporting content, but must remain legible on low-density displays. */
+body :where(
+  small,
+  .sec-label,
+  .kicker,
+  .eyebrow,
+  .section-index,
+  .stepper-label,
+  .step-kicker,
+  .signal-kicker,
+  .card-top,
+  .panel-top,
+  .assistant-note,
+  .journey-kicker,
+  .card-label,
+  .menu-index,
+  .menu-hint,
+  .deployment-strip,
+  .stepper-count,
+  .step-indicator b,
+  .step-tags span,
+  .diagram-node b,
+  .diagram-node small,
+  .download-checklist span,
+  .download-checklist small,
+  .meter-label,
+  .load-stats,
+  .parameter-list label,
+  .step-button,
+  .stepper-footer p,
+  .model-card-top,
+  .model-architecture,
+  .model-columns h4,
+  .model-columns ul,
+  .model-bottom span,
+  .model-experience,
+  .loading-state,
+  .hardware-top,
+  .hardware-spec small,
+  .hardware-fit,
+  .size-tradeoff,
+  .format-row--head,
+  .format-row p b,
+  .timeline-toolbar,
+  .tree-seed strong,
+  .tree-canopy strong,
+  .timeline-aside span,
+  .site-map span,
+  .optimization-list span,
+  .flow-stack span,
+  .deployment-flow,
+  .journey-footer,
+  .workflow-footer,
+  .solutions-footer,
+  .solution-card-top,
+  .solution-tag,
+  .solution-footer,
+  .empty-state,
+  .offline-note,
+  .platform-index,
+  .platform-sub,
+  .platform-count,
+  .paper,
+  .paper em,
+  .photo-info-meta,
+  .gallery-end,
+  .photo-hero-top,
+  .photo-hero-side,
+  .photo-hero-scroll
+) {
+  font-size: max(12px, .75rem);
+}
+
+/* Grid children must be allowed to shrink before translated text wraps naturally. */
+body :where(.grid, .container, .page-width, .section-shell, .solutions-hero,
+  .lab-hero, .section-heading, .step-panel, .models-grid, .hardware-grid,
+  .format-row, .timeline-item, .hero-inner, .streams-grid, .assistant-box) > * {
+  min-width: 0;
+}
+
+/* English words stay intact; titles wrap at spaces and can grow vertically. */
+body :where(h1, h2, h3, h4, .nav-link, .nav-logo, .project-title,
+  .solution-title, .model-name, .workflow-card strong, .photo-hero-title) {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: balance;
+}
+
+@media (max-width: 1100px) {
+  .home-section-motion .nav {
+    width: calc(100vw - 40px);
+    padding-inline: 22px;
+  }
+
+  .solution-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .models-grid, .hardware-grid { grid-template-columns: 1fr 1fr; }
+  .timeline-item { grid-template-columns: 56px minmax(0, 1fr); gap: 28px; }
+  .timeline-aside, .site-map, .design-swatch, .flow-stack,
+  .optimization-list, .deployment-flow {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .solutions-hero, .lab-hero, .section-heading, .step-panel,
+  .size-explorer, .archive-section, .future-section {
+    gap: 32px;
+  }
+
+  .step-panel { grid-template-columns: 1fr; }
+  .step-viewport, .step-panel { min-height: 0; }
+  .step-viewport { overflow: visible; }
+  .solution-card, .model-card, .hardware-card { min-height: auto; }
+}
+
+@media (max-width: 768px) {
+  .container, .page-width, .section-shell {
+    width: calc(100vw - 40px);
+  }
+
+  .hero-title {
+    font-size: clamp(56px, 15vw, 108px);
+  }
+
+  .hero-title-line { white-space: nowrap; }
+  .hero-title-line:last-child { padding-left: min(14vw, 80px); }
+
+  .solution-grid, .models-grid, .hardware-grid { grid-template-columns: 1fr; }
+  .solution-card, .model-card, .hardware-card { min-height: 0; }
+
+  .workflow-card {
+    height: auto;
+    min-height: 290px;
+  }
+
+  .timeline-item { grid-template-columns: 46px minmax(0, 1fr); gap: 20px; }
+  .timeline-marker { width: 46px; height: 46px; }
+
+  .home-section-motion .hero-subtitle {
+    width: min(100%, calc(100vw - 48px));
+    max-width: calc(100vw - 48px);
+  }
+}
+
+@media (max-width: 600px) {
+  .solutions-nav, .lab-nav, .journey-nav, .workflow-nav,
+  body:not(.home-section-motion):not(.error-page) .nav {
+    width: calc(100vw - 28px);
+    padding-inline: 16px;
+  }
+
+  .solutions-hero, .lab-hero { padding-top: 150px; }
+  .format-row { grid-template-columns: 1fr; gap: 12px; }
+  .format-row--head { display: none; }
+  .timeline-aside, .site-map, .design-swatch, .flow-stack,
+  .optimization-list, .deployment-flow { grid-column: 2; }
 }
