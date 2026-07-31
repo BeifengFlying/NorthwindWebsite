@@ -223,14 +223,22 @@
           <div class="music-song-album" id="musicCurrentAlbum">猎户星座</div>
         </div>
         <div class="music-platforms">
-          <a href="https://y.qq.com/n/ryqq/search?w=平凡之路%20朴树" class="music-platform-btn music-platform-btn--qq" id="musicQQLink" target="_blank" rel="noopener">
+          <button type="button" class="music-platform-btn music-platform-btn--play" id="musicPlayButton" aria-label="打开当前歌曲">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.53.85l10-6.5a1 1 0 0 0 0-1.7l-10-6.5A1 1 0 0 0 8 5.5Z"/></svg>
+            播放当前歌曲
+          </button>
+          <button type="button" class="music-platform-btn music-platform-btn--qq" id="musicQQLink" data-platform="qq">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             QQ音乐
-          </a>
-          <a href="https://music.163.com/#/song?id=28815250" class="music-platform-btn music-platform-btn--netease" id="musicNeteaseLink" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="music-platform-btn music-platform-btn--netease" id="musicNeteaseLink" data-platform="netease">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4"/></svg>
             网易云音乐
-          </a>
+          </button>
+          <button type="button" class="music-platform-btn music-platform-btn--spotify" id="musicSpotifyLink" data-platform="spotify">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M7.5 10.5c3.9-1.3 7.1-.7 9.5.4M7.8 13.5c3.1-1 5.7-.5 7.8.3M8.7 16.2c2.1-.6 3.9-.3 5.4.2" stroke-linecap="round"/></svg>
+            Spotify
+          </button>
         </div>
       </div>
 
@@ -242,6 +250,21 @@
     </div>
   </div>
 </section>
+
+<div class="music-chooser" id="musicChooser" role="dialog" aria-modal="true" aria-labelledby="musicChooserTitle" hidden>
+  <div class="music-chooser__backdrop" data-music-chooser-close></div>
+  <div class="music-chooser__panel">
+    <button type="button" class="music-chooser__close" data-music-chooser-close aria-label="关闭播放方式选择">&times;</button>
+    <div class="sec-label">播放方式</div>
+    <h2 id="musicChooserTitle">打开这首歌</h2>
+    <p class="music-chooser__song" id="musicChooserSong"></p>
+    <div class="music-chooser__actions">
+      <button type="button" class="music-chooser__action music-chooser__action--app" id="musicChooserApp">打开 App</button>
+      <button type="button" class="music-chooser__action" id="musicChooserWeb">网页播放</button>
+      <button type="button" class="music-chooser__action" id="musicChooserCopy">复制链接</button>
+    </div>
+  </div>
+</div>
 
   <div class="arc-divider">
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
@@ -354,7 +377,7 @@
       </div>
     </div>
 
-    <a href="photography.html" class="project project-link reveal">
+    <a href="photography.html" class="project project-link reveal" data-project-id="photography">
       <div class="project-inner">
         <div class="project-number">02</div>
         <div>
@@ -369,7 +392,7 @@
       </div>
     </a>
 
-    <a href="solutions.html" class="project project-link reveal">
+    <a href="solutions.html" class="project project-link reveal" data-project-id="solutions">
       <div class="project-inner">
         <div class="project-number">03</div>
         <div>
@@ -384,7 +407,7 @@
       </div>
     </a>
 
-    <a href="ai-lab.html" class="project project-link reveal">
+    <a href="ai-lab.html" class="project project-link reveal" data-project-id="ai-lab">
       <div class="project-inner">
         <div class="project-number">04</div>
         <div>
@@ -399,7 +422,7 @@
       </div>
     </a>
 
-    <a href="journey.html" class="project project-link reveal">
+    <a href="journey.html" class="project project-link reveal" data-project-id="journey">
       <div class="project-inner">
         <div class="project-number">05</div>
         <div>
@@ -414,7 +437,7 @@
       </div>
     </a>
 
-    <a href="workflow.html" class="project project-link reveal">
+    <a href="workflow.html" class="project project-link reveal" data-project-id="workflow">
       <div class="project-inner">
         <div class="project-number">06</div>
         <div>

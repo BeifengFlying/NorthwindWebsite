@@ -107,3 +107,39 @@ body.home-section-motion.motion-ready .music-group-toggle.home-motion-item {
     transition: none;
   }
 }
+
+/* Short, low-DPI displays need a larger information floor even when the
+   surrounding layout keeps its designed scale. */
+@media (max-width: 1440px) and (max-height: 900px) {
+  .journey-intro,
+  .section-heading--row > p,
+  .timeline-copy p,
+  .future-copy p,
+  .hero-intro,
+  .archive-copy p,
+  .row-heading > p,
+  .future-section p,
+  .model-description,
+  .hardware-card p,
+  .size-copy > p:last-child,
+  .format-row p,
+  .photo-hero-subtitle,
+  .gallery-intro-copy { font-size: 16px !important; }
+
+  .journey-kicker,
+  .eyebrow,
+  .card-label,
+  .menu-index,
+  .menu-hint,
+  .section-index,
+  .kicker,
+  .card-top,
+  .panel-top,
+  .assistant-note,
+  .photo-info-meta { font-size: 13px !important; }
+
+  .tree-leaf p,
+  .workflow-card > span:not(.card-top):not(.card-mark),
+  .loop-card p,
+  .phase-card p { font-size: 15px !important; }
+}

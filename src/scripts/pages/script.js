@@ -59,6 +59,68 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((time) => { lenis.raf(time * 1000); });
 gsap.ticker.lagSmoothing(0);
 
+/* --------------------------------
+   CRAFTED WORKS POSITION RESTORE
+   -------------------------------- */
+const craftedWorksPositionKey = 'craftedWorksPosition';
+const craftedWorksProjectKey = 'craftedWorksProject';
+const shouldRestoreCraftedWorks = !isReload && !window.location.hash;
+
+function saveCraftedWorksPosition(event) {
+  const link = event.currentTarget;
+  try {
+    sessionStorage.setItem(craftedWorksPositionKey, String(Math.round(window.scrollY)));
+    sessionStorage.setItem(craftedWorksProjectKey, link.dataset.projectId || '');
+  } catch (error) {
+    /* Private browsing can disable session storage without affecting navigation. */
+  }
+}
+
+function restoreCraftedWorksPosition() {
+  if (!shouldRestoreCraftedWorks) return;
+  let savedPosition = null;
+  let savedProject = '';
+  try {
+    savedPosition = Number(sessionStorage.getItem(craftedWorksPositionKey));
+    savedProject = sessionStorage.getItem(craftedWorksProjectKey) || '';
+  } catch (error) {
+    return;
+  }
+  if (!Number.isFinite(savedPosition) || savedPosition <= 0) return;
+
+  const applyPosition = () => {
+    lenis.scrollTo(savedPosition, { immediate: true, force: true });
+    window.scrollTo(0, savedPosition);
+    if (window.ScrollTrigger) {
+      ScrollTrigger.refresh();
+      ScrollTrigger.update();
+    }
+    window.dispatchEvent(new Event('scroll'));
+
+    const project = savedProject && document.querySelector('[data-project-id="' + savedProject + '"]');
+    if (project) {
+      project.classList.add('project--last-viewed');
+      window.setTimeout(() => project.classList.remove('project--last-viewed'), 1800);
+    }
+    try {
+      sessionStorage.removeItem(craftedWorksPositionKey);
+      sessionStorage.removeItem(craftedWorksProjectKey);
+    } catch (error) {}
+  };
+
+  requestAnimationFrame(() => {
+    applyPosition();
+    window.setTimeout(applyPosition, 180);
+  });
+}
+
+document.querySelectorAll('.project-link').forEach((link) => {
+  link.addEventListener('click', saveCraftedWorksPosition);
+});
+
+restoreCraftedWorksPosition();
+window.addEventListener('load', restoreCraftedWorksPosition, { once: true });
+
 if (resetHomepageToTop) {
   const enforceHomepageTop = () => {
     lenis.scrollTo(0, { immediate: true, force: true });
@@ -488,6 +550,44 @@ gsap.from('.cta-buttons', {
 });
 }
 
+if (!hasMotionLibraries) {
+  var fallbackNavigation = performance.getEntriesByType('navigation')[0];
+  var fallbackShouldRestore = (!fallbackNavigation || fallbackNavigation.type !== 'reload') && !window.location.hash;
+  document.querySelectorAll('.project-link').forEach(function (link) {
+    link.addEventListener('click', function () {
+      try {
+        sessionStorage.setItem('craftedWorksPosition', String(Math.round(window.scrollY)));
+        sessionStorage.setItem('craftedWorksProject', link.dataset.projectId || '');
+      } catch (error) {}
+    });
+  });
+  if (fallbackShouldRestore) {
+    var fallbackRestore = function () {
+      var position = null;
+      var projectId = '';
+      try {
+        position = Number(sessionStorage.getItem('craftedWorksPosition'));
+        projectId = sessionStorage.getItem('craftedWorksProject') || '';
+      } catch (error) {
+        return;
+      }
+      if (!Number.isFinite(position) || position <= 0) return;
+      window.scrollTo(0, position);
+      var project = projectId && document.querySelector('[data-project-id="' + projectId + '"]');
+      if (project) {
+        project.classList.add('project--last-viewed');
+        window.setTimeout(function () { project.classList.remove('project--last-viewed'); }, 1800);
+      }
+      try {
+        sessionStorage.removeItem('craftedWorksPosition');
+        sessionStorage.removeItem('craftedWorksProject');
+      } catch (error) {}
+    };
+    requestAnimationFrame(fallbackRestore);
+    window.addEventListener('load', fallbackRestore, { once: true });
+  }
+}
+
 }
 }
 
@@ -517,7 +617,7 @@ gsap.from('.cta-buttons', {
   const section = document.getElementById('music');
   if (!section) return;
 
-  const songs = [
+  var songs = [
     { title:'鲜花 (Live)', artist:'回春丹', album:'乐队的夏天3 第9期', qqUrl:'https://y.qq.com/n/ryqq/search?w=鲜花%20回春丹', neteaseUrl:'https://music.163.com/#/search/m/?s=鲜花%20回春丹', set:'111', cover:'assets/images/music/111/鲜花.webp' },
     { title:'我们的时光', artist:'赵雷', album:'吉姆餐厅', qqUrl:'https://y.qq.com/n/ryqq/search?w=我们的时光%20赵雷', neteaseUrl:'https://music.163.com/#/search/m/?s=我们的时光%20赵雷', set:'111', cover:'assets/images/music/111/我们的时光.webp' },
     { title:'平凡之路', artist:'朴树', album:'猎户星座', qqUrl:'https://y.qq.com/n/ryqq/search?w=平凡之路%20朴树', neteaseUrl:'https://music.163.com/#/song?id=28815250', set:'111', cover:'assets/images/music/111/平凡之路.webp' },
@@ -620,8 +720,36 @@ gsap.from('.cta-buttons', {
     decodeCoversWhenIdle(deferredImages, generation);
   }
 
+  var currentSong = null;
+
+  function getSongPlatforms(song) {
+    if (!song) return [];
+    var primaryLabels = { netease:'网易云音乐', qq:'QQ音乐', spotify:'Spotify' };
+    if (!song.platform) {
+      var legacyPrimary = song.neteaseUrl ? 'netease' : 'qq';
+      return [{
+        platform: legacyPrimary,
+        label: primaryLabels[legacyPrimary],
+        appUrl: '',
+        webUrl: song[legacyPrimary + 'Url'],
+      }];
+    }
+    var primary = {
+      platform: song.platform,
+      label: primaryLabels[song.platform] || song.platform,
+      appUrl: song.appUrl,
+      webUrl: song.webUrl,
+    };
+    return [primary].concat(Array.isArray(song.alternatives) ? song.alternatives : []);
+  }
+
+  function findSongPlatform(song, platformId) {
+    return getSongPlatforms(song).find(function (platform) { return platform.platform === platformId; }) || getSongPlatforms(song)[0];
+  }
+
   function updateSongUI(s) {
     if (!s) return;
+    currentSong = s;
     var coverLayers = document.querySelectorAll('[data-music-cover-layer]');
     if (coverLayers.length > 1) {
       var requestId = ++coverRequestId;
@@ -656,17 +784,100 @@ gsap.from('.cta-buttons', {
     setText('musicCurrentTitle', s.title);
     setText('musicCurrentArtist', s.artist);
     setText('musicCurrentAlbum', s.album);
-    var qq = document.getElementById('musicQQLink');
-    var ne = document.getElementById('musicNeteaseLink');
-    if (qq) {
-      qq.hidden = !s.qqUrl;
-      if (s.qqUrl) qq.href = s.qqUrl;
-    }
-    if (ne) {
-      ne.hidden = !s.neteaseUrl;
-      if (s.neteaseUrl) ne.href = s.neteaseUrl;
-    }
+    ['qq', 'netease', 'spotify'].forEach(function (platformId) {
+      var button = document.querySelector('[data-platform="' + platformId + '"]');
+      var platform = findSongPlatform(s, platformId);
+      if (!button) return;
+      button.hidden = !platform;
+      button.dataset.platform = platformId;
+      button.setAttribute('aria-label', '打开' + (platform ? platform.label : platformId));
+    });
   }
+
+  var chooser = document.getElementById('musicChooser');
+  var chooserSong = document.getElementById('musicChooserSong');
+  var chooserApp = document.getElementById('musicChooserApp');
+  var chooserWeb = document.getElementById('musicChooserWeb');
+  var chooserCopy = document.getElementById('musicChooserCopy');
+  var chooserPlatform = null;
+
+  function closeMusicChooser() {
+    if (!chooser) return;
+    chooser.hidden = true;
+    document.body.classList.remove('music-chooser-open');
+  }
+
+  function showMusicChooser(song, platform) {
+    if (!chooser || !song || !platform) return;
+    chooserPlatform = platform;
+    chooserSong.textContent = song.title + ' · ' + platform.label;
+    chooser.hidden = false;
+    document.body.classList.add('music-chooser-open');
+    chooserApp.hidden = !platform.appUrl;
+    chooserWeb.hidden = !platform.webUrl;
+  }
+
+  function copyMusicLink(url) {
+    if (!url) return;
+    var fallback = function () {
+      var input = document.createElement('input');
+      input.value = url;
+      input.setAttribute('readonly', '');
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.select();
+      try { document.execCommand('copy'); } catch (error) {}
+      input.remove();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).catch(fallback);
+    } else fallback();
+  }
+
+  function openMusicDestination(song, platformId) {
+    var platform = findSongPlatform(song, platformId);
+    if (!song || !platform) return;
+    if (!platform.appUrl) {
+      showMusicChooser(song, platform);
+      return;
+    }
+    var appWasOpened = false;
+    var onVisibilityChange = function () { if (document.hidden) appWasOpened = true; };
+    document.addEventListener('visibilitychange', onVisibilityChange, { once: true });
+    window.location.href = platform.appUrl;
+    window.setTimeout(function () {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      if (!appWasOpened && !document.hidden) showMusicChooser(song, platform);
+    }, 1200);
+  }
+
+  document.querySelectorAll('[data-music-chooser-close]').forEach(function (element) {
+    element.addEventListener('click', closeMusicChooser);
+  });
+  if (chooserApp) chooserApp.addEventListener('click', function () {
+    if (chooserPlatform && chooserPlatform.appUrl) window.location.href = chooserPlatform.appUrl;
+  });
+  if (chooserWeb) chooserWeb.addEventListener('click', function () {
+    if (chooserPlatform && chooserPlatform.webUrl) window.open(chooserPlatform.webUrl, '_blank', 'noopener');
+    closeMusicChooser();
+  });
+  if (chooserCopy) chooserCopy.addEventListener('click', function () {
+    if (chooserPlatform) copyMusicLink(chooserPlatform.webUrl);
+    closeMusicChooser();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeMusicChooser();
+  });
+  var playButton = document.getElementById('musicPlayButton');
+  if (playButton) playButton.addEventListener('click', function () {
+    openMusicDestination(currentSong, currentSong && currentSong.platform);
+  });
+  document.querySelectorAll('.music-platform-btn[data-platform]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      openMusicDestination(currentSong, button.dataset.platform);
+    });
+  });
 
   /* ---- OptionWheel (vanilla JS port) ---- */
 
@@ -938,7 +1149,8 @@ gsap.from('.cta-buttons', {
 
   /* ---- Init ---- */
   var wheelContainer = document.getElementById('optionWheel');
-  if (wheelContainer) {
+  function initializeMusicWheel() {
+    if (!wheelContainer || !songs.length) return;
     var compactWheel = window.matchMedia('(max-width: 640px)').matches;
     var activeSet = '111';
     var activeSongs = songs.filter(function (song) { return song.set === activeSet; });
@@ -997,6 +1209,22 @@ gsap.from('.cta-buttons', {
         updateSongUI(activeSongs[selectedIndexBySet[activeSet]]);
       });
     }
+  }
+
+  if (wheelContainer) {
+    fetch('assets/data/music.json', { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Unable to load music data: ' + response.status);
+        return response.json();
+      })
+      .then(function (remoteSongs) {
+        if (!Array.isArray(remoteSongs) || !remoteSongs.length) throw new Error('Invalid music data');
+        songs = remoteSongs;
+        initializeMusicWheel();
+      })
+      .catch(function () {
+        initializeMusicWheel();
+      });
   }
 })();
 }());
