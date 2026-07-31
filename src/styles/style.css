@@ -1687,6 +1687,10 @@ body.music-chooser-open { overflow: hidden; }
     content-visibility: auto;
     contain-intrinsic-size: auto 900px;
   }
+
+  html.is-restoring-crafted-works main > section {
+    content-visibility: visible;
+  }
 }
 
 @media (max-width: 768px) {
