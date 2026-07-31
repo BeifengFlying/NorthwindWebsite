@@ -543,7 +543,7 @@ body {
   display: flex;
   justify-content: space-between;
   color: rgba(245,243,234,.76);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .13em;
   text-transform: uppercase;
@@ -603,7 +603,7 @@ body {
   align-items: flex-end;
   gap: 8px;
   color: rgba(245,243,234,.66);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .10em;
   text-transform: uppercase;
 }
@@ -620,7 +620,7 @@ body {
   bottom: 30px;
   z-index: 2;
   color: rgba(245,243,234,.56);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .12em;
   text-transform: uppercase;
 }
@@ -649,7 +649,7 @@ body {
 .gallery-intro-kicker {
   margin-bottom: 20px;
   color: var(--photo-lime);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -735,7 +735,7 @@ body {
   right: 16px;
   z-index: 2;
   color: rgba(245,243,234,.78);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .12em;
   opacity: 0;
@@ -776,7 +776,7 @@ body {
   gap: 12px;
   margin-top: 0;
   color: var(--photo-muted);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .06em;
   white-space: nowrap;
 }
@@ -791,7 +791,7 @@ body {
   justify-content: space-between;
   border-top: 1px solid var(--photo-line);
   color: var(--photo-muted);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .13em;
   text-transform: uppercase;
 }
@@ -841,12 +841,12 @@ body {
   .nav-links { display: none; }
   .nav-back { font-size: 12px; }
   .photo-hero { min-height: 84svh; height: 84svh; padding-inline: 20px; }
-  .photo-hero-top { top: 100px; left: 20px; right: 20px; font-size: 9px; }
+  .photo-hero-top { top: 100px; left: 20px; right: 20px; font-size: 12px; }
   .photo-hero-inner { padding-bottom: 74px; }
   .photo-hero-title { font-size: 22vw; }
   .photo-hero-subtitle { max-width: 280px; margin-top: 22px; font-size: 13px; }
-  .photo-hero-side { right: 20px; bottom: 76px; font-size: 9px; }
-  .photo-hero-scroll { right: 20px; bottom: 26px; font-size: 9px; }
+  .photo-hero-side { right: 20px; bottom: 76px; font-size: 12px; }
+  .photo-hero-scroll { right: 20px; bottom: 26px; font-size: 12px; }
   .gallery-wrap { padding: 88px 20px 100px; }
   .gallery-intro { margin-bottom: 72px; }
   .gallery-intro h2 { font-size: 13vw; }
@@ -860,7 +860,7 @@ body {
   .photo-item:nth-child(2), .photo-item:nth-child(5) { width: 88%; align-self: flex-end; }
   .photo-item:nth-child(3), .photo-item:nth-child(6) { width: 94%; }
   .photo-info { padding-top: 12px; }
-  .photo-info-meta { font-size: 10px; }
+  .photo-info-meta { font-size: 12px; }
   .gallery-end { margin-top: 96px; }
   .lightbox-content { max-width: calc(100vw - 32px); }
   .lightbox-img-wrap img { max-width: calc(100vw - 32px); max-height: 72vh; }
