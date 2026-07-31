@@ -19,6 +19,7 @@ await Promise.all([
   copyDirectory('src/styles', 'dist/assets/styles'),
   copyDirectory('src/scripts', 'dist/assets/scripts'),
   copyDirectory('src/config', 'dist/assets/data'),
+  copyDirectory('src/locales', 'dist/assets/locales'),
 ]);
 
 const pagesDir = path.join(projectRoot, 'src/pages');
