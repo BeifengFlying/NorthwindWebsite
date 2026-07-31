@@ -64,7 +64,13 @@ gsap.ticker.lagSmoothing(0);
    -------------------------------- */
 const craftedWorksPositionKey = 'craftedWorksPosition';
 const craftedWorksProjectKey = 'craftedWorksProject';
-const shouldRestoreCraftedWorks = !isReload && !window.location.hash;
+let craftedWorksSavedPosition = null;
+let craftedWorksSavedProject = '';
+try {
+  craftedWorksSavedPosition = Number(sessionStorage.getItem(craftedWorksPositionKey));
+  craftedWorksSavedProject = sessionStorage.getItem(craftedWorksProjectKey) || '';
+} catch (error) {}
+const shouldRestoreCraftedWorks = !isReload && Number.isFinite(craftedWorksSavedPosition) && craftedWorksSavedPosition > 0;
 
 function saveCraftedWorksPosition(event) {
   const link = event.currentTarget;
@@ -78,15 +84,8 @@ function saveCraftedWorksPosition(event) {
 
 function restoreCraftedWorksPosition() {
   if (!shouldRestoreCraftedWorks) return;
-  let savedPosition = null;
-  let savedProject = '';
-  try {
-    savedPosition = Number(sessionStorage.getItem(craftedWorksPositionKey));
-    savedProject = sessionStorage.getItem(craftedWorksProjectKey) || '';
-  } catch (error) {
-    return;
-  }
-  if (!Number.isFinite(savedPosition) || savedPosition <= 0) return;
+  const savedPosition = craftedWorksSavedPosition;
+  const savedProject = craftedWorksSavedProject;
 
   const applyPosition = () => {
     lenis.scrollTo(savedPosition, { immediate: true, force: true });
@@ -128,7 +127,7 @@ if (resetHomepageToTop) {
     ScrollTrigger.refresh();
   };
   window.addEventListener('load', () => requestAnimationFrame(enforceHomepageTop), { once: true });
-} else if (window.location.hash) {
+} else if (window.location.hash && !shouldRestoreCraftedWorks) {
   const homepageTarget = document.getElementById(window.location.hash.slice(1));
   if (homepageTarget) {
     const enforceHomepageTarget = () => {
@@ -197,8 +196,6 @@ if (!reduceMotion && !compactViewport) {
     pink: document.querySelector('.ambient-blob--pink'),
     cyan: document.querySelector('.ambient-blob--cyan'),
     green: document.querySelector('.ambient-blob--green'),
-    ring: document.querySelector('.shape-ring'),
-    blob: document.querySelector('.shape-blob'),
   };
   let pointerActive = true;
 
@@ -216,9 +213,6 @@ if (!reduceMotion && !compactViewport) {
     if (pointerElements.pink) gsap.set(pointerElements.pink, { x: pointer.x * 30, y: pointer.y * 20 });
     if (pointerElements.cyan) gsap.set(pointerElements.cyan, { x: pointer.x * -25, y: pointer.y * -18 });
     if (pointerElements.green) gsap.set(pointerElements.green, { x: pointer.x * 20, y: pointer.y * -15 });
-    if (pointerElements.ring) gsap.set(pointerElements.ring, { x: pointer.x * 20, y: pointer.y * 14 });
-    if (pointerElements.blob) gsap.set(pointerElements.blob, { x: pointer.x * 12, y: pointer.y * 10 });
-
     if (Math.abs(target.x - pointer.x) < .0005 && Math.abs(target.y - pointer.y) < .0005) {
       pointer.x = target.x;
       pointer.y = target.y;
@@ -552,7 +546,13 @@ gsap.from('.cta-buttons', {
 
 if (!hasMotionLibraries) {
   var fallbackNavigation = performance.getEntriesByType('navigation')[0];
-  var fallbackShouldRestore = (!fallbackNavigation || fallbackNavigation.type !== 'reload') && !window.location.hash;
+  var fallbackPosition = null;
+  var fallbackProjectId = '';
+  try {
+    fallbackPosition = Number(sessionStorage.getItem('craftedWorksPosition'));
+    fallbackProjectId = sessionStorage.getItem('craftedWorksProject') || '';
+  } catch (error) {}
+  var fallbackShouldRestore = (!fallbackNavigation || fallbackNavigation.type !== 'reload') && Number.isFinite(fallbackPosition) && fallbackPosition > 0;
   document.querySelectorAll('.project-link').forEach(function (link) {
     link.addEventListener('click', function () {
       try {
@@ -563,17 +563,8 @@ if (!hasMotionLibraries) {
   });
   if (fallbackShouldRestore) {
     var fallbackRestore = function () {
-      var position = null;
-      var projectId = '';
-      try {
-        position = Number(sessionStorage.getItem('craftedWorksPosition'));
-        projectId = sessionStorage.getItem('craftedWorksProject') || '';
-      } catch (error) {
-        return;
-      }
-      if (!Number.isFinite(position) || position <= 0) return;
-      window.scrollTo(0, position);
-      var project = projectId && document.querySelector('[data-project-id="' + projectId + '"]');
+      window.scrollTo(0, fallbackPosition);
+      var project = fallbackProjectId && document.querySelector('[data-project-id="' + fallbackProjectId + '"]');
       if (project) {
         project.classList.add('project--last-viewed');
         window.setTimeout(function () { project.classList.remove('project--last-viewed'); }, 1800);
