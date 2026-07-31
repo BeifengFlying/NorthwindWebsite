@@ -443,6 +443,62 @@ window.NorthwindSound = NorthwindSound;
   else boot();
 }());
 
+/* Session-scoped state shared by the homepage and project detail pages. */
+var NorthwindPageState = window.NorthwindPageState || (function () {
+  'use strict';
+
+  var craftedWorksKey = 'northwind-crafted-works-state';
+
+  function readCraftedWorks() {
+    try {
+      var state = JSON.parse(window.sessionStorage.getItem(craftedWorksKey) || 'null');
+      if (!state || state.page !== 'crafted-works' || !Number.isFinite(state.scrollY)) return null;
+      return state;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveCraftedWorks(anchor) {
+    if (!anchor || !anchor.classList.contains('project-link')) return;
+    var state = {
+      page: 'crafted-works',
+      pagePath: window.location.pathname,
+      scrollY: Math.max(0, Math.round(window.scrollY)),
+      project: anchor.dataset.projectId || '',
+      href: anchor.getAttribute('href') || '',
+      savedAt: Date.now()
+    };
+    try {
+      window.sessionStorage.setItem(craftedWorksKey, JSON.stringify(state));
+      // Keep the original keys readable during the migration to structured state.
+      window.sessionStorage.setItem('craftedWorksPosition', String(state.scrollY));
+      window.sessionStorage.setItem('craftedWorksProject', state.project);
+    } catch (error) { /* Navigation remains available when storage is restricted. */ }
+  }
+
+  function clearCraftedWorks() {
+    try {
+      window.sessionStorage.removeItem(craftedWorksKey);
+      window.sessionStorage.removeItem('craftedWorksPosition');
+      window.sessionStorage.removeItem('craftedWorksProject');
+    } catch (error) { /* Treat storage failures as already cleared. */ }
+  }
+
+  return {
+    clearCraftedWorks: clearCraftedWorks,
+    readCraftedWorks: readCraftedWorks,
+    saveCraftedWorks: saveCraftedWorks
+  };
+}());
+window.NorthwindPageState = NorthwindPageState;
+
+var initialCraftedWorksState = NorthwindPageState.readCraftedWorks();
+var currentPagePath = window.location.pathname;
+if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.test(currentPagePath))) {
+  document.documentElement.classList.add('is-restoring-crafted-works');
+}
+
 /* Full-page geometric wipe for navigation between project pages. */
 (function () {
   'use strict';
@@ -533,6 +589,7 @@ window.NorthwindSound = NorthwindSound;
     var anchor = event.target.closest && event.target.closest('a[href]');
     if (!isPageNavigation(anchor, event)) return;
 
+    NorthwindPageState.saveCraftedWorks(anchor);
     event.preventDefault();
     event.stopImmediatePropagation();
     if (locked) return;

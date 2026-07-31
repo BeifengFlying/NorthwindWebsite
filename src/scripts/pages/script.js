@@ -64,16 +64,36 @@ gsap.ticker.lagSmoothing(0);
    -------------------------------- */
 const craftedWorksPositionKey = 'craftedWorksPosition';
 const craftedWorksProjectKey = 'craftedWorksProject';
-let craftedWorksSavedPosition = null;
-let craftedWorksSavedProject = '';
-try {
-  craftedWorksSavedPosition = Number(sessionStorage.getItem(craftedWorksPositionKey));
-  craftedWorksSavedProject = sessionStorage.getItem(craftedWorksProjectKey) || '';
-} catch (error) {}
-const shouldRestoreCraftedWorks = !isReload && Number.isFinite(craftedWorksSavedPosition) && craftedWorksSavedPosition > 0;
+let craftedWorksRestoreTask = null;
+
+function readCraftedWorksState() {
+  if (window.NorthwindPageState) {
+    const state = window.NorthwindPageState.readCraftedWorks();
+    if (state) return state;
+  }
+  try {
+    const storedPosition = sessionStorage.getItem(craftedWorksPositionKey);
+    if (storedPosition === null) return null;
+    const scrollY = Number(storedPosition);
+    if (!Number.isFinite(scrollY) || scrollY < 0) return null;
+    return {
+      page: 'crafted-works',
+      scrollY,
+      project: sessionStorage.getItem(craftedWorksProjectKey) || '',
+    };
+  } catch (error) {
+    return null;
+  }
+}
+
+const shouldRestoreCraftedWorks = Boolean(readCraftedWorksState());
 
 function saveCraftedWorksPosition(event) {
   const link = event.currentTarget;
+  if (window.NorthwindPageState) {
+    window.NorthwindPageState.saveCraftedWorks(link);
+    return;
+  }
   try {
     sessionStorage.setItem(craftedWorksPositionKey, String(Math.round(window.scrollY)));
     sessionStorage.setItem(craftedWorksProjectKey, link.dataset.projectId || '');
@@ -82,35 +102,93 @@ function saveCraftedWorksPosition(event) {
   }
 }
 
+function waitForWindowLoad() {
+  if (document.readyState === 'complete') return Promise.resolve();
+  return new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
+}
+
+function waitForPageImages() {
+  const pendingImages = Array.from(document.images).filter((image) => !image.complete);
+  return Promise.all(pendingImages.map((image) => new Promise((resolve) => {
+    image.addEventListener('load', resolve, { once: true });
+    image.addEventListener('error', resolve, { once: true });
+  })));
+}
+
+function waitForStableLayout() {
+  return new Promise((resolve) => {
+    let previousHeight = -1;
+    let stableFrames = 0;
+    const startedAt = performance.now();
+    const inspectLayout = () => {
+      const currentHeight = document.documentElement.scrollHeight;
+      stableFrames = Math.abs(currentHeight - previousHeight) <= 1 ? stableFrames + 1 : 0;
+      previousHeight = currentHeight;
+      if (stableFrames >= 3 || performance.now() - startedAt > 1600) {
+        resolve();
+        return;
+      }
+      requestAnimationFrame(inspectLayout);
+    };
+    requestAnimationFrame(inspectLayout);
+  });
+}
+
+function nextAnimationFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
 function restoreCraftedWorksPosition() {
-  if (!shouldRestoreCraftedWorks) return;
-  const savedPosition = craftedWorksSavedPosition;
-  const savedProject = craftedWorksSavedProject;
+  if (craftedWorksRestoreTask) return craftedWorksRestoreTask;
+  const state = readCraftedWorksState();
+  if (!state) return Promise.resolve(false);
 
-  const applyPosition = () => {
-    lenis.scrollTo(savedPosition, { immediate: true, force: true });
-    window.scrollTo(0, savedPosition);
-    if (window.ScrollTrigger) {
-      ScrollTrigger.refresh();
-      ScrollTrigger.update();
-    }
-    window.dispatchEvent(new Event('scroll'));
+  document.documentElement.classList.add('is-restoring-crafted-works');
+  craftedWorksRestoreTask = Promise.all([
+    waitForWindowLoad(),
+    waitForPageImages(),
+    document.fonts && document.fonts.ready ? document.fonts.ready.catch(() => {}) : Promise.resolve(),
+  ]).then(waitForStableLayout).then(async () => {
+    const applyPosition = () => {
+      lenis.scrollTo(state.scrollY, { immediate: true, force: true });
+      window.scrollTo(0, state.scrollY);
+      if (window.ScrollTrigger) {
+        ScrollTrigger.refresh();
+        ScrollTrigger.update();
+      }
+      window.dispatchEvent(new Event('scroll'));
+    };
 
-    const project = savedProject && document.querySelector('[data-project-id="' + savedProject + '"]');
+    applyPosition();
+    await nextAnimationFrame();
+    await nextAnimationFrame();
+    applyPosition();
+
+    const project = state.project && document.querySelector('[data-project-id="' + state.project + '"]');
     if (project) {
       project.classList.add('project--last-viewed');
       window.setTimeout(() => project.classList.remove('project--last-viewed'), 1800);
     }
-    try {
-      sessionStorage.removeItem(craftedWorksPositionKey);
-      sessionStorage.removeItem(craftedWorksProjectKey);
-    } catch (error) {}
-  };
 
-  requestAnimationFrame(() => {
+    document.documentElement.classList.remove('is-restoring-crafted-works');
+    await nextAnimationFrame();
     applyPosition();
-    window.setTimeout(applyPosition, 180);
+    if (window.ScrollTrigger) {
+      ScrollTrigger.refresh();
+      ScrollTrigger.update();
+    }
+    if (window.NorthwindPageState) window.NorthwindPageState.clearCraftedWorks();
+    else {
+      try {
+        sessionStorage.removeItem(craftedWorksPositionKey);
+        sessionStorage.removeItem(craftedWorksProjectKey);
+      } catch (error) {}
+    }
+    return true;
+  }).finally(() => {
+    craftedWorksRestoreTask = null;
   });
+  return craftedWorksRestoreTask;
 }
 
 document.querySelectorAll('.project-link').forEach((link) => {
@@ -118,7 +196,7 @@ document.querySelectorAll('.project-link').forEach((link) => {
 });
 
 restoreCraftedWorksPosition();
-window.addEventListener('load', restoreCraftedWorksPosition, { once: true });
+window.addEventListener('pageshow', restoreCraftedWorksPosition);
 
 if (resetHomepageToTop) {
   const enforceHomepageTop = () => {
@@ -545,38 +623,79 @@ gsap.from('.cta-buttons', {
 }
 
 if (!hasMotionLibraries) {
-  var fallbackNavigation = performance.getEntriesByType('navigation')[0];
-  var fallbackPosition = null;
-  var fallbackProjectId = '';
-  try {
-    fallbackPosition = Number(sessionStorage.getItem('craftedWorksPosition'));
-    fallbackProjectId = sessionStorage.getItem('craftedWorksProject') || '';
-  } catch (error) {}
-  var fallbackShouldRestore = (!fallbackNavigation || fallbackNavigation.type !== 'reload') && Number.isFinite(fallbackPosition) && fallbackPosition > 0;
+  var fallbackRestoreTask = null;
+
+  function readFallbackCraftedWorksState() {
+    if (window.NorthwindPageState) {
+      var state = window.NorthwindPageState.readCraftedWorks();
+      if (state) return state;
+    }
+    try {
+      var storedPosition = sessionStorage.getItem('craftedWorksPosition');
+      if (storedPosition === null) return null;
+      var scrollY = Number(storedPosition);
+      if (!Number.isFinite(scrollY) || scrollY < 0) return null;
+      return { scrollY:scrollY, project:sessionStorage.getItem('craftedWorksProject') || '' };
+    } catch (error) {
+      return null;
+    }
+  }
+
   document.querySelectorAll('.project-link').forEach(function (link) {
     link.addEventListener('click', function () {
+      if (window.NorthwindPageState) {
+        window.NorthwindPageState.saveCraftedWorks(link);
+        return;
+      }
       try {
         sessionStorage.setItem('craftedWorksPosition', String(Math.round(window.scrollY)));
         sessionStorage.setItem('craftedWorksProject', link.dataset.projectId || '');
       } catch (error) {}
     });
   });
-  if (fallbackShouldRestore) {
-    var fallbackRestore = function () {
-      window.scrollTo(0, fallbackPosition);
-      var project = fallbackProjectId && document.querySelector('[data-project-id="' + fallbackProjectId + '"]');
+
+  function restoreCraftedWorksWithoutMotion() {
+    if (fallbackRestoreTask) return fallbackRestoreTask;
+    var state = readFallbackCraftedWorksState();
+    if (!state) return Promise.resolve(false);
+    document.documentElement.classList.add('is-restoring-crafted-works');
+    var images = Array.prototype.filter.call(document.images, function (image) { return !image.complete; });
+    var imagesReady = Promise.all(images.map(function (image) {
+      return new Promise(function (resolve) {
+        image.addEventListener('load', resolve, { once:true });
+        image.addEventListener('error', resolve, { once:true });
+      });
+    }));
+    var loadReady = document.readyState === 'complete'
+      ? Promise.resolve()
+      : new Promise(function (resolve) { window.addEventListener('load', resolve, { once:true }); });
+    fallbackRestoreTask = Promise.all([imagesReady, loadReady]).then(function () {
+      return new Promise(function (resolve) {
+        requestAnimationFrame(function () { requestAnimationFrame(resolve); });
+      });
+    }).then(function () {
+      window.scrollTo(0, state.scrollY);
+      window.dispatchEvent(new Event('scroll'));
+      var project = state.project && document.querySelector('[data-project-id="' + state.project + '"]');
       if (project) {
         project.classList.add('project--last-viewed');
         window.setTimeout(function () { project.classList.remove('project--last-viewed'); }, 1800);
       }
-      try {
-        sessionStorage.removeItem('craftedWorksPosition');
-        sessionStorage.removeItem('craftedWorksProject');
-      } catch (error) {}
-    };
-    requestAnimationFrame(fallbackRestore);
-    window.addEventListener('load', fallbackRestore, { once: true });
+      document.documentElement.classList.remove('is-restoring-crafted-works');
+      if (window.NorthwindPageState) window.NorthwindPageState.clearCraftedWorks();
+      else {
+        try {
+          sessionStorage.removeItem('craftedWorksPosition');
+          sessionStorage.removeItem('craftedWorksProject');
+        } catch (error) {}
+      }
+      return true;
+    }).finally(function () { fallbackRestoreTask = null; });
+    return fallbackRestoreTask;
   }
+
+  restoreCraftedWorksWithoutMotion();
+  window.addEventListener('pageshow', restoreCraftedWorksWithoutMotion);
 }
 
 }
