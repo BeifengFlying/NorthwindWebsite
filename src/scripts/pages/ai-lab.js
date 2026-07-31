@@ -102,7 +102,7 @@ function setupStepper() {
       }
     });
     back.disabled = current === 1;
-    next.querySelector('span').textContent = current === total ? '完成' : '继续';
+    next.querySelector('span').textContent = current === total ? (window.NorthwindI18n?.t('complete', '完成') || '完成') : (window.NorthwindI18n?.t('continue', '继续') || '继续');
   }
 
   function finish() {

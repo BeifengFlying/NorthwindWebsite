@@ -13,7 +13,8 @@ function setMobileMenu(open) {
   document.documentElement.classList.toggle('mobile-menu-open', open);
   document.body.classList.toggle('mobile-menu-open', open);
   navToggle.setAttribute('aria-expanded', String(open));
-  navToggle.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+  var i18n = window.NorthwindI18n;
+  navToggle.setAttribute('aria-label', open ? (i18n ? i18n.t('close_menu', '关闭菜单') : '关闭菜单') : (i18n ? i18n.t('open_menu', '打开菜单') : '打开菜单'));
 }
 
 if (navToggle && navLinks) {
@@ -29,6 +30,14 @@ if (navToggle && navLinks) {
 }
 
 var hasMotionLibraries = Boolean(window.gsap && window.ScrollTrigger && window.Lenis);
+var homepageNav = document.querySelector('.nav');
+
+// Keep the compact header state working even when the optional motion CDN is unavailable.
+function syncHomepageNav() {
+  if (homepageNav) homepageNav.classList.toggle('scrolled', window.scrollY > 30);
+}
+window.addEventListener('scroll', syncHomepageNav, { passive: true });
+syncHomepageNav();
 
 if (hasMotionLibraries) {
 

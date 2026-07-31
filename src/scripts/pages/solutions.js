@@ -53,7 +53,7 @@ function isTimeoutError(error) {
 
 function createEntry(raw, fallbackPlatform = '') {
   const path = raw.path || raw.file || '';
-  const fileTitle = path.split('/').pop()?.replace(/\.md$/i, '').replace(/[-_]/g, ' ') || '未命名题解';
+  const fileTitle = path.split('/').pop()?.replace(/\.md$/i, '').replace(/[-_]/g, ' ') || (window.NorthwindI18n?.t('unknown_solution', '未命名题解'));
   const tags = Array.isArray(raw.tags) ? raw.tags : String(raw.tags || '').split(',').map((tag) => tag.trim()).filter(Boolean);
   const platform = normalizePlatform(raw.platform || fallbackPlatform || path.split('/')[0]);
   return {
@@ -217,7 +217,8 @@ async function init() {
   updateStats();
   render();
   const syncState = $('#syncState');
-  syncState.innerHTML = state.solutions.length ? '<i></i> 来自 GitHub 的实时数据' : '<i></i> 仓库已就绪';
+  const i18n = window.NorthwindI18n;
+  syncState.innerHTML = state.solutions.length ? `<i></i> ${i18n?.t('github_live_data', '来自 GitHub 的实时数据') || '来自 GitHub 的实时数据'}` : `<i></i> ${i18n?.t('repository_ready', '仓库已就绪') || '仓库已就绪'}`;
   if (!metadata && !state.solutions.length) syncState.classList.add('offline');
 }
 

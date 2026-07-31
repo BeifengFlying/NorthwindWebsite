@@ -29,11 +29,14 @@ var NorthwindSound = window.NorthwindSound || (function () {
     var toggle = document.getElementById('soundToggle');
     if (!toggle) return;
     var enabled = !soundMuted;
-    var label = enabled ? '关闭声音' : '开启声音';
+    var i18n = window.NorthwindI18n;
+    var label = enabled ? (i18n ? i18n.t('disable_sound', '关闭声音') : '关闭声音') : (i18n ? i18n.t('enable_sound', '开启声音') : '开启声音');
     toggle.classList.toggle('is-enabled', enabled);
     toggle.setAttribute('aria-pressed', String(enabled));
     toggle.setAttribute('aria-label', label);
     toggle.title = label;
+    var stateLabel = toggle.querySelector('.sound-toggle__label');
+    if (stateLabel) stateLabel.textContent = enabled ? 'ON' : 'OFF';
   }
 
   function getContext() {

@@ -1,0 +1,819 @@
+{
+  "locale": "en-US",
+  "strings": {
+    "home": "Home",
+    "about": "About",
+    "music": "Music",
+    "explore": "Explore",
+    "projects": "Projects",
+    "creative": "Creative",
+    "now": "Now",
+    "contact": "Contact",
+    "back": "Back",
+    "back_home": "Back home",
+    "back_projects": "Back to projects",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "enable_sound": "Turn sound on",
+    "disable_sound": "Turn sound off",
+    "scroll_down": "Scroll down",
+    "about_me": "About",
+    "computer_science": "Computer Science",
+    "algorithm": "Algorithm",
+    "web_development": "Web Development",
+    "creative_coding": "Creative Coding",
+    "capabilities": "Strengths",
+    "photography": "Photography",
+    "video_editing": "Video Editing",
+    "programming_languages": "Programming Languages",
+    "current_exploration": "Currently Exploring",
+    "algorithm_competition": "Competitive Programming",
+    "digital_creation": "Digital Creation",
+    "another_playlist": "Another group",
+    "play_current_song": "Play current song",
+    "open_current_song": "Open current song",
+    "qq_music": "QQ Music",
+    "netease_music": "NetEase Cloud Music",
+    "playback_method": "Playback method",
+    "open_this_song": "Open this song",
+    "open_app": "Open app",
+    "web_playback": "Play on the web",
+    "copy_link": "Copy link",
+    "close_playback": "Close playback options",
+    "algorithm_club": "Algorithm Club",
+    "community_building": "Community Building",
+    "programming_education": "Programming Education",
+    "dali_university": "Dali University",
+    "project_photography": "Photography Works",
+    "visual": "Visual",
+    "project_solutions": "Algorithm Notes",
+    "solution_record": "Problem Solving",
+    "project_ai": "AI Lab",
+    "artificial_intelligence": "Artificial Intelligence",
+    "local_deployment": "Local Deployment",
+    "experiment_log": "Experiment Log",
+    "web_projects": "Web Projects",
+    "design_development": "Design & Development",
+    "open_source_record": "Open Source Notes",
+    "workflow": "My Workflow",
+    "development_journey": "Development Journey",
+    "development_tools": "Tools",
+    "idea": "Ideas",
+    "method": "Method",
+    "efficiency": "Efficiency",
+    "code": "Code",
+    "full_stack": "Full Stack",
+    "explore_more": "Explore Widely",
+    "learn_more": "Keep Learning",
+    "build_by_hand": "Build by Hand",
+    "view_project": "View project",
+    "share_idea": "Exchange an idea",
+    "connect_github": "Reach out through GitHub",
+    "lost_in_space": "Somewhere in digital space",
+    "northwind_direction": "This path does not lead back to Northwind yet",
+    "keep_exploring": "Keep exploring",
+    "photography_title": "Light in Slices",
+    "photo_browse": "Browse downward",
+    "film_end": "End of roll",
+    "continue_watching": "Keep looking",
+    "close": "Close",
+    "previous": "Previous photo",
+    "next": "Next photo",
+    "solutions": "Solutions",
+    "all": "All",
+    "search_solutions": "Search notes",
+    "syncing_repository": "Syncing repository",
+    "solution_index": "Index",
+    "problem": "Problems",
+    "platform": "Platform",
+    "last_updated": "Last updated",
+    "solution_filter": "Filter solutions",
+    "repository": "Solution repository",
+    "repository_algorithm": "Solution repository / Algorithms",
+    "public_source_sync": "Open source / GitHub sync",
+    "ai_nav": "AI Lab navigation",
+    "ai_research": "Personal research / Local intelligence",
+    "deployment_observation_log": "Deploy · Observe · Record",
+    "current_focus": "Current focus",
+    "return_to_work": "Back to work",
+    "continue": "Continue",
+    "previous_step": "Previous",
+    "complete": "Complete",
+    "restart_guide": "Restart guide",
+    "deployment_complete": "Deployment path complete",
+    "models_loading": "Loading model notes",
+    "timeline_loading": "Loading timeline",
+    "hardware": "Hardware",
+    "runtime": "Runtime",
+    "desktop_app": "Desktop app",
+    "ready": "Ready",
+    "memory": "Memory",
+    "quantization": "Quantization",
+    "context": "Context",
+    "model": "Model",
+    "advantages": "Strengths",
+    "limitations": "Limitations",
+    "suitable_for": "Best for",
+    "format": "Format",
+    "use_case": "Best use",
+    "tradeoffs": "Trade-offs",
+    "ai_evolution": "AI Evolution",
+    "future_exploration": "Future Directions",
+    "personal_log_continues": "Personal notes, still in progress",
+    "photo_calm": "Quiet Hours",
+    "photo_light": "Between Light and Shadow",
+    "photo_mountains": "Distant Mountains",
+    "photo_daily": "Daily Slices",
+    "photo_dusk": "Dusk",
+    "photo_open": "Open Horizon",
+    "kunming": "Kunming",
+    "urumqi": "Urumqi",
+    "rainy_mountains": "Mountains After Rain",
+    "landscape_alt": "A distant view of snow mountains and clouds",
+    "unknown_solution": "Untitled solution",
+    "github_live_data": "Live data from GitHub",
+    "repository_ready": "Repository ready",
+    "not_found": "Page not found"
+  },
+  "text": {
+    "关于": "About",
+    "音乐": "Music",
+    "探索": "Explore",
+    "作品": "Projects",
+    "创作": "Creative",
+    "当下": "Now",
+    "联系": "Contact",
+    "关于我": "About",
+    "我是谁": "Who I Am",
+    "向下滚动": "Scroll down",
+    "能力方向": "Strengths",
+    "编程语言": "Programming Languages",
+    "当前探索": "Currently Exploring",
+    "网页开发": "Web Development",
+    "创意编程": "Creative Coding",
+    "算法竞赛": "Competitive Programming",
+    "数字创作": "Digital Creation",
+    "视频剪辑": "Video Editing",
+    "个人网站": "Personal Website",
+    "个人作品集": "Personal Portfolio",
+    "个人工作流循环": "Personal Workflow Loop",
+    "人工智能": "Artificial Intelligence",
+    "大模型": "Large Language Models",
+    "机器学习": "Machine Learning",
+    "全栈": "Full Stack",
+    "开源记录": "Open Source Notes",
+    "本地部署": "Local Deployment",
+    "实验记录": "Experiment Log",
+    "设计与开发": "Design & Development",
+    "解题记录": "Problem Solving",
+    "视觉": "Visual",
+    "社区建设": "Community Building",
+    "编程教育": "Programming Education",
+    "大理大学": "Dali University",
+    "作品展示": "Selected Work",
+    "题解合集": "Algorithm Notes",
+    "摄影作品": "Photography Works",
+    "查看项目": "View project",
+    "深入算法、数据结构和人工智能基础。": "Going deeper into algorithms, data structures, and the foundations of AI.",
+    "探索大模型应用与 Web 开发项目。": "Exploring large-model applications and Web projects.",
+    "持续探索算法、人工智能与开源世界。欢迎交流与合作。": "Continuing to explore algorithms, AI, and the open-source world. Always open to a conversation.",
+    "代码、摄影、设计，": "Code, photography, and design",
+    "都是连接想法与现实的工具。": "are all tools for turning ideas into reality.",
+    "创作对我来说，": "For me, creating",
+    "不仅是一种表达，": "is more than a form of expression.",
+    "也是理解世界的一种方式。": "It is also a way to understand the world.",
+    "让想法": "Let ideas",
+    "逐渐成为现实。": "become real, one step at a time.",
+    "广泛探索": "Explore Widely",
+    "持续学习": "Keep Learning",
+    "动手构建": "Build by Hand",
+    "想法": "Ideas",
+    "方法": "Method",
+    "效率": "Efficiency",
+    "开发": "Development",
+    "代码": "Code",
+    "工具": "Tools",
+    "播放当前歌曲": "Play current song",
+    "播放方式": "Playback method",
+    "打开这首歌": "Open this song",
+    "复制链接": "Copy link",
+    "网页播放": "Play on the web",
+    "算法社": "Algorithm Club",
+    "题解": "Solutions",
+    "AI Lab": "AI Lab",
+    "我的工作流": "My Workflow",
+    "工作流导航": "Workflow navigation",
+    "项目档案 / 2026": "PROJECT ARCHIVE / 2026",
+    "一个个人网站的诞生过程": "The making of a personal website",
+    "从最初的想法，到设计、编码、部署，": "From the first idea to design, code, and deployment,",
+    "记录一个 Web 项目的完整成长轨迹": "a complete record of a Web project's growth.",
+    "向下探索": "Explore downward",
+    "项目概览": "Project overview",
+    "记录想法、代码与创作的持续档案": "A living archive of ideas, code, and creative work",
+    "让作品被看见的地方": "A place for the work to be seen",
+    "创建个人": "Create a personal",
+    "数字空间": "digital space",
+    "不是简历，而是过程记录": "Not a resume, but a record of the process",
+    "路径": "Path",
+    "拖动或滑动查看每一个阶段": "Drag or swipe through every stage",
+    "每一张卡片都对应下面的一段记录": "Each card points to a chapter below",
+    "正在载入旅程导航": "Loading journey navigation",
+    "开发时间线": "Development timeline",
+    "先创建一个": "First, create a",
+    "属于自己的数字空间": "digital space of your own",
+    "保持个人": "Keep a personal",
+    "特色": "signature",
+    "让不同兴趣": "Give different interests",
+    "拥有自己的入口": "their own point of entry",
+    "和情绪放在一起": "Bring order, color,",
+    "把秩序、颜色": "and feeling together",
+    "把设计变成": "Turn design into",
+    "真实可用的交互": "real, usable interaction",
+    "让细节更轻，": "Make the details lighter,",
+    "让体验更顺": "and the experience smoother",
+    "从本地文件，": "From local files",
+    "到公开的地址": "to a public address",
+    "继续改进": "Keep improving",
+    "增加新的创作": "Add new creative work",
+    "记录学习旅程": "Record the learning journey",
+    "构建更好的体验": "Build a better experience",
+    "从本地部署开始，探索开源模型的发展与边界": "Starting with local deployment, exploring the evolution and limits of open models",
+    "探索开源模型的本地能力": "Exploring what open models can do locally",
+    "把模型": "Get the model",
+    "跑起来": "running",
+    "第一次真正运行本地模型时，最大的限制不是模型能力，而是显存和推理效率，这里记录我用 LM Studio 把模型从文件变成可交互实例的过程": "When I first ran a model locally, the biggest constraints were memory and inference speed, not capability. This is a record of turning model files into an interactive instance with LM Studio.",
+    "选择模型": "Choose a model",
+    "下载": "Download",
+    "推理": "Inference",
+    "环境配置": "Environment setup",
+    "下载模型": "Download model",
+    "加载模型": "Load model",
+    "参数调节": "Tune parameters",
+    "部署流程概览": "Deployment overview",
+    "先确认硬件，再决定模型规模": "Check the hardware before choosing a model size",
+    "部署路径走通了": "The deployment path works",
+    "我的模型": "My Models",
+    "模型不是越大越好，它和硬件、任务、耐心共同决定一次本地实验是否值得": "Bigger is not always better. Hardware, task, and patience together decide whether a local experiment is worthwhile.",
+    "硬件配置": "Hardware setup",
+    "硬件边界": "Hardware limits",
+    "模型规模探索": "Model scale explorer",
+    "模型格式": "Model formats",
+    "优势场景": "Best use",
+    "取舍": "Trade-offs",
+    "一条仍在": "A line still",
+    "变化的线": "in motion",
+    "未来探索": "Future Directions",
+    "问题留下": "Leave the questions open",
+    "下一步想记录的不只是模型跑分，还有它们在真实工作流里的摩擦：工具调用、记忆、Agent，以及更低成本的多模态部署": "Next, I want to record more than benchmarks: the friction these models create in real workflows, from tool use and memory to Agents and lower-cost multimodal deployment.",
+    "交换一个想法": "Exchange an idea",
+    "个人记录，仍在持续更新": "Personal notes, still in progress",
+    "题解仓库 / 算法": "Solution repository / Algorithms",
+    "正在同步仓库": "Syncing repository",
+    "题解筛选": "Filter solutions",
+    "搜索题解": "Search notes",
+    "全部": "All",
+    "索引": "Index",
+    "源码公开 / GitHub 同步": "Open source / GitHub sync",
+    "摄影": "Photography",
+    "光影": "Light and shadow",
+    "切片": "Sliced",
+    "把经过的地方留在光里，六个瞬间，来自昆明与乌鲁木齐": "Keeping the places I passed through in the light: six moments from Kunming and Urumqi",
+    "视线从植物开始，": "The eye begins with plants,",
+    "最后落在远山": "and ends on distant mountains",
+    "胶片末尾": "End of roll",
+    "继续观看": "Keep looking",
+    "页面未找到": "Page not found",
+    "返回主页": "Back home",
+    "返回首页": "Back home",
+    "继续探索": "Keep exploring",
+    "迷失在数字空间的某处": "Somewhere in digital space",
+    "这条路径暂时没有通往北风的方向": "This path does not lead back to Northwind yet",
+    "静谧时分": "Quiet Hours",
+    "光影之间": "Between Light and Shadow",
+    "远山": "Distant Mountains",
+    "日常切片": "Daily Slices",
+    "暮色": "Dusk",
+    "辽阔": "Open Horizon",
+    "昆明": "Kunming",
+    "乌鲁木齐": "Urumqi",
+    "雨后山野": "Mountains After Rain",
+    "雪山与云层的远景": "A distant view of snow mountains and clouds"
+    ,"从一个属于自己的数字空间开始": "Start with a digital space of your own"
+    ,"让不同兴趣拥有自己的入口": "Give different interests their own point of entry"
+    ,"把秩序、颜色和情绪放在一起": "Bring order, color, and feeling together"
+    ,"把设计变成真实可用的交互": "Turn design into real, usable interaction"
+    ,"让细节更轻，让体验更顺": "Make the details lighter and the experience smoother"
+    ,"从本地文件，到公开的地址": "From local files to a public address"
+    ,"自动循环": "Auto loop"
+    ,"闭环": "Loop"
+    ,"流程": "Process"
+    ,"资产": "Assets"
+    ,"个人系统 / 2026": "PERSONAL SYSTEM / 2026"
+    ,"从想法到作品，构建个人技术资产体系": "From ideas to work, building a personal system of technical assets"
+    ,"算法刷题、项目开发、技术学习、内容创作，": "Competitive programming, project work, technical learning, and creative work",
+    "最后都沉淀成可以继续使用的个人资产": "all become personal assets I can keep using",
+    "查看工作闭环": "View the workflow loop",
+    "学习": "Learning",
+    "解题": "Problem Solving",
+    "分享": "Sharing",
+    "算法 · 阅读 · 课程": "Algorithms · Reading · Courses",
+    "刷题 · 分析 · 证明": "Problems · Analysis · Proof",
+    "项目 · Web · 工具": "Projects · Web · Tools",
+    "摄影 · 音乐 · 视频": "Photography · Music · Video",
+    "GitHub · 网站 · 复盘": "GitHub · Site · Review",
+    "工作闭环": "Workflow loop",
+    "把兴趣连成": "Connect interests into",
+    "一条路": "one path",
+    "技术学习": "Technical Learning",
+    "算法刷题": "Competitive Programming",
+    "项目开发": "Project Development",
+    "内容创作": "Content Creation",
+    "公开沉淀": "Public Archive",
+    "从想法开始，": "Start with an idea,",
+    "把成果留下": "leave the work behind",
+    "核心流程": "Core Process",
+    "想法输入": "Idea Input",
+    "需求设计": "Requirements & Design",
+    "代码实现": "Implementation",
+    "人工复核": "Human Review",
+    "资产沉淀": "Asset Archive",
+    "公开展示": "Public Showcase",
+    "一道题，": "One problem,",
+    "一份可复用的答案": "one reusable answer",
+    "算法题解流程": "Algorithm Notes Workflow",
+    "完成": "Complete",
+    "分析": "Analyze",
+    "整理": "Organize",
+    "上传": "Upload",
+    "复盘": "Review",
+    "产出": "Output",
+    "学习之外，": "Beyond learning,",
+    "继续做东西": "keep making things",
+    "工作方向": "Work Directions",
+    "开发辅助": "Development Support",
+    "工具负责提速，": "Tools handle the speed,",
+    "我负责方向": "I set the direction",
+    "数字资产": "Digital Assets",
+    "把散落的": "Archive the scattered",
+    "痕迹归档": "traces",
+    "持续迭代": "Continuous Iteration",
+    "增加算法题解": "Add algorithm notes",
+    "完成更好的项目": "Finish better projects",
+    "记录新的创作": "Record new creative work",
+    "完善个人资产库": "Grow the personal asset library",
+    "训练一个大脑": "Train a Brain",
+    "让大众使用 AI": "Put AI in Everyone's Hands",
+    "能力开始分枝": "Capabilities Branch Out",
+    "树冠快速展开": "The Canopy Expands",
+    "模型学会思考": "Models Learn to Reason",
+    "枝叶指向行动": "Branches Point to Action",
+    "预训练开始发芽": "Pretraining begins to sprout",
+    "轻量 / 端侧友好": "Lightweight / edge-friendly",
+    "实用的起点": "A practical starting point",
+    "更完整的能力": "More complete capability",
+    "开始有重量": "Starting to carry weight",
+    "部署的边界": "The deployment boundary",
+    "理解能力 ↑": "Understanding ↑",
+    "显存需求 ↑": "Memory demand ↑",
+    "推理速度 ↓": "Inference speed ↓",
+    "在约束、结构与复杂度中思考。把算法竞赛作为系统化解决问题的训练场。": "Thinking through constraints, structure, and complexity. Competitive programming is my training ground for systematic problem solving.",
+    "探索大语言模型、AI 应用开发与机器学习。构建能理解与生成的智能工具。": "Exploring large language models, AI application development, and machine learning. Building tools that can understand and generate.",
+    "把想法变成可交互的体验。从 PHP 后端到现代前端设计，全栈构建应用。": "Turning ideas into interactive experiences. Building full-stack applications from PHP backends to modern frontend design.",
+    "开源生态、算法竞赛和创造性技术结合。": "Bringing open-source ecosystems, competitive programming, and creative technology together."
+    ,"我是谁 · 我从哪里来 · 我要到哪里去": "Who I am · Where I come from · Where I am going"
+    ,"01 / 关于我": "01 / About"
+    ,"02 / 音乐": "02 / Music"
+    ,"03 / 探索方向": "03 / Directions"
+    ,"04 / 作品展示": "04 / Selected Work"
+    ,"05 / 创作": "05 / Creative Work"
+    ,"06 / 当下": "06 / Now"
+    ,"主导航": "Main navigation"
+    ,"AI Lab 导航": "AI Lab navigation"
+    ,"工作流导航": "Workflow navigation"
+    ,"题解统计": "Solution statistics"
+    ,"Northwind 页面未找到": "Northwind page not found"
+    ,"Northwind 的个人开发工作流系统": "Northwind personal development workflow"
+    ,"BeifengFlying 的算法题解": "Algorithm notes by BeifengFlying"
+    ,"Northwind 网站从想法到上线的开发旅程": "Northwind's journey from idea to launch"
+    ,"本地大模型部署、模型研究与 AI 发展记录": "Local model deployment, model research, and notes on AI's evolution"
+    ,"摄影专辑封面": "Photography album cover"
+    ,"平凡之路": "The Ordinary Road"
+    ,"朴树": "Pu Shu"
+    ,"猎户星座": "Orion"
+    ,"数据结构": "Data Structures"
+    ,"动态规划": "Dynamic Programming"
+    ,"图论": "Graph Theory"
+    ,"后端": "Backend"
+    ,"设计": "Design"
+    ,"创作记录": "Creative Notes"
+    ,"想法 → 需求文档 → 代码生成 → 人工审查 → 优化 → 上线": "Idea → Requirements → Code Generation → Human Review → Refinement → Launch"
+    ,"原因": "Reason"
+    ,"主页": "Home"
+    ,"项目": "Project"
+    ,"博客": "Blog"
+    ,"规划 / 结构": "Planning / Structure"
+    ,"设计 / 视觉": "Design / Visuals"
+    ,"开发 / 实现": "Development / Implementation"
+    ,"打磨 / 优化": "Polish / Optimization"
+    ,"上线 / 发布": "Launch / Release"
+    ,"想法 / 起点": "Idea / Starting Point"
+    ,"最初的想法很简单：记录技术学习、算法成长以及个人创作，网站不是一份静态简历，而是一个会持续生长的个人档案": "The first idea was simple: document technical learning, algorithmic growth, and creative work. The site is not a static resume, but a personal archive that keeps growing."
+    ,"主页、关于、项目、创作和博客构成基础骨架，每个页面先承担清晰的角色，再决定它应该长什么样": "Home, About, Projects, Creative, and Blog form the basic structure. Each page takes on a clear role before its visual language is decided."
+    ,"米白底色保留阅读感，彩色光晕负责情绪，清晰的网格和留白负责秩序，动效只在需要的时候出现，让页面有呼吸感": "The off-white ground keeps the site readable, color carries the mood, a clear grid and open space create order, and motion appears only when it helps the page breathe."
+    ,"从 HTML 结构到 CSS 系统，再到 JavaScript 的细节交互，每一次编码，都是把抽象的体验变成可以被点击、滚动和使用的东西": "From HTML structure and the CSS system to the smallest JavaScript interactions, every line of code turns an abstract experience into something people can click, scroll, and use."
+    ,"调整布局比例、优化图片加载、补齐移动端适配，也为每个页面补上明确的返回路径和错误状态": "Refine layout proportions, improve image loading, finish the mobile experience, and give every page a clear way back and a useful error state."
+    ,"代码进入 GitHub，页面通过 Cloudflare Pages 发布，上线不是终点，而是下一次迭代真正开始的地方": "The code goes to GitHub and the site ships through Cloudflare Pages. Launch is not the end; it is where the next iteration really begins."
+    ,"在线": "Online"
+    ,"性能": "Performance"
+    ,"响应式": "Responsive"
+    ,"界面 / 布局": "Interface / Layout"
+    ,"组件": "Components"
+    ,"交互": "Interaction"
+    ,"优化": "Optimization"
+    ,"本地": "Local"
+    ,"在 GitHub 查看源码 ↗": "View source on GitHub ↗"
+    ,"拖动旋转": "Drag to rotate"
+    ,"开发旅程阶段导航，可拖动或使用方向键旋转": "Development journey stages. Drag or use the arrow keys to rotate."
+    ,"个人研究 / 本地智能": "Personal research / Local intelligence"
+    ,"部署 · 观察 · 记录": "Deploy · Observe · Record"
+    ,"当前关注": "Current focus"
+    ,"本地 / 开源": "Local / Open Source"
+    ,"步骤 01 / 先准备运行环境": "Step 01 / Prepare the runtime"
+    ,"步骤 02 / 选择模型权重": "Step 02 / Choose model weights"
+    ,"步骤 03 / 加载到内存": "Step 03 / Load into memory"
+    ,"步骤 04 / 调整使用体验": "Step 04 / Tune the experience"
+    ,"先看内存": "Check memory first"
+    ,"准备完成": "Ready to go"
+    ,"本地推理": "Local inference"
+    ,"从 HuggingFace 或 LM Studio 的模型目录选择模型和参数规模，再判断 GGUF、MLX 与量化版本，文件大小决定能否装下，量化等级决定速度和回答质量的平衡": "Choose a model and parameter scale from HuggingFace or LM Studio, then compare GGUF, MLX, and quantized variants. File size determines whether it fits; quantization balances speed and answer quality."
+    ,"先看任务，不先看参数": "Start with the task, not the parameter count"
+    ,"7B 是容易起步的尺度": "7B is an easy place to start"
+    ,"选择规模": "Choose a size"
+    ,"选择量化": "Choose quantization"
+    ,"下载文件": "Download files"
+    ,"留出缓存空间": "Leave room for the cache"
+    ,"加载模型本质是将模型权重放入内存或显存，让计算设备能够完成推理，GPU Offload 越充分，通常响应越快，但可用显存也会成为最先遇到的边界": "Loading a model means placing its weights in memory or VRAM so the device can run inference. More GPU offload usually means faster responses, but available VRAM becomes the first boundary."
+    ,"模型权重": "Model weights"
+    ,"状态": "Status"
+    ,"参数没有一组永远正确的答案，先用稳定的默认值跑通，再针对任务调整，我的经验是先调 Temperature 和 Context Length，再处理采样细节": "There is no universally correct parameter set. Start with stable defaults, then tune for the task. My approach is to adjust Temperature and Context Length first, then handle sampling details."
+    ,"接下来可以把注意力放到模型本身，而不是安装过程": "Now the attention can move to the model itself, not the installation process"
+    ,"模型记录": "Model notes"
+    ,"部署记录": "Deployment note"
+    ,"同一个模型换一台机器，体验可能完全不同，显存、统一内存和生态，往往比纸面参数更先决定结果": "The same model can feel completely different on another machine. VRAM, unified memory, and ecosystem often decide the result before the headline specs do."
+    ,"统一内存": "Unified memory"
+    ,"显存": "VRAM"
+    ,"模型参数规模": "Model parameter scale"
+    ,"格式是部署体验的一部分，它不决定模型聪不聪明，却会改变模型如何使用你的硬件": "Format is part of the deployment experience. It does not decide how smart a model is, but it changes how the model uses your hardware."
+    ,"llama.cpp 生态": "llama.cpp ecosystem"
+    ,"兼容性强，资源丰富，Windows / Linux / macOS 均支持": "Broad compatibility, rich resources, and support for Windows, Linux, and macOS"
+    ,"Apple Silicon 优化不一定最佳": "Apple Silicon optimization is not always ideal"
+    ,"Apple Silicon 原生": "Native on Apple Silicon"
+    ,"M 系列芯片优化明显，内存利用效率高，Mac 本地体验优秀": "Strong optimization for M-series chips, efficient memory use, and an excellent local Mac experience"
+    ,"生态规模小于 GGUF，平台限制明显": "A smaller ecosystem than GGUF, with clear platform limits"
+    ,"从预训练的一颗种子，到推理、多模态与 Agent 交织成枝。沿着主干向下，看见大语言模型如何一点点长成今天的树冠。": "From a pretraining seed to branches of reasoning, multimodality, and Agents. Follow the trunk downward to see how large language models grew into today's canopy."
+    ,"生长记录 / 2018 - 2026": "Growth record / 2018 - 2026"
+    ,"向下生长": "Growing downward"
+    ,"预训练时代": "The pretraining era"
+    ,"RLHF / 对话革命": "RLHF / The conversational revolution"
+    ,"多模态 / 开源 / 安全": "Multimodality / Open Source / Safety"
+    ,"实时交互 / MoE / 长上下文": "Real-time interaction / MoE / Long context"
+    ,"推理 / 工具调用 / 代码 Agent": "Reasoning / Tool use / Code Agents"
+    ,"长任务 / 多模态 / Agent": "Long tasks / Multimodality / Agents"
+    ,"训练一个大脑": "Train a Brain"
+    ,"让大众使用 AI": "Put AI in Everyone's Hands"
+    ,"能力开始分枝": "Capabilities Branch Out"
+    ,"树冠快速展开": "The Canopy Expands"
+    ,"模型学会思考": "Models Learn to Reason"
+    ,"枝叶指向行动": "Branches Point to Action"
+    ,"下一步想记录的不只是模型跑分，还有它们在真实工作流里的摩擦：工具调用、记忆、Agent，以及更低成本的多模态部署": "Next, I want to record more than benchmarks: the friction these models create in real workflows, from tool use and memory to Agents and lower-cost multimodal deployment."
+    ,"个人": "Personal"
+    ,"作品集": "Portfolio"
+    ,"类型": "Type"
+    ,"技术栈": "Stack"
+    ,"目标": "Goal"
+    ,"网站会继续变化，新的作品、新的学习记录，以及更多从想法走向现实的尝试，都会在这里留下痕迹": "The site will keep changing. New work, new learning notes, and more attempts to turn ideas into reality will leave their traces here."
+    ,"持续改进": "Keep improving"
+    ,"构建更好的体验": "Build a better experience"
+    ,"推理模型": "Reasoning model"
+    ,"强化学习": "Reinforcement Learning"
+    ,"思维链": "Chain of Thought"
+    ,"面向复杂推理任务优化，更强调数学、代码和逻辑分析能力": "Optimized for complex reasoning, with a focus on mathematics, code, and logical analysis"
+    ,"推理能力强": "Strong reasoning ability"
+    ,"数学和算法任务表现优秀": "Excellent on math and algorithm tasks"
+    ,"开源生态完善": "Mature open-source ecosystem"
+    ,"推理速度较慢": "Slower inference"
+    ,"对硬件要求较高": "Higher hardware requirements"
+    ,"长时间运行资源消耗明显": "Noticeable resource use over long runs"
+    ,"数学": "Mathematics"
+    ,"复杂问题分析": "Complex problem analysis"
+    ,"适合拿来观察推理过程，但在本地运行时要给速度和内存留出余量": "Useful for observing reasoning, but leave room for speed and memory when running it locally"
+    ,"多头潜在注意力": "Multi-head Latent Attention"
+    ,"大语言模型": "Large Language Model"
+    ,"通过架构优化提升模型效率，在较低推理成本下提供较强综合能力": "Architecture improvements raise efficiency and deliver strong general capability at lower inference cost"
+    ,"综合能力强": "Strong general capability"
+    ,"中文表现优秀": "Excellent Chinese performance"
+    ,"推理效率较高": "High inference efficiency"
+    ,"大参数版本部署门槛高": "Large versions are difficult to deploy"
+    ,"需要量化降低资源需求": "Quantization is needed to reduce resource demands"
+    ,"日常问答": "Everyday Q&A"
+    ,"代码辅助": "Coding assistance"
+    ,"中文写作": "Chinese writing"
+    ,"更像一台综合能力不错的工作台，量化版本决定了它是否适合本地长期运行": "More like a capable general-purpose workbench; the quantized version decides whether it can run locally for the long term"
+    ,"指令微调": "Instruction tuning"
+    ,"多语言模型": "Multilingual model"
+    ,"工具调用": "Tool use"
+    ,"覆盖不同参数规模和任务类型，在中文、工具调用和日常任务之间保持均衡": "Covering different parameter scales and tasks while balancing Chinese, tool use, and everyday work"
+    ,"中文能力突出": "Strong Chinese capability"
+    ,"工具调用生态完善": "Mature tool-use ecosystem"
+    ,"综合表现均衡": "Well-balanced overall performance"
+    ,"部分复杂推理任务弱于专用推理模型": "Weaker than specialized reasoning models on some complex tasks"
+    ,"中文任务": "Chinese tasks"
+    ,"Agent 原型": "Agent prototypes"
+    ,"本地助手": "Local assistant"
+    ,"小参数版本是本地实验里很实用的起点，先验证工作流，再考虑换更大的模型": "The smaller versions are a practical starting point for local experiments: validate the workflow before moving to a larger model"
+    ,"开源模型": "Open model"
+    ,"参数高效": "Parameter-efficient"
+    ,"Google DeepMind 发布的开放模型系列，强调较小参数规模下的可用性": "An open model family from Google DeepMind, focused on usefulness at smaller parameter scales"
+    ,"参数效率高": "Parameter efficient"
+    ,"小模型表现优秀": "Excellent small-model performance"
+    ,"开源友好": "Open-source friendly"
+    ,"中文生态较弱": "Weaker Chinese ecosystem"
+    ,"专业领域能力有限": "Limited specialist capability"
+    ,"轻量部署": "Lightweight deployment"
+    ,"英文任务": "English tasks"
+    ,"端侧实验": "Edge experiments"
+    ,"它更适合拿来感受小模型的边界，而不是作为中文复杂任务的唯一选择": "Better for exploring the limits of small models than for serving as the only choice for complex Chinese tasks"
+    ,"证明语言模型可以先学习通用知识，再迁移到不同任务，基础模型范式开始发芽。": "Showing that language models can learn general knowledge first and transfer it to different tasks, the foundation-model paradigm begins to sprout."
+    ,"长文本生成与零样本能力让行业开始相信，规模会带来新的智能能力。": "Long-form generation and zero-shot ability convince the industry that scale can unlock new forms of intelligence."
+    ,"Prompt 即可完成任务，催生提示工程、Agent 雏形和大模型创业潮。": "Prompts alone can complete tasks, giving rise to prompt engineering, early Agents, and a wave of model startups."
+    ,"模型从“会生成文字”变成“像助手一样交流”，两个月破亿用户。": "The model shifts from generating text to conversing like an assistant, reaching 100 million users in two months."
+    ,"行业标准从语言模型提升到通用智能模型，能力门槛被重新定义。": "The industry standard rises from language models to general intelligence models, redefining the capability threshold."
+    ,"以安全、长文本和企业应用为核心路线，成为 GPT 的重要竞争者。": "Safety, long context, and enterprise use become the core path, making it an important competitor to GPT."
+    ,"开源模型开始爆发，更多团队拥有训练和部署自己模型的可能。": "Open models begin to take off, giving more teams the ability to train and deploy their own models."
+    ,"把实时世界信息与社交网络接入模型，形成 AI + 社交的新分枝。": "Connecting real-time world information and social networks to the model creates a new AI-plus-social branch."
+    ,"从一开始就理解文字、图像、音频和视频，而非从文字模型后补能力。": "Understanding text, images, audio, and video from the start instead of adding those capabilities later to a text model."
+    ,"模型从 Chatbot 走向实时 AI 助手，交互开始自然地跨越语音、图片与视频。": "Models move from chatbots to real-time AI assistants, naturally crossing voice, images, and video."
+    ,"每次只激活约 21B 参数，证明高性能不必依赖暴力堆叠算力。": "Activating roughly 21B parameters at a time proves that high performance does not require brute-force compute."
+    ,"国产通用模型向企业服务和 Agent 能力延展。": "Chinese general-purpose models extend into enterprise services and Agent capabilities."
+    ,"训练效率与开源能力的突破，让全球重新关注中国大模型路线。": "Breakthroughs in training efficiency and openness put China's model strategy back in the global spotlight."
+    ,"模型从预测下一个 token，开始主动思考；开源推理模型进入主舞台。": "Models move beyond predicting the next token and begin to reason deliberately; open reasoning models take center stage."
+    ,"模型不只回答问题，也开始分析、调用工具并完成连续任务。": "Models do more than answer questions: they analyze, use tools, and complete multi-step tasks."
+    ,"长链路的软件工程任务成为重点，模型开始参与更完整的开发流程。": "Long-horizon software engineering becomes a focus, with models taking part in more complete development workflows."
+    ,"超长上下文与推理能力结合，进一步扩大复杂任务的可执行范围。": "Very long context and reasoning combine to expand the range of complex tasks models can execute."
+    ,"面向实际工作流，强调代码、科研辅助与更长程的任务执行。": "Focused on real workflows, code, research assistance, and longer-horizon task execution."
+    ,"把软件开发与企业流程作为长期 Agent 的核心场景。": "Making software development and enterprise processes core scenarios for long-running Agents."
+    ,"进一步聚焦复杂任务执行和跨模态理解。": "Further focusing on complex task execution and cross-modal understanding."
+    ,"沿着实时信息、社交生态与推理能力继续生长。": "Continuing to grow along real-time information, social ecosystems, and reasoning."
+    ,"返回作品": "Back to work"
+    ,"闭环": "Loop"
+    ,"个人工作流循环": "Personal workflow loop"
+    ,"学习": "Learning"
+    ,"解题": "Problem Solving"
+    ,"分享": "Sharing"
+    ,"算法、阅读、课程、项目研究": "Algorithms, reading, courses, and project research"
+    ,"完成 OJ 题目，整理思路与证明": "Complete OJ problems, then organize the reasoning and proof"
+    ,"C++、Python、Web 和工具实践": "C++, Python, Web, and tool practice"
+    ,"摄影、音乐、视频和个人表达": "Photography, music, video, and personal expression"
+    ,"GitHub、网站、题解与复盘": "GitHub, the site, solutions, and review"
+    ,"自动循环": "Auto loop"
+    ,"把兴趣连成一条路": "Connect interests into one path"
+    ,"不同方向并不是彼此分散的标签，而是同一套学习、实践、表达和归档系统": "These directions are not separate labels, but one system for learning, practice, expression, and archiving."
+    ,"技术学习": "Technical Learning"
+    ,"算法刷题": "Competitive Programming"
+    ,"项目开发": "Project Development"
+    ,"内容创作": "Content Creation"
+    ,"公开沉淀": "Public Archive"
+    ,"算法、阅读、课程、项目研究": "Algorithms, reading, courses, and project research"
+    ,"算法、阅读、课程、项目研究": "Algorithms, reading, courses, and project research"
+    ,"需求、实现、判断和沉淀共同组成一套个人开发工作体系": "Requirements, implementation, judgment, and archiving form one personal development system."
+    ,"一个想法、一个需求、一个问题，或学习与创作过程中突然出现的灵感": "An idea, a need, a problem, or a spark that appears while learning and creating"
+    ,"学习想法 · 项目需求 · 算法问题 · 创作灵感": "Learning ideas · Project needs · Algorithm problems · Creative sparks"
+    ,"GPT 需求分析": "GPT Requirements Analysis"
+    ,"通过多轮交流拆解目标、功能、场景和页面结构，整理成清晰的开发需求文档": "Use multiple rounds of conversation to break down goals, features, scenarios, and page structure into a clear development brief."
+    ,"产品分析 · 功能拆解 · 视觉规划": "Product analysis · Feature breakdown · Visual planning"
+    ,"Codex 工程实现": "Codex Engineering"
+    ,"读取项目结构，分析已有代码，完成 HTML、CSS、JavaScript 与组件开发，并运行测试": "Read the project structure, understand the existing code, build the HTML, CSS, JavaScript, and components, then run the tests."
+    ,"结构 · 样式 · 交互 · 文件管理": "Structure · Style · Interaction · File management"
+    ,"人工审美复核": "Human Visual Review"
+    ,"查看真实效果，调整页面比例、空间布局、动画节奏和内容表达，去掉模板化痕迹": "Review the real result, tune proportions, layout, motion, and language, and remove anything that feels templated."
+    ,"查看效果 → 提出意见 → GPT 整理 → Codex 优化": "Review → Give feedback → GPT organizes → Codex refines"
+    ,"GitHub 资产沉淀": "GitHub Asset Archive"
+    ,"把源代码、文档、算法题解、项目记录和学习笔记保存为长期可检索的技术资产": "Save source code, documents, algorithm notes, project records, and study notes as searchable technical assets."
+    ,"代码 · 文档 · 题解 · 笔记": "Code · Documents · Solutions · Notes"
+    ,"个人网站展示": "Personal Website Showcase"
+    ,"将项目作品、算法题解、摄影作品、博客文章和技术记录公开展示，形成个人表达": "Publish projects, algorithm notes, photography, blog posts, and technical records as a public form of personal expression."
+    ,"GitHub → 网站 → 个人品牌": "GitHub → Website → Personal identity"
+    ,"需求设计": "Requirements & Design"
+    ,"代码实现": "Implementation"
+    ,"人工复核": "Human Review"
+    ,"资产沉淀": "Asset Archive"
+    ,"一道题，": "One problem,"
+    ,"一份可复用的答案": "one reusable answer"
+    ,"刷题不只留下通过记录，也留下能够帮助未来自己的解释": "Problem solving should leave more than an accepted result; it should leave an explanation that helps future me."
+    ,"理解代码与思路": "Understand the code and reasoning"
+    ,"边界 · 证明 · 复杂度": "Edge cases · Proof · Complexity"
+    ,"生成题解 Markdown": "Generate solution Markdown"
+    ,"题意 · 算法 · 代码解析": "Problem · Algorithm · Code walkthrough"
+    ,"分类并提交 GitHub": "Classify and submit to GitHub"
+    ,"索引 · 版本 · 仓库": "Index · Version · Repository"
+    ,"网站同步展示": "Sync to the website"
+    ,"阅读 · 复盘 · 再利用": "Read · Review · Reuse"
+    ,"让每一次刷题，都为下一次学习节省时间": "Let every solved problem save time for the next lesson."
+    ,"项目开发和内容创作是把知识变成作品的两种方式": "Project development and content creation are two ways to turn knowledge into work."
+    ,"工作方向": "Work Directions"
+    ,"实现": "Build"
+    ,"表达": "Express"
+    ,"需求": "Requirements"
+    ,"测试": "Testing"
+    ,"部署": "Deployment"
+    ,"迭代": "Iteration"
+    ,"把观察变成": "Turn observation into"
+    ,"可以分享的作品": "work worth sharing"
+    ,"选题 → 拍摄 / 录制 → 剪辑 → 发布 → 归档": "Choose a topic → Shoot / record → Edit → Publish → Archive"
+    ,"视频": "Video"
+    ,"工具负责提速，": "Tools handle the speed,"
+    ,"我负责方向": "I set the direction"
+    ,"AI 是工作流中的工具，不是工作流的主角": "AI is a tool in the workflow, not the protagonist."
+    ,"数字资产": "Digital Assets"
+    ,"根目录": "Root"
+    ,"算法\n题解": "Algorithms\nSolutions"
+    ,"项目记录": "Project Records"
+    ,"学习笔记\n知识库": "Study Notes\nKnowledge Base"
+    ,"创作\n作品": "Creative Work\nPortfolio"
+    ,"下一轮继续学习、继续做、继续分享，工作流的终点，只是下一次输入的起点": "The next round starts with more learning, making, and sharing. The end of the workflow is only the beginning of the next input."
+    ,"查看 Web 项目开发旅程 ↗": "View the Web project journey ↗"
+    ,"北风": "Northwind"
+    ,"↓ 向下滚动": "↓ Scroll down"
+    ,"计算机科学与技术": "Computer Science"
+    ,"Web 开发": "Web Development"
+    ,"Web 项目": "Web Projects"
+    ,"QQ音乐": "QQ Music"
+    ,"网易云音乐": "NetEase Cloud Music"
+    ,"切换另一组歌单": "Switch playlist"
+    ,"关闭播放方式选择": "Close playback options"
+    ,"打开当前歌曲": "Open current song"
+    ,"打开 QQ音乐": "Open QQ Music"
+    ,"打开 网易云音乐": "Open NetEase Cloud Music"
+    ,"通过 GitHub 公开渠道联系": "Reach out through GitHub"
+    ,"现场笔记 / 2025": "Field Notes / 2025"
+    ,"6 张照片 / 02 个地点": "6 photos / 02 locations"
+    ,"向下浏览": "Browse downward"
+    ,"胶片索引 / 01—06": "Film Index / 01—06"
+    ,"不急着解释一张照片，让花、云、雪线和城市自己说话，像一卷还没有冲洗完的胶片": "There is no need to explain a photograph too quickly. Let flowers, clouds, snow lines, and cities speak for themselves, like a roll of film not yet developed."
+    ,"6 张照片 · 2025": "6 photos · 2025"
+    ,"返回": "Back"
+    ,"返回作品展示": "Back to selected work"
+    ,"题解仓库": "Solution repository"
+    ,"题目": "Problems"
+    ,"平台": "Platform"
+    ,"最近更新": "Last updated"
+    ,"DLUOJ 题集": "DLUOJ problem set"
+    ,"Luogu 题集": "Luogu problem set"
+    ,"面试与数据结构": "Interviews & data structures"
+    ,"竞赛编程": "Competitive programming"
+    ,"暂时还没有题解~": "No solution notes yet~"
+    ,"打开 DLUOJ 文件夹": "Open DLUOJ folder"
+    ,"打开 Luogu 文件夹": "Open Luogu folder"
+    ,"打开 LeetCode 文件夹": "Open LeetCode folder"
+    ,"打开 Codeforces 文件夹": "Open Codeforces folder"
+    ,"个人开发工作流系统": "Personal Development Workflow"
+    ,"01 / 学习": "01 / Learning"
+    ,"02 / 解题": "02 / Problem Solving"
+    ,"03 / 开发": "03 / Development"
+    ,"04 / 创作": "04 / Creative Work"
+    ,"05 / 分享": "05 / Sharing"
+    ,"01 / 工作闭环": "01 / Workflow Loop"
+    ,"02 / 核心流程": "02 / Core Process"
+    ,"03 / 算法题解流程": "03 / Algorithm Notes Workflow"
+    ,"04 / 工作方向": "04 / Work Directions"
+    ,"05 / 开发辅助": "05 / Development Support"
+    ,"06 / 数字资产": "06 / Digital Assets"
+    ,"07 / 持续迭代": "07 / Continuous Iteration"
+    ,"代码、题解、项目、笔记、照片和音乐，组成一个会持续增长的个人资产库": "Code, solutions, projects, notes, photos, and music form a personal asset library that keeps growing."
+    ,"完成 OJ 题目": "Complete OJ problems"
+    ,"洛谷 · 力扣 · Codeforces · 牛客": "Luogu · LeetCode · Codeforces · Nowcoder"
+    ,"需求": "Requirements"
+    ,"AI Lab - 本地大模型部署、模型研究与 AI 发展记录": "AI Lab - Local model deployment, model research, and notes on AI's evolution"
+    ,"实验状态": "Experiment status"
+    ,"部署流程概览": "Deployment overview"
+    ,"量化": "Quantization"
+    ,"硬件": "Hardware"
+    ,"桌面应用": "Desktop app"
+    ,"内存": "Memory"
+    ,"上下文": "Context"
+    ,"上一步": "Previous"
+    ,"继续": "Continue"
+    ,"重新开始指南": "Restart guide"
+    ,"我的模型": "My Models"
+    ,"模型": "Model"
+    ,"优势": "Strengths"
+    ,"限制": "Limitations"
+    ,"适合": "Best for"
+    ,"硬件配置": "Hardware setup"
+    ,"边界": "Limits"
+    ,"模型规模探索": "Model scale explorer"
+    ,"模型格式": "Model formats"
+    ,"格式": "Format"
+    ,"AI 演进": "AI Evolution"
+    ,"未来探索": "Future Directions"
+    ,"状态": "Status"
+    ,"中文": "Chinese"
+    ,"英文": "English"
+    ,"打开菜单": "Open menu"
+    ,"关闭菜单": "Close menu"
+    ,"开启声音": "Turn sound on"
+    ,"关闭声音": "Turn sound off"
+    ,"算法": "Algorithm"
+    ,"摄影": "Photography"
+    ,"音乐": "Music"
+    ,"创作": "Creative"
+    ,"设计": "Design"
+    ,"作品": "Work"
+    ,"项目": "Project"
+    ,"代码": "Code"
+    ,"开发": "Development"
+    ,"学习": "Learning"
+    ,"网页开发": "Web Development"
+    ,"视频剪辑": "Video Editing"
+    ,"题解": "Solutions"
+    ,"查看项目": "View project"
+    ,"胶卷末尾": "End of roll"
+    ,"关闭": "Close"
+    ,"上一张": "Previous photo"
+    ,"下一张": "Next photo"
+    ,"在 GitHub 打开题解仓库": "Open the solution repository on GitHub"
+    ,"在 GitHub 打开作者主页": "Open the author's GitHub profile"
+    ,"在 GitHub 打开 Northwind 作者主页": "Open the Northwind author's GitHub profile"
+    ,"BeifengFlying 的算法题解": "Algorithm notes by BeifengFlying"
+    ,"搜索题解": "Search notes"
+    ,"题解统计": "Solution statistics"
+    ,"题解筛选": "Filter solutions"
+    ,"打开当前歌曲": "Open current song"
+    ,"打开 QQ音乐": "Open QQ Music"
+    ,"打开 网易云音乐": "Open NetEase Cloud Music"
+    ,"平凡之路专辑封面": "The Ordinary Road album cover"
+    ,"打开 App": "Open app"
+    ,"学习笔记": "Study Notes"
+    ,"知识库": "Knowledge Base"
+    ,"运行环境": "Runtime"
+    ,"就绪": "Ready"
+    ,"LM Studio 提供了一个可视化本地大模型运行环境，降低模型部署门槛，先确认硬件、运行时和模型格式，再开始下载，后面排查问题会轻松很多": "LM Studio provides a visual environment for running local large language models. Confirm your hardware, runtime, and model format before downloading; troubleshooting is much easier afterward."
+    ,"M 系列芯片采用统一内存架构，CPU 和 GPU 共享内存，适合运行 MLX 以及量化后的 GGUF 模型": "M-series chips use unified memory shared by the CPU and GPU, making them a good fit for MLX and quantized GGUF models."
+    ,"CUDA 生态成熟，但显存容量成为限制模型规模的重要因素，小模型和明确的 GPU Offload 策略更重要": "CUDA is mature, but VRAM capacity limits model size. Smaller models and a deliberate GPU offload strategy matter more."
+    ,"部分 32B 量化模型": "Some 32B quantized models"
+    ,"7B 模型": "7B models"
+    ,"部分 14B 量化模型": "Some 14B quantized models"
+    ,"速度、质量和硬件要求之间比较容易取得平衡，适合先验证一条本地工作流": "A practical balance of speed, quality, and hardware requirements; a good way to validate a local workflow first"
+    ,"格式是部署体验的一部分，它不决定模型聪不聪明，却会改变模型如何使用你的硬件": "Format is part of the deployment experience. It does not decide how smart a model is, but it changes how the model uses your hardware."
+    ,"把长文理解和中文场景带到大众视野，形成面向真实阅读任务的分枝。": "Bringing long-context understanding and Chinese use cases into the mainstream, creating a branch for real reading tasks."
+    ,"国产通用模型向企业服务和 Agent 能力延展。": "Chinese general-purpose models extend into enterprise services and Agent capabilities."
+    ,"兼顾中文能力、开源生态和商业部署，成为重要的国产开源分枝。": "Balancing Chinese capability, open-source ecosystems, and commercial deployment, it becomes an important open branch from China."
+    ,"实时互联网 / X": "Real-time web / X"
+    ,"原生多模态": "Native multimodality"
+    ,"推理 / 图像 / 编程": "Reasoning / Images / Coding"
+    ,"实时语音视觉": "Real-time voice and vision"
+    ,"超长上下文 / 中文长文": "Very long context / Chinese long-form text"
+    ,"中文 / 企业 / Agent": "Chinese / Enterprise / Agent"
+    ,"多尺寸 / 商业部署": "Multiple sizes / Commercial deployment"
+    ,"MoE 优化 / 训练效率": "MoE optimization / Training efficiency"
+    ,"GRPO / 推理强化学习": "GRPO / Reinforcement learning for reasoning"
+    ,"推理 / 工具调用 / Agent": "Reasoning / Tool use / Agents"
+    ,"代码 Agent": "Code Agents"
+    ,"长上下文 / 推理 / Agent": "Long context / Reasoning / Agents"
+    ,"实时数据 / 数学推理": "Real-time data / Mathematical reasoning"
+    ,"大规模训练与实时世界数据结合，继续探索推理的上限。": "Combining large-scale training with real-time world data to keep exploring the limits of reasoning."
+    ,"2018 - 2020 训练一个大脑": "2018 - 2020 Train a Brain"
+    ,"2022 让大众使用 AI": "2022 Put AI in Everyone's Hands"
+    ,"2023 能力开始分枝": "2023 Capabilities Branch Out"
+    ,"2024 树冠快速展开": "2024 The Canopy Expands"
+    ,"2025 模型学会思考": "2025 Models Learn to Reason"
+    ,"2026 枝叶指向行动": "2026 Branches Point to Action"
+    ,"Transformer 预训练时代": "The Transformer pretraining era"
+    ,"多模态 / 开源 / 安全": "Multimodality / Open Source / Safety"
+    ,"推理 / 工具调用 / 代码 Agent": "Reasoning / Tool use / Code Agents"
+    ,"长任务 / 多模态 / Agent": "Long tasks / Multimodality / Agents"
+    ,"智谱 AI": "Zhipu AI"
+    ,"阿里通义千问": "Alibaba Qwen"
+    ,"企业": "Enterprise"
+    ,"生态": "Ecosystem"
+    ,"多尺寸": "Multiple sizes"
+    ,"商业部署": "Commercial deployment"
+    ,"统一内存架构": "Unified memory architecture"
+    ,"我的": "My"
+    ,"OpenAI o3 / GPT-5 系列": "OpenAI o3 / GPT-5 Series"
+    ,"Agentic Coding / 长任务": "Agentic Coding / Long-horizon tasks"
+    ,"长时间 Agent / 企业工作流": "Long-running Agents / Enterprise workflows"
+    ,"Agent / 多模态理解": "Agents / Multimodal understanding"
+    ,"MoE / 推理效率 / 开源": "MoE / Inference efficiency / Open Source"
+    ,"多模态 / 企业应用": "Multimodality / Enterprise applications"
+    ,"实时世界模型 / X 生态": "Real-time world models / X ecosystem"
+    ,"V2、V3、R1 到 V4 的技术路线，持续强化高效推理和开源生态。": "From V2, V3, and R1 to V4, the line keeps strengthening efficient inference and open ecosystems."
+    ,"从中文模型走向全球开源生态竞争者，面向企业级任务执行。": "Moving from a Chinese-language model to a global open-source contender for enterprise tasks."
+    ,"将长任务软件开发作为 Agent 能力的关键落点。": "Making long-horizon software development a key destination for Agent capabilities."
+    ,"围绕长上下文、推理与企业应用继续扩展。": "Continuing to expand around long context, reasoning, and enterprise applications."
+    ,"从回答问题，走向完成任务": "From answering questions to completing tasks"
+    ,"继续把": "Keep"
+    ,"Agent Coding / 长任务": "Agent Coding / Long-horizon tasks"
+    ,"百万级上下文 / 推理": "Million-token context / Reasoning"
+  }
+}
