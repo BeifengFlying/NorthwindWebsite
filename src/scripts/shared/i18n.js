@@ -43,6 +43,7 @@
     var parent = node.parentElement;
     if (!parent || parent.closest('script, style, svg')) return;
     if (parent.closest('[data-i18n]')) return;
+    if (parent.closest('.path-bilingual')) return;
     if (parent.closest('.music-song-name, .music-song-artist, .music-song-album, .option-wheel')) return;
     var original = node.nodeValue;
     var clean = sourceText(original);

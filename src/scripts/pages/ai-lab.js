@@ -2,6 +2,21 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 document.body.classList.add('motion-ready');
 
+const labSky = $('.lab-sky');
+if (labSky && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let skyFrame = 0;
+  const updateLabSky = () => {
+    skyFrame = 0;
+    const shift = Math.max(-28, Math.min(28, window.scrollY * 0.02));
+    labSky.style.setProperty('--lab-shift', `${shift.toFixed(2)}px`);
+  };
+  const scheduleLabSky = () => {
+    if (!skyFrame) skyFrame = window.requestAnimationFrame(updateLabSky);
+  };
+  window.addEventListener('scroll', scheduleLabSky, { passive: true });
+  updateLabSky();
+}
+
 let revealObserver;
 
 function setupRevealAnimations() {
