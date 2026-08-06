@@ -50,6 +50,7 @@
     var groups = [
       { selector: '.hero-title-line, .hero-subtitle, .hero-scroll-hint', heading: '.hero-title-line' },
       { selector: '#about .sec-label, #about .about-title, #about .about-identity, #about .about-module', heading: '.about-title' },
+      { selector: '#path .sec-label, #path .path-title, #path .path-bilingual-row, #path .path-route-note', heading: '.path-title' },
       { selector: '#music .sec-label, #music .music-heading, #music .music-group-toggle, #music .music-cover-col, #music .music-links-col, #music .music-wheel-col', heading: '.music-heading', image: '.music-cover-col' },
       { selector: '#explore .sec-label, #explore .explore-title, #explore .explore-card', heading: '.explore-title' },
       { selector: '#projects .sec-label, #projects .projects-title', heading: '.projects-title' },

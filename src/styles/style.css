@@ -620,6 +620,227 @@ body.language-switching footer { opacity: .18; }
 }
 
 
+/* --------------------------------
+   THE PATH BENEATH OUR FEET
+   -------------------------------- */
+.path-section {
+  min-height: 0;
+  padding: 112px 0 140px;
+  overflow: hidden;
+  isolation: isolate;
+  background: transparent;
+  color: var(--ink);
+}
+
+.path-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.path-sky::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .28;
+  background-image: radial-gradient(circle at 18% 26%, rgba(17,17,17,.18) 0 1px, transparent 1.5px), radial-gradient(circle at 76% 18%, rgba(17,17,17,.12) 0 1px, transparent 1.5px), radial-gradient(circle at 65% 72%, rgba(77,131,255,.22) 0 1px, transparent 1.5px);
+  background-size: 180px 160px, 230px 210px, 280px 260px;
+}
+
+.path-star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--orange);
+  opacity: .5;
+  transition: transform 1s var(--ease-out);
+}
+
+.path-star--one { top: 22%; left: 12%; }
+.path-star--two { top: 31%; left: 81%; width: 2px; height: 2px; opacity: .48; }
+.path-star--three { top: 64%; left: 17%; width: 2px; height: 2px; opacity: .5; }
+.path-star--four { top: 16%; left: 54%; width: 2px; height: 2px; background: var(--blue); opacity: .58; }
+.path-star--five { top: 70%; left: 86%; }
+.path-star--six { top: 78%; left: 42%; width: 2px; height: 2px; background: var(--ink); opacity: .3; }
+
+.path-heading,
+.path-copy,
+.path-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.path-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+}
+
+.path-section .sec-label {
+  margin-bottom: 0;
+  color: currentColor;
+}
+
+.path-copy {
+  display: grid;
+  grid-template-columns: minmax(390px, .9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: clamp(28px, 3.5vw, 54px);
+  margin-top: 58px;
+}
+
+.path-title {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(68px, 7.25vw, 118px);
+  font-weight: 900;
+  line-height: .88;
+  letter-spacing: -.055em;
+}
+
+.path-title span {
+  display: block;
+  white-space: nowrap;
+}
+
+.path-title span:nth-child(2) { margin-left: .10em; }
+.path-title span:nth-child(3) {
+  margin-left: -.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ink);
+  text-stroke: 1.5px var(--ink);
+}
+.path-title span:nth-child(4) { margin-left: .08em; }
+
+.path-title-block {
+  position: relative;
+  padding-top: clamp(18px, 2.5vw, 36px);
+}
+
+.path-title-block::after {
+  content: '02';
+  position: absolute;
+  top: -22px;
+  right: -10px;
+  z-index: 0;
+  color: rgba(17,17,17,.045);
+  font: 900 clamp(160px, 20vw, 300px)/.8 'Inter', sans-serif;
+  letter-spacing: -.12em;
+  pointer-events: none;
+}
+
+.path-title-block::before {
+  content: 'FIELD NOTE / 02';
+  display: block;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font: 11px/1 var(--font-mono-accessible, monospace);
+  letter-spacing: .16em;
+}
+
+.path-rule {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0 0 34px;
+}
+
+.path-rule::before,
+.path-rule::after {
+  content: '';
+  width: 64px;
+  height: 1px;
+  background: var(--orange);
+}
+
+.path-rule::after {
+  flex: 1;
+  width: auto;
+  background: var(--line);
+}
+
+.path-rule span {
+  width: 6px;
+  height: 6px;
+  margin: 0 14px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 5px rgba(255,138,61,.10);
+}
+
+.path-bilingual {
+  display: grid;
+  gap: 24px;
+  padding-left: 44px;
+  counter-reset: path-line;
+}
+
+.path-bilingual-row {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  counter-increment: path-line;
+}
+
+.path-bilingual-row::before {
+  content: counter(path-line, decimal-leading-zero);
+  position: absolute;
+  top: 7px;
+  left: -44px;
+  width: 30px;
+  color: var(--orange);
+  font: 11px/1 var(--font-mono-accessible, monospace);
+  letter-spacing: .08em;
+}
+
+.path-bilingual-row:nth-child(2) { margin-left: clamp(18px, 3vw, 52px); }
+.path-bilingual-row:nth-child(3) { margin-left: clamp(5px, 1vw, 18px); }
+.path-bilingual-row:nth-child(4) { margin-left: clamp(28px, 4.5vw, 78px); }
+
+.path-line {
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', 'Iowan Old Style', 'Times New Roman', serif;
+  font-size: clamp(25px, 2.35vw, 34px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: .01em;
+}
+
+.path-line-zh {
+  color: var(--muted);
+  font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+  font-size: 14px;
+  line-height: 1.8;
+  letter-spacing: .06em;
+}
+
+.path-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  margin-top: 72px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.path-footer i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--orange);
+  opacity: .8;
+}
+
+
 
 /* ---- Pixel bars ---- */
 .about-panel-bars {
@@ -1362,6 +1583,24 @@ body.language-switching footer { opacity: .18; }
   .about { min-height: auto; padding: 88px 0; }
   .about-title { font-size: 14vw; }
   .about-module-pair { grid-template-columns: 1fr; row-gap: 28px; }
+
+  .path-section { min-height: 690px; padding: 100px 0 90px; }
+  .path-copy { display: block; margin-top: 72px; }
+  .path-title-block { padding-top: 0; }
+  .path-title-block::after { display: none; }
+  .path-title { font-size: clamp(54px, 16vw, 84px); }
+  .path-reading { margin-top: 64px; }
+  .path-rule { margin-bottom: 40px; }
+  .path-rule::before { width: 38px; }
+  .path-rule span { margin-inline: 11px; }
+  .path-bilingual { gap: 22px; padding-left: 36px; }
+  .path-bilingual-row::before { left: -36px; }
+  .path-bilingual-row:nth-child(2),
+  .path-bilingual-row:nth-child(3),
+  .path-bilingual-row:nth-child(4) { margin-left: 0; }
+  .path-line { font-size: clamp(23px, 6.4vw, 28px); line-height: 1.12; }
+  .path-line-zh { font-size: 13px; line-height: 1.85; }
+  .path-footer { gap: 9px; margin-top: 68px; font-size: 10px; letter-spacing: .12em; }
 
   .explore { padding: 88px 0; }
   .explore-header { margin-bottom: 48px; }

@@ -26,6 +26,32 @@ button, input { color: inherit; font: inherit; }
 button { border: 0; }
 
 .grid-field { display: none; }
+.lab-sky { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.lab-sky::before { position: absolute; inset: 0; opacity: .42; background-image: radial-gradient(circle at 18% 26%, rgba(201,239,84,.24) 0 1px, transparent 1.5px), radial-gradient(circle at 76% 18%, rgba(241,238,229,.18) 0 1px, transparent 1.5px), radial-gradient(circle at 65% 72%, rgba(95,228,208,.16) 0 1px, transparent 1.5px); background-size: 180px 160px, 230px 210px, 280px 260px; content: ''; animation: lab-star-drift 86s linear infinite; will-change: background-position; }
+.lab-sky::after { position: absolute; left: 50%; bottom: -220px; width: min(760px, 90vw); height: 330px; transform: translate3d(-50%, var(--lab-shift, 0px), 0); border-top: 1px solid rgba(241,238,229,.14); border-radius: 50%; box-shadow: 0 -18px 0 -17px rgba(241,238,229,.11), 0 -42px 0 -41px rgba(241,238,229,.08), 0 -76px 0 -75px rgba(241,238,229,.05); content: ''; animation: lab-horizon-sweep 18s ease-in-out infinite alternate; will-change: transform; }
+.lab-star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--acid); opacity: .7; animation: lab-star-float 12s ease-in-out infinite alternate; will-change: transform, opacity; }
+.lab-star--one { top: 22%; left: 12%; }
+.lab-star--two { top: 31%; left: 81%; width: 2px; height: 2px; opacity: .48; }
+.lab-star--three { top: 64%; left: 17%; width: 2px; height: 2px; opacity: .5; }
+.lab-star--four { top: 16%; left: 54%; width: 2px; height: 2px; background: var(--cyan); opacity: .58; }
+.lab-star--five { top: 70%; left: 86%; }
+.lab-star--six { top: 78%; left: 42%; width: 2px; height: 2px; background: var(--ink); opacity: .4; }
+.lab-star--seven { top: 42%; left: 34%; width: 2px; height: 2px; background: var(--cyan); opacity: .46; animation-delay: -7s; }
+.lab-star--eight { top: 56%; left: 72%; width: 2px; height: 2px; opacity: .45; animation-delay: -3s; }
+.lab-star--nine { top: 84%; left: 58%; width: 2px; height: 2px; background: var(--orange); opacity: .52; animation-delay: -9s; }
+.lab-star--one { animation-delay: -5s; }
+.lab-star--two { animation-delay: -2s; }
+.lab-star--three { animation-delay: -8s; }
+.lab-star--four { animation-delay: -10s; }
+.lab-star--five { animation-delay: -1s; }
+.lab-star--six { animation-delay: -6s; }
+.lab-route { position: absolute; top: 28%; left: 50%; width: min(720px, 74vw); height: 155%; transform: translate3d(-50%, var(--lab-shift, 0px), 0) rotate(-8deg); transform-origin: 50% 0; border-left: 1px solid rgba(201,239,84,.34); border-radius: 50%; opacity: .7; animation: lab-route-sway 24s ease-in-out infinite alternate; will-change: margin-left; }
+.lab-route::after { position: absolute; inset: 0 0 0 34px; border-left: 1px solid rgba(95,228,208,.14); border-radius: 50%; content: ''; }
+.lab-horizon { position: absolute; bottom: 112px; left: 50%; width: min(960px, 110vw); height: 1px; transform: translate3d(-50%, var(--lab-shift, 0px), 0); background: rgba(241,238,229,.15); animation: lab-horizon-sweep 18s ease-in-out infinite alternate-reverse; will-change: transform; }
+@keyframes lab-star-drift { from { background-position: 0 0, 0 0, 0 0; } to { background-position: 180px 160px, -230px 210px, 280px -260px; } }
+@keyframes lab-star-float { from { transform: translate3d(-6px, 5px, 0) scale(.8); opacity: .28; } to { transform: translate3d(7px, -8px, 0) scale(1.25); opacity: .82; } }
+@keyframes lab-route-sway { from { margin-left: -12px; } to { margin-left: 14px; } }
+@keyframes lab-horizon-sweep { from { margin-left: -14px; transform: translate3d(-50%, var(--lab-shift, 0px), 0) scaleX(.96); } to { margin-left: 14px; transform: translate3d(-50%, var(--lab-shift, 0px), 0) scaleX(1.04); } }
 .page-width { position: relative; z-index: 1; width: min(var(--content), calc(100vw - 2 * var(--gutter))); margin-inline: auto; }
 
 body.motion-ready .reveal-on-scroll { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: var(--reveal-delay, 0ms); }
@@ -278,6 +304,8 @@ input[type="range"] { width: 100%; height: 3px; accent-color: var(--acid); curso
   .tree-leaf-heading strong { font-size: 20px; }
   .future-layout h2 { margin-bottom: 34px; }
   .lab-footer { display: block; line-height: 2; }
+  .lab-route { top: 23%; left: 76%; width: 112vw; }
+  .lab-horizon { bottom: 86px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
