@@ -23,6 +23,7 @@ import { animate, createTimeline } from 'animejs';
   ].join(',');
   const observed = new WeakSet();
   let observer;
+  let textFadeObserver;
 
   const isHeading = (element) => element.matches(headingSelector) || element.classList.contains('hero-title-line');
   const isImage = (element) => element.matches('img, .photo-hero-media, .photo-card, .music-cover-col, .card-swap-stage');
@@ -51,16 +52,16 @@ import { animate, createTimeline } from 'animejs';
       '#music .music-heading, #music .music-cover-col',
       '#explore .explore-title, #explore .explore-card, #explore .explore-card-title',
       '#projects .projects-title',
-      '#creative .creative-title, #creative .creative-subtitle-line',
-      '#now .now-title',
       '#music .music-song-name',
       '#contact .cta-title'
     ].forEach((selector) => scope.querySelectorAll(selector).forEach((element, index) => addReveal(element, undefined, Math.min(index * (compactViewport ? 46 : 74), compactViewport ? 160 : 400))));
 
     [
-      '#creative .creative-desc p, #creative .creative-tags',
-      '#now .now-item-title, #now .now-item-desc'
-    ].forEach((selector) => scope.querySelectorAll(selector).forEach((element) => addReveal(element, 'text-fade')));
+      '#creative .sec-label, #creative .creative-title, #creative .creative-subtitle-line, #creative .creative-desc p, #creative .creative-tags',
+      '#now .sec-label, #now .now-title, #now .now-item'
+    ].forEach((selector) => scope.querySelectorAll(selector).forEach((element, index) => {
+      addReveal(element, 'text-fade', Math.min(index * (compactViewport ? 50 : 80), compactViewport ? 150 : 480));
+    }));
   }
 
   function register(scope = document) {
@@ -212,6 +213,10 @@ import { animate, createTimeline } from 'animejs';
     if (observed.has(element)) return;
     observed.add(element);
     if (reducedMotion || !observer) { reveal(element); return; }
+    if (element.getAttribute('data-motion-reveal') === 'text-fade') {
+      textFadeObserver.observe(element);
+      return;
+    }
     observer.observe(element);
   }
 
@@ -229,6 +234,12 @@ import { animate, createTimeline } from 'animejs';
       // Prewarm the next section so a quick wheel/trackpad gesture does not
       // outrun the heading's first frame.
       rootMargin: document.body.classList.contains('home-section-motion') ? '0px 0px 12% 0px' : '0px 0px -4% 0px'
+    }) : null;
+    textFadeObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => entries.forEach((entry) => {
+      entry.target.classList.toggle('is-motion-visible', entry.isIntersecting);
+    }), {
+      threshold: .35,
+      rootMargin: '-6% 0px -12% 0px'
     }) : null;
     document.querySelectorAll('[data-motion-reveal]').forEach(observe);
     setupHeroScrollStretch();

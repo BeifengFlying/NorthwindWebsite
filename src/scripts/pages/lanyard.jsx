@@ -7,11 +7,11 @@ import StickerPeel from '../../components/StickerPeel/StickerPeel.jsx';
 const mount = document.getElementById('lanyardRoot');
 const stickerLayer = document.getElementById('homeStickerLayer');
 const QR_IMAGE = 'assets/images/github-qr.svg';
-const FLOATING_CARD_BACK = '/assets/images/flying-card-back-clean.svg';
-const BACK_STICKER = '/assets/images/flying-wordmark-sticker.svg';
+const FLOATING_CARD_BACK = '/assets/images/flying-card-back.svg';
 const CARD_EDGE_LAYERS = [-2.6, -1.95, -1.3, -0.65, 0, 0.65, 1.3, 1.95, 2.6];
 const DESKTOP_TIP_STORAGE_KEY = 'northwind-desktop-tip-dismissed';
 const DESKTOP_TIP_SESSION_KEY = 'northwind-desktop-tip-seen';
+const STICKER_POSITION_STORAGE_KEY = 'northwind-home-sticker-position';
 
 function syncStickerLayerHeight() {
   if (!stickerLayer) return;
@@ -24,13 +24,40 @@ syncStickerLayerHeight();
 
 function initialStickerPosition() {
   if (typeof window === 'undefined') return { x: 0, y: 0 };
+
+  let stored = null;
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(STICKER_POSITION_STORAGE_KEY) || 'null');
+    if (parsed && Number.isFinite(parsed.x) && Number.isFinite(parsed.y)) stored = parsed;
+  } catch (error) {}
+
+  const maxX = Math.max(24, window.innerWidth - 150);
+  const contentHeight = Math.max(document.body?.scrollHeight || 0, window.innerHeight);
+  const maxY = Math.max(window.scrollY + 24, contentHeight - 150);
+  if (stored) {
+    return {
+      x: Math.min(maxX, Math.max(24, stored.x)),
+      y: Math.min(maxY, Math.max(24, stored.y))
+    };
+  }
+
   return {
     x: Math.max(24, window.innerWidth - 190),
     y: window.scrollY + Math.max(240, window.innerHeight - 190)
   };
 }
 
-function FloatingProfileCard({ frontImage, locale, stickerDetached, onStickerDetach, onClose, variant = 'default', peelableSticker = true }) {
+function saveStickerPosition(position) {
+  if (!position || !Number.isFinite(position.x) || !Number.isFinite(position.y)) return;
+  try {
+    window.localStorage.setItem(STICKER_POSITION_STORAGE_KEY, JSON.stringify({
+      x: Math.round(position.x),
+      y: Math.round(position.y)
+    }));
+  } catch (error) {}
+}
+
+function FloatingProfileCard({ frontImage, locale, onClose, variant = 'default' }) {
   const [rotation, setRotation] = useState({ x: -3, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef(null);
@@ -106,26 +133,6 @@ function FloatingProfileCard({ frontImage, locale, stickerDetached, onStickerDet
         </div>
         <div className="profile-card-3d__face profile-card-3d__face--back">
           <img src={FLOATING_CARD_BACK} alt="北风个人资料卡背面" draggable="false" />
-          {!stickerDetached && peelableSticker && (
-            <StickerPeel
-              className="profile-card-back-sticker"
-              imageSrc={BACK_STICKER}
-              width="74%"
-              rotate={0}
-              peelBackHoverPct={24}
-              peelBackActivePct={56}
-              shadowIntensity={0.36}
-              lightingIntensity={0.06}
-              bounds={false}
-              stopPropagation
-              onDragRelease={sticker => {
-                if (sticker.distance > 18) onStickerDetach(sticker);
-              }}
-            />
-          )}
-          {!stickerDetached && !peelableSticker && (
-            <img className="profile-card-back-sticker profile-card-back-sticker--static" src={BACK_STICKER} alt="" draggable="false" />
-          )}
         </div>
         {CARD_EDGE_LAYERS.map(layer => (
           <div
@@ -144,7 +151,6 @@ function LanyardShowcase() {
   const [expanded, setExpanded] = useState(false);
   const [showDesktopTip, setShowDesktopTip] = useState(false);
   const [dontRemind, setDontRemind] = useState(false);
-  const [detachedBackSticker, setDetachedBackSticker] = useState(null);
   const [locale, setLocale] = useState(() => window.NorthwindI18n?.getLocale?.() || (document.documentElement.lang.startsWith('en') ? 'en' : 'zh'));
   const stickerPosition = useMemo(initialStickerPosition, []);
   const frontImage = locale === 'en' ? '/assets/images/flying-card-front-en.svg' : '/assets/images/flying-card-front.svg';
@@ -213,7 +219,7 @@ function LanyardShowcase() {
     <>
       <div className="lanyard-scene">
         <Lanyard
-          position={[0, 0, 14]}
+          position={[-3, 0, 12]}
           gravity={[0, -40, 0]}
           frontImage={frontImage}
           backImage="/assets/images/flying-card-back.svg"
@@ -223,8 +229,8 @@ function LanyardShowcase() {
           onCardDoubleClick={() => setExpanded(true)}
         />
         <div className="lanyard-scene__hint" role="note">
-          <span>{locale === 'en' ? 'DRAG CARD' : '拖动卡片'}</span>
-          <span>{locale === 'en' ? 'DOUBLE-CLICK TO ENLARGE' : '双击查看大图'}</span>
+          <span>{locale === 'en' ? 'DOUBLE-CLICK / DRAG' : '双击 / 拖拽'}</span>
+          <span>{locale === 'en' ? 'PROFILE CARD' : '资料卡'}</span>
         </div>
       </div>
       {stickerLayer && createPortal(
@@ -239,31 +245,15 @@ function LanyardShowcase() {
             lightingIntensity={0.1}
             initialPosition={stickerPosition}
             bounds={stickerLayer}
+            onDragRelease={saveStickerPosition}
           />
         </div>,
-        stickerLayer
-      )}
-      {detachedBackSticker && stickerLayer && createPortal(
-        <StickerPeel
-          className="detached-back-sticker"
-          imageSrc={BACK_STICKER}
-          width={detachedBackSticker.width}
-          rotate={0}
-          peelBackHoverPct={20}
-          peelBackActivePct={45}
-          shadowIntensity={0.46}
-          lightingIntensity={0.06}
-          initialPosition={{ x: detachedBackSticker.x, y: detachedBackSticker.y }}
-          bounds={stickerLayer}
-        />,
         stickerLayer
       )}
       {expanded && createPortal(
         <FloatingProfileCard
           frontImage={frontImage}
           locale={locale}
-          stickerDetached={Boolean(detachedBackSticker)}
-          onStickerDetach={setDetachedBackSticker}
           onClose={() => setExpanded(false)}
         />,
         document.body
@@ -276,11 +266,8 @@ function LanyardShowcase() {
               <FloatingProfileCard
                 frontImage={frontImage}
                 locale={locale}
-                stickerDetached={Boolean(detachedBackSticker)}
-                onStickerDetach={setDetachedBackSticker}
                 onClose={closeDesktopTip}
                 variant="prompt"
-                peelableSticker={false}
               />
             </div>
             <div className="desktop-tip-modal__copy">
