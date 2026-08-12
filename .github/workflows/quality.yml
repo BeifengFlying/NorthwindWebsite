@@ -9,6 +9,21 @@ permissions:
   contents: read
 
 jobs:
+  commit-messages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check pull request title
+        if: github.event_name == 'pull_request'
+        run: node scripts/check-commit-message.mjs --subject "${{ github.event.pull_request.title }}"
+      - name: Check pushed commit messages
+        if: github.event_name == 'push'
+        run: node scripts/check-commit-message.mjs "${{ github.event.before }}..${{ github.sha }}"
+      - name: Check pull request commit messages
+        if: github.event_name == 'pull_request'
+        run: node scripts/check-commit-message.mjs "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
   build-and-check:
     runs-on: ubuntu-latest
     steps:
