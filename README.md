@@ -60,9 +60,9 @@ npm run check:version    # 检查本地 JS/CSS 是否统一使用版本占位符
 npm run optimize:images  # 从本机私有原片生成公开 WebP
 ```
 
-本地 JS/CSS 使用统一缓存版本。`src/config/version.js` 中维护发布版本，构建时会再附加
-JS/CSS 内容指纹；页面和运行时资源引用统一使用 `?v={{APP_VERSION}}`，构建脚本会替换为
-最终版本号。修改脚本、样式或打包依赖后，内容指纹会自动变化，无需手工刷新缓存号。
+发布版本由 `package.json` 维护，资源缓存序列由 `src/config/version.js` 维护。构建时会为
+本地 JS/CSS 统一写入该序列及内容指纹；`{{APP_VERSION}}` 占位符也会被替换为最终版本号。
+修改脚本、样式或打包依赖后，内容指纹会自动变化，无需手工刷新缓存号。
 
 `npm run optimize:images` 也会从 `private/source-media/photography/distilled-originals`
 生成摄影蒸馏图的 WebP 发布版本；原始 PNG 不进入 `public/`。
@@ -79,7 +79,7 @@ JS/CSS 内容指纹；页面和运行时资源引用统一使用 `?v={{APP_VERSI
 
 ## Git Workflow
 
-提交标题使用 `类型: 修改内容`，推荐类型为 `feat`、`fix`、`style`、`perf`、`refactor`、`docs` 和 `chore`。每次推送前必须先在根目录更新 [changed.md](changed.md)，记录本次功能、修复或样式变更；日志条目统一使用 `版本号 - 日期` 格式，例如 `1.2.1 - 2026-08-06`。每次提交前运行：
+提交标题使用 `类型: 修改内容`，推荐类型为 `feat`、`fix`、`style`、`perf`、`refactor`、`docs` 和 `chore`。每次推送前必须先在根目录更新 [changed.md](changed.md)，记录本次功能、修复或样式变更；日志条目统一使用 `版本号 - 日期` 格式，例如 `2.0.0 - 2026-08-13`。每次提交前运行：
 
 ```bash
 git status

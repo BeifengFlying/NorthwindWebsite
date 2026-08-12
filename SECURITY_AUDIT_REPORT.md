@@ -1,35 +1,35 @@
 # 项目安全审查报告
 
-审查时间：2026-08-01
+审查时间：2026-08-13
 
-项目：Northwind（`northwind-personal-site` v1.2.0）
+项目：Northwind（`northwind-personal-site` v2.0.0）
 
 审查范围：工作区已跟踪文件、被忽略文件、`dist/` 构建产物、Git 历史与不可达对象、依赖清单、发布配置。
 
 ## 总体评级
 
-**B**
+**B+**
 
-项目整体干净：未发现真实密钥、私人联系方式、本机路径、恶意代码或隐私收集逻辑。发布前应优先处理 1 个高危依赖漏洞、音乐封面授权问题，并补齐 CDN 完整性与安全响应头。
+项目整体干净：未发现真实密钥、私人联系方式、本机路径、恶意代码或隐私收集逻辑。`sharp` 已升级至 `0.35.3`，生产构建已关闭 sourcemap，部署响应头已包含 CSP、HSTS 与 COOP。发布前仍需确认第三方音乐封面展示授权，并接受 CDN/Google Fonts 的剩余供应链风险。
 
 ## 风险统计
 
 - 严重：0
-- 高危：1
+- 高危：0
 - 中危：2
-- 低危：5
+- 低危：1
 
 ## 问题列表
 
 ### 问题1
 
-类型：依赖安全漏洞
+类型：依赖安全漏洞（已修复）
 
-位置：`package.json`、`package-lock.json`（`sharp@0.34.5`）
+位置：`package.json`、`package-lock.json`（`sharp@0.35.3`）
 
-风险：高危。`npm audit` 报告 `sharp <0.35.0` 继承 libvips 漏洞，对应公告 GHSA-f88m-g3jw-g9cj（CVE-2026-33327、CVE-2026-33328、CVE-2026-35590、CVE-2026-35591）。`sharp` 是 devDependency，仅用于本地 `optimize:images` 脚本，不进入 `dist/`，但会影响开发机和 CI 安装环境。
+原风险：`sharp <0.35.0` 继承 libvips 漏洞，对应公告 GHSA-f88m-g3jw-g9cj（CVE-2026-33327、CVE-2026-33328、CVE-2026-35590、CVE-2026-35591）。该依赖用于本地 `optimize:images` 与 CI 安装。
 
-建议：执行 `npm install --save-dev sharp@^0.35.3`，随后重新运行 `npm audit` 与 `npm run check`。
+处置：已升级到 `sharp@0.35.3`，`npm audit` 与 `npm audit --omit=dev` 均返回 0 漏洞。
 
 ### 问题2
 
@@ -37,7 +37,7 @@
 
 位置：`public/assets/images/music/111/`、`public/assets/images/music/222/`，共 27 个封面 WebP
 
-风险：中危。封面大概率来自第三方专辑或音乐平台，仓库内没有逐图授权记录，`LICENSE` 也明确排除创作资源。公开仓库与公开站点存在版权和平台下架风险；这些文件已进入 Git 历史，只删除当前文件不会清除历史记录。
+风险：中危。封面大概率来自第三方专辑或音乐平台，仓库内没有逐图授权记录，`LICENSE` 也明确排除创作资源。公开仓库与公开站点存在版权和平台下架风险；这些文件已进入 Git 历史，只删除当前文件不会清除历史记录。此项需要权利人确认，不能由代码审计替代。
 
 建议：逐一确认展示权或替换为自有、明确授权的素材；补充素材来源与授权说明；如需从历史移除，使用 `git filter-repo` 并确认远端历史可改写。
 
@@ -47,9 +47,9 @@
 
 位置：`src/pages/index.html`（jsdelivr 加载 GSAP、ScrollTrigger、Lenis）、Google Fonts 引用
 
-风险：中危。外部脚本和字体没有 SRI，也没有 CSP；CDN 被投毒或劫持时可能执行任意脚本，第三方同时会收到访问者的 IP 与 UA。GSAP、Lenis、字体版本已固定，降低了漂移风险，但完整性校验仍缺失。
+风险：中危。外部脚本和字体没有 SRI；虽然应用已将 GSAP/Lenis 本地化并通过 CSP 限制来源，Google Fonts 仍会收到访问者的 IP 与 UA，且第三方字体可用性不受本站控制。
 
-建议：为 CDN 脚本补充 `integrity` SRI，或改为 npm 安装并本地打包；添加 CSP，仅放行 `fonts.googleapis.com`、`fonts.gstatic.com` 与所需资源源；字体可考虑自托管。
+建议：字体可考虑自托管；保留第三方资源时应为每个明确的外部脚本使用 SRI。
 
 ### 问题4
 
@@ -57,19 +57,19 @@
 
 位置：`public/_headers`
 
-风险：低危。已配置 `X-Frame-Options: DENY`、`X-Content-Type-Options: nosniff`、`Referrer-Policy`、`Permissions-Policy`；缺少 HSTS、CSP、COOP。
+状态：已在 `public/_headers` 配置 `X-Frame-Options`、`X-Content-Type-Options`、`Referrer-Policy`、`Permissions-Policy`、HSTS、CSP 和 COOP。
 
-建议：在 Cloudflare Pages 开启 HTTPS 与 HSTS（或补充 `Strict-Transport-Security`），配合问题 3 增加 CSP；确认生产环境无 debug 模式、无目录列表。
+建议：确认 Cloudflare Pages 的 HTTPS 始终开启，并在每次新增外部源时同步收紧 CSP。
 
 ### 问题5
 
 类型：构建产物信息暴露
 
-位置：`scripts/build.mjs`（`sourcemap: true`）
+位置：`scripts/build.mjs`（已修复）
 
-风险：低危。生产构建会生成 `journey-menu.js.map`；本项目源码本来就公开，影响有限，但部署产物会额外暴露可读源码。
+处置：生产构建已使用 `sourcemap: false`，发布检查也会拒绝 `.map` 文件。
 
-建议：生产构建改为 `sourcemap: false`，仅在本地调试时开启。
+建议：本地调试需要 source map 时仅在不发布的配置中开启。
 
 ### 问题6
 
@@ -111,8 +111,8 @@
 - XSS 风险可控：`solutions.js` 对来自 GitHub 的远程数据统一 `escapeHTML`；AI Lab、摄影、音乐等其余数据来自本地配置。
 - 注入与上传面：无 SQL、命令执行、文件上传、后台或管理接口。
 - Git 安全：`private/`、`node_modules/`、`dist/` 均被忽略；`git ls-files` 与全历史扫描未发现私密文件或真实凭据；不可达对象也已扫描。
-- 依赖安全：`package-lock.json` 61 个 `resolved` 全部来自 `registry.npmjs.org`；`npm audit` 仅报告 1 个高危（见问题1）。
-- 资源元数据：`npm run check` 对 89 个发布文件通过，未发现 EXIF、受保护源素材、超过 1.5 MB 的资源或发布进 `dist/` 的私密文件。
+- 依赖安全：`package-lock.json` 中的 registry 依赖来自 `registry.npmjs.org`；`npm audit` 与 `npm audit --omit=dev` 均为 0 漏洞。
+- 资源元数据：`npm run check` 对 134 个发布文件通过，未发现 EXIF、受保护源素材、超过对应上限的资源或发布进 `dist/` 的私密文件。
 - 权限与部署：GitHub Actions 仅授予 `contents: read`；无后台入口；已配置基本安全响应头。
 - License：根目录 `LICENSE` 明确为 source-available 许可并区分代码与创作资源；第三方素材授权仍需人工确认。
 
@@ -121,11 +121,11 @@
 | 检查项 | 结果 |
 | --- | --- |
 | `git status --ignored` | 工作区干净，`dist/`、`node_modules/`、`private/` 为忽略项 |
-| `git log` / `git reflog` / `git fsck` | 18 个提交无凭据；6 个不可达 blob 已扫描，无敏感内容 |
+| `git log` / `git reflog` / `git fsck` | 发布基线后的提交与当前历史无凭据；不可达对象扫描无敏感内容 |
 | 全历史 `git grep` 密钥模式 | 无真实命中 |
 | `rg` 密钥、邮箱、手机、本地路径、违禁词扫描 | 仅有文档示例词和模型术语误报 |
-| `npm audit` | 1 个高危：`sharp` |
-| `npm run check` | 通过，89 个发布文件 |
+| `npm audit` | 0 漏洞（含生产依赖与开发依赖） |
+| `npm run check` | 通过，134 个发布文件 |
 | 外部代码特征扫描 | 仅发现页面跳转与音效 base64，无恶意行为 |
 
 ## 审查限制
@@ -137,9 +137,8 @@
 
 ## 修复优先级
 
-1. 升级 `sharp` 到 `^0.35.3` 并重新扫描。
-2. 确认或替换第三方音乐封面，补充素材授权说明。
-3. 为 CDN 资源加 SRI，并补齐 CSP/HSTS。
-4. 顺手处理：关闭生产 sourcemap、增加 robots/sitemap、改写文档占位符、加固本地服务器异常处理。
+1. 确认或替换第三方音乐封面，补充素材授权说明。
+2. 为仍保留的第三方字体资源补充自托管方案或明确 SRI/供应链接受标准。
+3. 可选：增加 `robots.txt` 与 `sitemap.xml`，并在发布环境复核 Cloudflare Pages 的 HTTPS 配置。
 
 修复时遵守项目既有原则：不直接删除素材，先备份；不使用 `git add -f` 强制加入忽略文件；改动后重新执行 `npm run check` 与 `git status --ignored` 确认无误再提交。
