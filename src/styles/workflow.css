@@ -38,7 +38,7 @@
 /* The highway is the page atmosphere, so it stays fixed while the workflow
    content moves through it. */
 body { color: #edf4ee; }
-.workflow-background { position: absolute; inset: 0 0 auto; z-index: 2; width: 100%; height: max(790px, 100svh); overflow: hidden; pointer-events: none; background: #02060a; contain: strict; }
+.workflow-background { position: fixed; inset: 0; z-index: 2; width: 100%; height: 100svh; overflow: hidden; pointer-events: none; background: #02060a; contain: strict; }
 .workflow-stars { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
 .workflow-stars-layer { position: absolute; top: 0; left: 0; width: 2px; height: 2px; border-radius: 50%; background: rgba(235,246,255,.96); box-shadow: 8vw 10vh 0 rgba(224,241,255,.78), 17vw 6vh 0 rgba(255,239,199,.86), 27vw 15vh 0 rgba(224,241,255,.62), 38vw 8vh 0 rgba(255,255,255,.84), 48vw 18vh 0 rgba(205,232,255,.7), 61vw 7vh 0 rgba(255,236,190,.86), 73vw 13vh 0 rgba(225,241,255,.74), 86vw 5vh 0 rgba(255,255,255,.82), 94vw 19vh 0 rgba(213,232,255,.62), 12vw 25vh 0 rgba(255,245,211,.58), 23vw 31vh 0 rgba(222,240,255,.54), 34vw 23vh 0 rgba(255,255,255,.68), 56vw 30vh 0 rgba(255,242,203,.6), 68vw 25vh 0 rgba(211,237,255,.64), 81vw 33vh 0 rgba(255,255,255,.56), 91vw 27vh 0 rgba(255,239,204,.66); filter: drop-shadow(0 0 2px rgba(216,239,255,.38)); will-change: transform, opacity; }
 .stars-near { animation: workflow-stars-drift-near 24s linear infinite, workflow-stars-twinkle 5.2s ease-in-out infinite alternate; }
