@@ -30,6 +30,8 @@ Cloudflare Pages 自动部署
 
 一个提交只包含一个明确目的。提交前执行 `npm run check`，并在至少一个手机尺寸和一个桌面尺寸查看改动页面。
 
+仓库在 `.githooks/commit-msg` 中校验提交标题；首次执行 `npm install` 后会自动启用，也可运行 `npm run prepare` 手动启用。GitHub Actions 的 `commit-messages` 作业会检查 PR 标题、PR 中的新增提交和直接推送。请在 GitHub 分支保护规则中将该作业标记为必需通过，并仅允许 squash merge，确保最终进入 `main` 的提交标题也符合规范。
+
 ## 公开仓库发布
 
 首次发布前必须运行 `npm run check`，再使用 `git status --ignored` 确认 `private/`、`private-assets/`、`.env` 和 `dist/` 均处于忽略状态。GitHub 仓库设为 Public 后，按以下顺序同步：
@@ -38,6 +40,7 @@ Cloudflare Pages 自动部署
 git status
 git diff --check
 npm run check
+npm run check:commits -- origin/main..HEAD
 git add .
 git commit -m "类型: 修改内容"
 git push

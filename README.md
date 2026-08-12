@@ -79,7 +79,7 @@ npm run optimize:images  # 从本机私有原片生成公开 WebP
 
 ## Git Workflow
 
-提交标题使用 `类型: 修改内容`，推荐类型为 `feat`、`fix`、`style`、`perf`、`refactor`、`docs` 和 `chore`。每次推送前必须先在根目录更新 [changed.md](changed.md)，记录本次功能、修复或样式变更；日志条目统一使用 `版本号 - 日期` 格式，例如 `2.0.0 - 2026-08-13`。每次提交前运行：
+提交标题使用 `类型: 修改内容`，可用类型为 `feat`、`fix`、`style`、`perf`、`refactor`、`docs` 和 `chore`。`npm install` 会自动启用仓库中的提交信息钩子；也可手动运行 `npm run prepare`。CI 会检查推送和 PR 中的所有新增提交，主分支应将 `commit-messages` 设为必需检查。每次推送前必须先在根目录更新 [changed.md](changed.md)，记录本次功能、修复或样式变更；日志条目统一使用 `版本号 - 日期` 格式，例如 `2.0.0 - 2026-08-13`。每次提交前运行：
 
 ```bash
 git status
