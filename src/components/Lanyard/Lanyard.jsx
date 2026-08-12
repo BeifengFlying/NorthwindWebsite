@@ -23,7 +23,8 @@ export default function Lanyard({
   backImage = null,
   imageFit = 'cover',
   lanyardImage = null,
-  lanyardWidth = 1
+  lanyardWidth = 1,
+  onCardDoubleClick = null
 }) {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
@@ -50,6 +51,7 @@ export default function Lanyard({
             imageFit={imageFit}
             lanyardImage={lanyardImage}
             lanyardWidth={lanyardWidth}
+            onCardDoubleClick={onCardDoubleClick}
           />
         </Physics>
         <Environment blur={0.75}>
@@ -71,7 +73,8 @@ function Band({
   backImage = null,
   imageFit = 'cover',
   lanyardImage = null,
-  lanyardWidth = 1
+  lanyardWidth = 1,
+  onCardDoubleClick = null
 }) {
   const band = useRef();
   const fixed = useRef();
@@ -189,6 +192,10 @@ function Band({
             onPointerDown={event => {
               event.target.setPointerCapture(event.pointerId);
               drag(new THREE.Vector3().copy(event.point).sub(vec.copy(card.current.translation())));
+            }}
+            onDoubleClick={event => {
+              event.stopPropagation();
+              onCardDoubleClick?.();
             }}
           >
             <mesh

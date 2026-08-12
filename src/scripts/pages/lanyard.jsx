@@ -6,6 +6,7 @@ import StickerPeel from '../../components/StickerPeel/StickerPeel.jsx';
 
 const mount = document.getElementById('lanyardRoot');
 const stickerLayer = document.getElementById('homeStickerLayer');
+const QR_IMAGE = 'assets/images/github-qr.svg';
 const FLOATING_CARD_BACK = '/assets/images/flying-card-back-clean.svg';
 const BACK_STICKER = '/assets/images/flying-wordmark-sticker.svg';
 const CARD_EDGE_LAYERS = [-2.6, -1.95, -1.3, -0.65, 0, 0.65, 1.3, 1.95, 2.6];
@@ -140,6 +141,7 @@ function FloatingProfileCard({ frontImage, locale, stickerDetached, onStickerDet
 }
 
 function LanyardShowcase() {
+  const [expanded, setExpanded] = useState(false);
   const [showDesktopTip, setShowDesktopTip] = useState(false);
   const [dontRemind, setDontRemind] = useState(false);
   const [detachedBackSticker, setDetachedBackSticker] = useState(null);
@@ -211,12 +213,14 @@ function LanyardShowcase() {
     <>
       <div className="lanyard-scene">
         <Lanyard
+          position={[0, 0, 14]}
           gravity={[0, -40, 0]}
           frontImage={frontImage}
           backImage="/assets/images/flying-card-back.svg"
           imageFit="cover"
           lanyardImage="/assets/lanyard/flying-lanyard.svg"
           lanyardWidth={1}
+          onCardDoubleClick={() => setExpanded(true)}
         />
         <div className="lanyard-scene__hint" role="note">
           <span>{locale === 'en' ? 'DRAG CARD' : '拖动卡片'}</span>
@@ -253,6 +257,16 @@ function LanyardShowcase() {
           bounds={stickerLayer}
         />,
         stickerLayer
+      )}
+      {expanded && createPortal(
+        <FloatingProfileCard
+          frontImage={frontImage}
+          locale={locale}
+          stickerDetached={Boolean(detachedBackSticker)}
+          onStickerDetach={setDetachedBackSticker}
+          onClose={() => setExpanded(false)}
+        />,
+        document.body
       )}
       {showDesktopTip && createPortal(
         <div className="desktop-tip-modal" role="dialog" aria-modal="true" aria-labelledby="desktopTipTitle">
