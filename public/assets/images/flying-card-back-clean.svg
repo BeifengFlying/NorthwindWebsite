@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1024" viewBox="0 0 720 1024">
+  <defs>
+    <linearGradient id="back-paper-clean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#181818"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <pattern id="back-grid-clean" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#fff" stroke-opacity=".08"/>
+    </pattern>
+  </defs>
+  <rect width="720" height="1024" rx="28" fill="url(#back-paper-clean)"/>
+  <rect width="720" height="1024" rx="28" fill="url(#back-grid-clean)"/>
+  <rect x="46" y="54" width="628" height="1" fill="#fff" fill-opacity=".25"/>
+  <text x="48" y="96" fill="#fff" fill-opacity=".65" font-family="monospace" font-size="18" letter-spacing="4">THE OTHER SIDE / 2026</text>
+  <text x="672" y="96" text-anchor="end" fill="#fff" fill-opacity=".35" font-family="monospace" font-size="18">FLY-01</text>
+  <text x="360" y="628" text-anchor="middle" fill="#fff" fill-opacity=".52" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing="7">NORTHWIND STUDIO</text>
+  <circle cx="112" cy="856" r="30" fill="#ff70e8"/>
+  <circle cx="180" cy="856" r="30" fill="#62e8e8"/>
+  <circle cx="248" cy="856" r="30" fill="#ffd84d"/>
+  <text x="48" y="950" fill="#fff" fill-opacity=".38" font-family="monospace" font-size="15" letter-spacing="3">OBSERVE / LEARN / MAKE</text>
+</svg>

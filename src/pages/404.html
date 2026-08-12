@@ -15,9 +15,11 @@
 <link rel="stylesheet" href="assets/styles/motion-system.css">
 <link rel="stylesheet" href="assets/styles/legal.css">
 <link rel="stylesheet" href="assets/styles/i18n.css?v=responsive-20260801-1">
+<link rel="stylesheet" href="assets/scripts/shared/nav-glass.css?v=glasssurface-nav-20260812-1">
 <script src="assets/scripts/shared/i18n.js?v=nav-20260801-4" defer></script>
-<script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-6" defer></script>
-<script src="assets/scripts/shared/motion-system.js" defer></script>
+<script src="assets/scripts/shared/nav-glass.js?v=glasssurface-nav-20260812-1" defer></script>
+<script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-7" defer></script>
+<script src="assets/scripts/shared/motion-anime.js?v=anime-20260812-2" defer></script>
 </head>
 <body class="error-page">
 <div class="site-noise" aria-hidden="true"></div>
@@ -29,6 +31,7 @@
 </div>
 
 <nav class="nav error-nav" aria-label="主导航">
+  <div class="nav__glass" data-nav-glass-root aria-hidden="true"></div>
   <a href="/" class="nav-logo" data-transition>Flying</a>
   <div class="error-nav-meta">
     <span>Northwind / 404</span>

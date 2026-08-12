@@ -10,7 +10,6 @@ body.motion-ready [data-motion-reveal] {
   transform: translate3d(0, 32px, 0) scale(.985);
   transition: opacity var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease), filter 700ms var(--motion-ease);
   transition-delay: var(--motion-delay, 0ms);
-  will-change: opacity, transform;
 }
 
 body.motion-ready [data-motion-reveal="heading"] { transform: translate3d(0, 40px, 0); }
@@ -28,6 +27,40 @@ body.motion-ready .error-nav[data-motion-reveal] { transform: translateX(-50%) !
 
 body.motion-ready [data-motion-reveal].motion-fade { transform: none; }
 
+/* Creative and presentational copy can fade with the reading flow without
+   moving the text block or competing with the larger heading entrances. */
+body.home-section-motion.motion-ready [data-motion-reveal="text-fade"] {
+  opacity: .18;
+  transform: none;
+  filter: none;
+  transition: opacity 520ms var(--motion-ease);
+}
+body.home-section-motion.motion-ready [data-motion-reveal="text-fade"].is-motion-visible {
+  opacity: 1;
+}
+
+/* The exploration cards use a deliberate editorial fan. Keep that layout
+   transform while Anime.js handles their opacity/blur entrance. */
+body.home-section-motion.motion-ready .explore-card[data-motion-reveal] {
+  transform: translate3d(var(--fan-x), calc(var(--fan-y) + 44px), 0) rotate(var(--fan-rotate));
+}
+body.home-section-motion.motion-ready .explore-card[data-motion-reveal].is-motion-visible {
+  transform: translate3d(var(--fan-x), var(--fan-y), 0) rotate(var(--fan-rotate));
+}
+@media (hover: hover) and (pointer: fine) {
+  body.home-section-motion.motion-ready .explore-card[data-motion-reveal].is-motion-visible:hover {
+    transform: translate3d(var(--fan-x), calc(var(--fan-y) - 14px), 0) rotate(var(--fan-rotate)) scale(1.015);
+  }
+}
+
+/* Large display text owns its full line box during motion. This avoids clipping
+   ascenders, descenders, and explicit <br> lines in multi-line headings. */
+[data-motion-reveal="heading"] { transform-origin: left bottom; }
+[data-motion-reveal="heading"],
+.hero-title,
+.hero-title-line { overflow: visible; clip-path: none; contain: none; }
+.hero-title-line { transform-origin: left bottom; }
+
 /* Homepage modules replay in both directions. Delays apply only on entry so
    content leaves promptly once it has passed outside the active viewport. */
 body.home-section-motion.motion-ready .home-motion-item {
@@ -37,7 +70,6 @@ body.home-section-motion.motion-ready .home-motion-item {
   translate: 0 34px;
   scale: .985;
   transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), filter 620ms var(--motion-ease) var(--home-active-delay);
-  will-change: opacity, translate, scale, filter;
 }
 
 body.home-section-motion.motion-ready .home-motion-item[data-home-motion="heading"] {
@@ -108,6 +140,11 @@ html.is-restoring-crafted-works body.home-section-motion.motion-ready .home-moti
     filter: none;
     translate: none;
     scale: none;
+    transition: none;
+  }
+
+  body.home-section-motion.motion-ready [data-motion-reveal="text-fade"] {
+    opacity: 1;
     transition: none;
   }
 }

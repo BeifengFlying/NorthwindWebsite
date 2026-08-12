@@ -116,7 +116,7 @@ section { position: relative; overflow: visible; }
     0 1px 2px rgba(0,0,0,.06),
     inset 0 1px 0 rgba(255,255,255,.5);
   border: 1px solid rgba(255,255,255,.3);
-  transition: all .5s var(--ease-out);
+  transition: width .5s var(--ease-out), height .5s var(--ease-out), background-color .5s var(--ease-out), border-color .5s var(--ease-out), box-shadow .5s var(--ease-out);
 }
 
 .nav.scrolled {
@@ -686,6 +686,14 @@ body {
   align-items: start;
 }
 
+#accordionGalleryRoot.gallery {
+  display: block;
+}
+
+#accordionGalleryRoot .accordion-gallery {
+  width: 100%;
+}
+
 .photo-item,
 .photo-item.revealed {
   break-inside: auto;
@@ -815,6 +823,168 @@ body {
 .lightbox-close:hover, .lightbox-nav:hover { background: rgba(215,255,99,.16); }
 .lightbox-counter { color: rgba(245,243,234,.48); }
 
+/* ========================
+   PHOTO DETAIL
+   ======================== */
+.photo-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: clamp(28px, 5vw, 80px);
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--photo-bg);
+}
+
+.photo-detail__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border: 0;
+  background-color: var(--photo-bg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.photo-detail__content {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+  align-items: center;
+  gap: clamp(28px, 5vw, 72px);
+  padding: 44px 0 24px;
+}
+
+.photo-detail__visual {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+}
+
+.photo-detail__copy {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--photo-ink);
+  width: 100%;
+  max-width: 340px;
+}
+
+.photo-detail__content--visual-right .photo-detail__visual { grid-column: 1; }
+.photo-detail__content--visual-right .photo-detail__copy { grid-column: 2; justify-self: start; }
+
+.photo-detail .tilted-card-figure {
+  margin: 0;
+  max-width: 100%;
+}
+
+.photo-detail .tilted-card-inner {
+  max-width: 100%;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.photo-detail .tilted-card-img {
+  border-radius: 0;
+  object-fit: cover;
+}
+
+.photo-detail .tilted-card-caption {
+  background: var(--photo-lime);
+  color: var(--photo-bg);
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+.photo-detail__close,
+.photo-detail__actions button {
+  border: 1px solid rgba(245, 243, 234, .22);
+  border-radius: 0;
+  background: transparent;
+  color: var(--photo-ink);
+  font: inherit;
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.photo-detail__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.photo-detail__close:hover,
+.photo-detail__actions button:hover {
+  border-color: var(--photo-lime);
+  background: var(--photo-lime);
+  color: var(--photo-bg);
+}
+
+.photo-detail__close:focus-visible,
+.photo-detail__actions button:focus-visible {
+  outline: 2px solid var(--photo-lime);
+  outline-offset: 3px;
+}
+
+.photo-detail__index {
+  margin-bottom: 14px;
+  color: var(--photo-lime);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .12em;
+}
+
+.photo-detail h2 {
+  font-size: clamp(38px, 4.5vw, 64px);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.photo-detail__place {
+  margin-top: 18px;
+  color: var(--photo-coral);
+  font-size: 13px;
+  letter-spacing: .08em;
+}
+
+.photo-detail__note {
+  margin-top: 30px;
+  color: var(--photo-muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.photo-detail__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 36px;
+}
+
+.photo-detail__actions button {
+  padding: 9px 12px;
+  font-size: 12px;
+}
+
+@starting-style {
+  .photo-detail__backdrop { opacity: 0; }
+  .photo-detail__content { opacity: 0; transform: translateY(3%); }
+}
+
+.photo-detail__backdrop,
+.photo-detail__content {
+  transition: opacity 240ms cubic-bezier(.23, 1, .32, 1), transform 240ms cubic-bezier(.23, 1, .32, 1);
+}
+
 .footer {
   padding: 34px var(--gutter);
   background: var(--photo-bg-2);
@@ -834,6 +1004,19 @@ body {
   .photo-item:nth-child(4) { grid-column: 1 / span 4; }
   .photo-item:nth-child(5) { grid-column: 5 / span 2; }
   .photo-item:nth-child(6) { grid-column: 1 / span 6; --offset: 30px; }
+  .photo-detail { align-items: start; overflow-y: auto; padding: 20px; }
+  .photo-detail__content { grid-template-columns: 1fr; gap: 38px; padding-block: 52px 32px; }
+  .photo-detail__visual,
+  .photo-detail__content--visual-right .photo-detail__visual { grid-column: 1; grid-row: 1; }
+  .photo-detail__copy,
+  .photo-detail__content--visual-right .photo-detail__copy { grid-column: 1; grid-row: 2; justify-self: start; }
+  .photo-detail .tilted-card-figure { width: min(88vw, 420px) !important; height: auto !important; }
+  .photo-detail .tilted-card-inner { width: 100% !important; height: auto !important; }
+  .photo-detail .tilted-card-img { width: 100% !important; height: 100% !important; }
+  .photo-detail__copy { max-width: 420px; }
+  .photo-detail__close { margin-bottom: 36px; }
+  .photo-detail h2 { font-size: clamp(44px, 16vw, 68px); }
+  .photo-detail__note { margin-top: 20px; font-size: 15px; }
 }
 
 @media (max-width: 600px) {
@@ -852,6 +1035,7 @@ body {
   .gallery-intro h2 { font-size: 13vw; }
   .gallery-intro-copy { font-size: 13px; }
   .gallery { display: flex; flex-direction: column; gap: 68px; }
+  #accordionGalleryRoot.gallery { display: block; }
   .photo-item,
   .photo-item:nth-child(n) {
     width: 100%;
@@ -869,4 +1053,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .photo-hero-media, .photo-card img { transition: none; }
   .photo-item, .photo-item.revealed { opacity: 1; transform: none; transition: none; }
+  .photo-detail__content { transform: none; transition: opacity 200ms ease; }
+  .photo-detail__backdrop { transition: opacity 200ms ease; }
+  .photo-detail .tilted-card-figure { perspective: none; }
 }

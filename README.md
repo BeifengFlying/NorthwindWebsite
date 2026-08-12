@@ -56,8 +56,16 @@ npm run dev
 ```bash
 npm run build            # 生成 dist
 npm run check            # 构建并检查断链、敏感信息和资源规则
+npm run check:version    # 检查本地 JS/CSS 是否统一使用版本占位符
 npm run optimize:images  # 从本机私有原片生成公开 WebP
 ```
+
+本地 JS/CSS 使用统一缓存版本。`src/config/version.js` 中维护发布版本，构建时会再附加
+JS/CSS 内容指纹；页面和运行时资源引用统一使用 `?v={{APP_VERSION}}`，构建脚本会替换为
+最终版本号。修改脚本、样式或打包依赖后，内容指纹会自动变化，无需手工刷新缓存号。
+
+`npm run optimize:images` 也会从 `private/source-media/photography/distilled-originals`
+生成摄影蒸馏图的 WebP 发布版本；原始 PNG 不进入 `public/`。
 
 ## Public And Private Assets
 

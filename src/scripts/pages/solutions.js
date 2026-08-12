@@ -28,6 +28,14 @@ const toDateValue = (value) => {
   const timestamp = Date.parse(value || '');
   return Number.isNaN(timestamp) ? 0 : timestamp;
 };
+const safeSolutionLink = (value, fallback) => {
+  try {
+    const url = new URL(String(value || ''), window.location.origin);
+    return url.protocol === 'https:' && url.hostname === 'github.com' ? url.href : fallback;
+  } catch {
+    return fallback;
+  }
+};
 
 async function fetchWithTimeout(url, options = {}) {
   const controller = new AbortController();
@@ -53,6 +61,7 @@ function isTimeoutError(error) {
 
 function createEntry(raw, fallbackPlatform = '') {
   const path = raw.path || raw.file || '';
+  const fallbackLink = path ? `https://github.com/${REPO}/blob/main/${path}` : `https://github.com/${REPO}`;
   const fileTitle = path.split('/').pop()?.replace(/\.md$/i, '').replace(/[-_]/g, ' ') || (window.NorthwindI18n?.t('unknown_solution', '未命名题解'));
   const tags = Array.isArray(raw.tags) ? raw.tags : String(raw.tags || '').split(',').map((tag) => tag.trim()).filter(Boolean);
   const platform = normalizePlatform(raw.platform || fallbackPlatform || path.split('/')[0]);
@@ -62,7 +71,7 @@ function createEntry(raw, fallbackPlatform = '') {
     difficulty: raw.difficulty || '题解',
     tags,
     date: raw.date || raw.updated || raw.updatedAt || '',
-    link: raw.link || raw.url || (path ? `https://github.com/${REPO}/blob/main/${path}` : `https://github.com/${REPO}`),
+    link: safeSolutionLink(raw.link || raw.url || fallbackLink, fallbackLink),
     path,
   };
 }

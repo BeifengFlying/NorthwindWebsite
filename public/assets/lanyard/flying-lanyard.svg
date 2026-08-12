@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1025" height="250" viewBox="0 0 1025 250">
+  <rect width="1025" height="250" fill="#090909"/>
+  <text x="512.5" y="164" text-anchor="middle" fill="#fff" font-family="Georgia, serif" font-size="98" font-style="italic" font-weight="700" letter-spacing="3">flying</text>
+  <path d="M308 190H717" stroke="#ff70e8" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+</svg>

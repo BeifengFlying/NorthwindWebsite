@@ -48,15 +48,18 @@ h1, h2, h3, h4, p, a, button, span, small, strong, em, label {
 
 /* The home page has a wider editorial navigation than the compact project pages. */
 .home-section-motion .nav {
-  width: min(1120px, calc(100vw - 48px));
-  padding-inline: 28px;
-  gap: clamp(18px, 3vw, 44px);
+  width: min(1280px, calc(100vw - 48px));
+  height: 72px;
+  padding-inline: 36px;
+  gap: clamp(24px, 3vw, 52px);
 }
 .home-section-motion .nav-links {
   flex: 1 1 auto;
   justify-content: center;
-  gap: clamp(20px, 3vw, 44px);
+  gap: clamp(24px, 3vw, 52px);
 }
+.home-section-motion .nav-logo { font-size: 18px; }
+.home-section-motion .nav-link { font-size: 15px; }
 .home-section-motion .nav-link,
 .home-section-motion .language-switch { white-space: nowrap; }
 .home-section-motion .language-switch {
@@ -244,11 +247,13 @@ body:not(.home-section-motion):not(.error-page) .nav .language-switch {
     height: 56px;
     min-height: 56px;
     padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    border: 1px solid rgba(255, 255, 255, .48);
+    background: rgba(255, 255, 255, .34);
+    box-shadow:
+      0 10px 28px rgba(17, 17, 17, .07),
+      inset 0 1px 0 rgba(255, 255, 255, .66);
+    backdrop-filter: blur(22px) saturate(1.35);
+    -webkit-backdrop-filter: blur(22px) saturate(1.35);
   }
   .home-section-motion .nav .nav-logo,
   .home-section-motion .nav .nav-toggle {
@@ -256,16 +261,26 @@ body:not(.home-section-motion):not(.error-page) .nav .language-switch {
     align-items: center;
     justify-content: center;
     height: 52px;
-    border: 1px solid rgba(17, 17, 17, .12);
-    background: rgba(247, 245, 238, .96);
-    box-shadow: 0 8px 24px rgba(17, 17, 17, .14), inset 0 1px 0 rgba(255, 255, 255, .9);
   }
   .home-section-motion .nav .nav-logo {
     min-width: 112px;
     padding: 0 18px;
-    border-radius: 999px;
-    font-size: 15px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
+  .home-section-motion .nav .nav-toggle {
+    border: 1px solid rgba(255, 255, 255, .58);
+    background: rgba(255, 255, 255, .42);
+    box-shadow:
+      0 8px 24px rgba(17, 17, 17, .11),
+      inset 0 1px 0 rgba(255, 255, 255, .82);
+    backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  }
+  .home-section-motion .nav .nav-logo { border-radius: 999px; font-size: 15px; }
   .home-section-motion .nav .nav-toggle {
     width: 52px;
     padding: 0;
@@ -377,6 +392,39 @@ body:not(.home-section-motion):not(.error-page) .nav .language-switch {
     font-size: 14px;
     overflow-wrap: normal;
     word-break: normal;
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .home-section-motion .nav,
+  .home-section-motion .nav.scrolled,
+  .home-section-motion .nav .nav-toggle {
+    background: rgba(247, 245, 238, .94);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .home-section-motion .nav:not(.is-menu-open),
+  .home-section-motion .nav:not(.is-menu-open) .nav-toggle {
+    background: var(--paper);
+    border-color: var(--line);
+    box-shadow: 0 4px 16px rgba(17, 17, 17, .08);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .home-section-motion .nav:not(.is-menu-open) .nav-logo {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .home-section-motion .nav,
+  .home-section-motion .nav.scrolled {
+    background: rgba(247, 245, 238, .96);
+    border-color: rgba(17, 17, 17, .42);
+    box-shadow: 0 5px 18px rgba(17, 17, 17, .14);
   }
 }
 
@@ -572,3 +620,259 @@ body :where(h1, h2, h3, h4, .nav-link, .nav-logo, .project-title,
   .timeline-aside, .site-map, .design-swatch, .flow-stack,
   .optimization-list, .deployment-flow { grid-column: 2; }
 }
+
+/* Shared liquid-glass navigation material. Keep each page's layout and
+   accent colors, but make every site-level navigation one floating layer. */
+.nav:not(.is-menu-open),
+.solutions-nav,
+.lab-nav,
+.journey-nav,
+.workflow-nav,
+.error-nav {
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .46);
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, .12) 46%, rgba(255, 255, 255, .2)),
+    rgba(255, 255, 255, .18);
+  box-shadow:
+    0 18px 48px rgba(17, 17, 17, .11),
+    0 5px 16px rgba(17, 17, 17, .06),
+    inset 0 1px 0 rgba(255, 255, 255, .72),
+    inset 0 -1px 0 rgba(255, 255, 255, .16);
+  backdrop-filter: blur(24px) saturate(1.45) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(1.45) brightness(1.04);
+}
+
+.nav:not(.is-menu-open)::before,
+.solutions-nav::before,
+.lab-nav::before,
+.journey-nav::before,
+.workflow-nav::before,
+.error-nav::before {
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, .2), transparent 36%),
+    radial-gradient(circle at 22% 0%, rgba(255, 255, 255, .24), transparent 34%);
+  content: '';
+  pointer-events: none;
+}
+
+.nav:not(.is-menu-open) > *,
+.solutions-nav > *,
+.lab-nav > *,
+.journey-nav > *,
+.workflow-nav > *,
+.error-nav > * {
+  position: relative;
+  z-index: 1;
+}
+
+.nav:not(.is-menu-open) > .nav__glass {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.solutions-nav .nav-links a,
+.lab-nav .nav-links a,
+.nav-links .nav-link,
+.journey-nav-links a,
+.workflow-nav-links a,
+.nav-back,
+.journey-back,
+.workflow-back,
+.workflow-github,
+.error-nav-meta a {
+  transition: color .2s ease, background-color .2s ease, border-color .2s ease, opacity .2s ease, transform .2s ease;
+}
+
+.solutions-nav .nav-links a:hover,
+.solutions-nav .nav-links a.active,
+.lab-nav .nav-links a:hover,
+.lab-nav .nav-links a.active {
+  border-color: rgba(255, 255, 255, .2);
+  background: rgba(255, 255, 255, .1);
+}
+
+/* The homepage React surface supplies the material itself. */
+.home-section-motion .nav:not(.is-menu-open) {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.home-section-motion .nav:not(.is-menu-open)::before { display: none; }
+
+/* Preserve legibility on the aurora, archive, and photography pages. */
+body:has(.lab-nav) .lab-nav,
+body:has(.solutions-nav) .solutions-nav,
+body:has(.photo-hero) .nav {
+  border-color: rgba(255, 255, 255, .24);
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .05) 46%, rgba(255, 255, 255, .1)),
+    rgba(12, 15, 16, .28);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, .28),
+    0 5px 16px rgba(0, 0, 0, .18),
+    inset 0 1px 0 rgba(255, 255, 255, .32),
+    inset 0 -1px 0 rgba(255, 255, 255, .06);
+  backdrop-filter: blur(26px) saturate(1.35) brightness(1.08);
+  -webkit-backdrop-filter: blur(26px) saturate(1.35) brightness(1.08);
+}
+
+body:has(.lab-nav) .lab-nav::after { inset: 0; }
+
+@media (max-width: 768px) {
+  .nav:not(.is-menu-open),
+  .solutions-nav,
+  .lab-nav,
+  .journey-nav,
+  .workflow-nav,
+  .error-nav {
+    backdrop-filter: blur(20px) saturate(1.3) brightness(1.03);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3) brightness(1.03);
+  }
+
+  .nav:not(.is-menu-open)::before,
+  .solutions-nav::before,
+  .lab-nav::before,
+  .journey-nav::before,
+  .workflow-nav::before,
+  .error-nav::before { opacity: .72; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav:not(.is-menu-open),
+  .solutions-nav,
+  .lab-nav,
+  .journey-nav,
+  .workflow-nav,
+  .error-nav {
+    background: rgba(247, 245, 238, .94);
+    border-color: rgba(17, 17, 17, .16);
+    box-shadow: 0 8px 24px rgba(17, 17, 17, .08);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav:not(.is-menu-open)::before,
+  .solutions-nav::before,
+  .lab-nav::before,
+  .journey-nav::before,
+  .workflow-nav::before,
+  .error-nav::before { display: none; }
+}
+
+/* The navigation material is rendered by the shared GlassSurface entry. */
+.nav:not(.is-menu-open),
+.solutions-nav,
+.lab-nav,
+.journey-nav,
+.workflow-nav,
+.error-nav {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.nav:not(.is-menu-open)::before,
+.solutions-nav::before,
+.lab-nav::before,
+.journey-nav::before,
+.workflow-nav::before,
+.error-nav::before,
+body:has(.lab-nav) .lab-nav::after {
+  display: none;
+}
+
+.nav:not(.is-menu-open) > .nav__glass,
+.solutions-nav > .nav__glass,
+.lab-nav > .nav__glass,
+.journey-nav > .nav__glass,
+.workflow-nav > .nav__glass,
+.error-nav > .nav__glass {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.nav__glass-surface {
+  width: 100% !important;
+  height: 100% !important;
+  border: 1px solid rgba(255, 255, 255, .58);
+  box-shadow:
+    0 8px 24px rgba(17, 17, 17, .08),
+    inset 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.nav__glass-surface.glass-surface--svg {
+  background: light-dark(
+    hsl(0 0% 100% / var(--glass-frost, 0)),
+    hsl(0 0% 0% / var(--glass-frost, 0))
+  ) !important;
+  border-color: rgba(255, 255, 255, .62);
+}
+
+.nav__glass-surface.glass-surface--fallback {
+  background: rgba(255, 255, 255, .18);
+  backdrop-filter: blur(14px) saturate(1.05) brightness(1.03);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05) brightness(1.03);
+}
+
+.nav__glass-surface .glass-surface__content { padding: 0; }
+
+.nav__glass-proxy {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: transparent;
+}
+
+/* Keep navigation content readable as the surface below it changes. */
+[data-nav-contrast="dark"] :where(.nav-logo, .nav-link, .nav-links a,
+  .nav-back, .journey-logo, .journey-nav-links a, .journey-back,
+  .workflow-logo, .workflow-nav-links a, .workflow-back, .workflow-github,
+  .error-nav-meta, .error-nav-meta a, .language-switch, .language-switch button) {
+  color: #111 !important;
+  text-shadow: none;
+}
+
+[data-nav-contrast="light"] :where(.nav-logo, .nav-link, .nav-links a,
+  .nav-back, .journey-logo, .journey-nav-links a, .journey-back,
+  .workflow-logo, .workflow-nav-links a, .workflow-back, .workflow-github,
+  .error-nav-meta, .error-nav-meta a, .language-switch, .language-switch button) {
+  color: #f7f5ee !important;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .28);
+}
+
+[data-nav-contrast="dark"] :where(.nav-link::after, .nav-links .active::after) {
+  background: #111 !important;
+}
+
+[data-nav-contrast="light"] :where(.nav-link::after, .nav-links .active::after) {
+  background: #f7f5ee !important;
+}
+
+[data-nav-contrast="dark"] .nav__glass-surface,
+[data-nav-contrast="light"] .nav__glass-surface {
+  --nav-edge: rgba(255, 255, 255, .58);
+  border-color: var(--nav-edge);
+}
+
+[data-nav-contrast="light"] .nav__glass-surface {
+  --nav-edge: rgba(255, 255, 255, .72);
+}
+
+[data-nav-contrast="dark"] .nav__glass-surface { color-scheme: light; }
+[data-nav-contrast="light"] .nav__glass-surface { color-scheme: dark; }

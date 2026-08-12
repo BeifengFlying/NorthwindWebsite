@@ -8,8 +8,11 @@ var NorthwindSound = window.NorthwindSound || (function () {
   var contextPrimed = false;
   var masterGain;
   var muteStorageKey = 'northwind-sound-muted';
+  var volumeStorageKey = 'northwind-sound-volume';
   var soundMuted = true;
+  var soundVolume = .75;
   var lastWindAt = -Infinity;
+  var volumePersistTimer = 0;
   var assetData = Object.create(null);
   var assetDataPromises = Object.create(null);
   var assetBuffers = Object.create(null);
@@ -22,6 +25,8 @@ var NorthwindSound = window.NorthwindSound || (function () {
   try {
     var storedMuteState = window.localStorage.getItem(muteStorageKey);
     soundMuted = storedMuteState === null ? true : storedMuteState === 'true';
+    var storedVolume = Number(window.localStorage.getItem(volumeStorageKey));
+    if (Number.isFinite(storedVolume)) soundVolume = Math.min(Math.max(storedVolume, 0), 1);
   }
   catch (error) { /* Sound still works when storage is unavailable. */ }
 
@@ -50,7 +55,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
     }
     if (context && !context._northwindStateListener) {
       masterGain = context.createGain();
-      masterGain.gain.value = soundMuted ? 0 : 1;
+      masterGain.gain.value = soundMuted ? 0 : soundVolume;
       masterGain.connect(context.destination);
       context.addEventListener('statechange', reflectSoundState);
       context._northwindStateListener = true;
@@ -69,9 +74,32 @@ var NorthwindSound = window.NorthwindSound || (function () {
     if (masterGain && context && context.state !== 'closed') {
       var now = context.currentTime;
       masterGain.gain.cancelScheduledValues(now);
-      masterGain.gain.setValueAtTime(soundMuted ? 0 : 1, now);
+      masterGain.gain.setValueAtTime(soundMuted ? 0 : soundVolume, now);
     }
     reflectSoundState();
+  }
+
+  function setVolume(value) {
+    soundVolume = Math.min(Math.max(Number(value) || 0, 0), 1);
+    window.clearTimeout(volumePersistTimer);
+    if (soundVolume > 0 && soundMuted) soundMuted = false;
+    if (soundVolume === 0) soundMuted = true;
+    if (masterGain && context && context.state !== 'closed') {
+      var now = context.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setValueAtTime(soundMuted ? 0 : soundVolume, now);
+    }
+    volumePersistTimer = window.setTimeout(function () {
+      try {
+        window.localStorage.setItem(volumeStorageKey, String(soundVolume));
+        window.localStorage.setItem(muteStorageKey, String(soundMuted));
+      } catch (error) { /* Keep the in-memory setting in restricted contexts. */ }
+    }, 120);
+    reflectSoundState();
+  }
+
+  function getVolume() {
+    return soundVolume;
   }
 
   function primeContext(audioContext) {
@@ -286,6 +314,8 @@ var NorthwindSound = window.NorthwindSound || (function () {
     playPageWhoosh: playPageWhoosh,
     playTick: playTick,
     playWind: playWind,
+    setVolume: setVolume,
+    getVolume: getVolume,
     unlock: unlock
   };
 }());
@@ -511,6 +541,10 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
   var locked = false;
   var overlay;
   var arriving = false;
+  var warmups = Object.create(null);
+  var intentWarmupDelay = 70;
+  var intentWarmupTimer = 0;
+  var intentWarmupAnchor = null;
 
   try { arriving = Boolean(window.sessionStorage.getItem(storageKey)); }
   catch (error) { /* Storage can be unavailable in privacy-restricted contexts. */ }
@@ -551,6 +585,126 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
     return url.pathname.endsWith('/') || /\.html$/i.test(url.pathname);
   }
 
+  function getPageUrl(anchor) {
+    if (!anchor) return null;
+    var url;
+    try { url = new URL(anchor.href, window.location.href); }
+    catch (error) { return null; }
+    if (url.origin !== window.location.origin) return null;
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+    if (!url.pathname.endsWith('/') && !/\.html$/i.test(url.pathname)) return null;
+    url.hash = '';
+    return url;
+  }
+
+  function fetchForNavigation(url) {
+    return window.fetch(url, {
+      credentials: 'same-origin',
+      cache: 'force-cache'
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Unable to warm page: ' + response.status);
+      return response;
+    });
+  }
+
+  function getCriticalAssets(pageUrl, markup) {
+    var parsed = new DOMParser().parseFromString(markup, 'text/html');
+    var selectors = [
+      'link[rel="preload"][href]',
+      'link[rel="stylesheet"][href]',
+      'script[src]',
+      'img[fetchpriority="high"][src]',
+      'img:not([loading="lazy"])[src]'
+    ];
+    var urls = [];
+    parsed.querySelectorAll(selectors.join(',')).forEach(function (node) {
+      var source = node.getAttribute('href') || node.getAttribute('src');
+      if (!source) return;
+      try {
+        var assetUrl = new URL(source, pageUrl);
+        if (assetUrl.origin !== window.location.origin) return;
+        if (urls.indexOf(assetUrl.href) === -1) urls.push(assetUrl.href);
+      } catch (error) { /* Invalid optional assets do not block navigation. */ }
+    });
+    return urls;
+  }
+
+  function warmPage(url) {
+    var pageUrl = url instanceof URL ? url : new URL(url, window.location.href);
+    pageUrl.hash = '';
+    var key = pageUrl.href;
+    if (warmups[key]) return warmups[key];
+
+    warmups[key] = fetchForNavigation(key)
+      .then(function (response) { return response.text(); })
+      .then(function (markup) {
+        return Promise.all(getCriticalAssets(key, markup).map(function (assetUrl) {
+          return fetchForNavigation(assetUrl).catch(function () { return null; });
+        }));
+      })
+      .catch(function () { return null; });
+    return warmups[key];
+  }
+
+  function prefetchPage(url) {
+    var key = url.href;
+    var exists = Array.prototype.some.call(document.querySelectorAll('link[data-page-prefetch]'), function (link) {
+      return link.getAttribute('data-page-prefetch') === key;
+    });
+    if (exists) return;
+    var link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = key;
+    link.setAttribute('data-page-prefetch', key);
+    document.head.appendChild(link);
+  }
+
+  function scheduleIntentWarmup(anchor, immediate) {
+    var url = getPageUrl(anchor);
+    if (!url) return;
+    if (anchor === intentWarmupAnchor && !immediate) return;
+    window.clearTimeout(intentWarmupTimer);
+    intentWarmupAnchor = anchor;
+    if (immediate) {
+      warmPage(url);
+      return;
+    }
+    intentWarmupTimer = window.setTimeout(function () {
+      if (intentWarmupAnchor === anchor) warmPage(url);
+    }, intentWarmupDelay);
+  }
+
+  function onNavigationIntent(event) {
+    var anchor = event.target.closest && event.target.closest('a[href]');
+    scheduleIntentWarmup(anchor, event.type === 'touchstart' || event.type === 'pointerdown' || event.type === 'focusin');
+  }
+
+  function cancelNavigationIntent(event) {
+    var anchor = event.target.closest && event.target.closest('a[href]');
+    if (!anchor || anchor !== intentWarmupAnchor) return;
+    if (event.relatedTarget && anchor.contains(event.relatedTarget)) return;
+    window.clearTimeout(intentWarmupTimer);
+    intentWarmupAnchor = null;
+  }
+
+  function scheduleProjectPrefetch() {
+    var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (connection && (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || ''))) return;
+    var run = function () {
+      if (document.hidden) return;
+      document.querySelectorAll('.project-link[href]').forEach(function (anchor) {
+        var url = getPageUrl(anchor);
+        if (url) prefetchPage(url);
+      });
+    };
+    var afterLoad = function () {
+      if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 2500 });
+      else window.setTimeout(run, 800);
+    };
+    if (document.readyState === 'complete') afterLoad();
+    else window.addEventListener('load', afterLoad, { once: true });
+  }
+
   function reveal() {
     if (!overlay || reducedMotion) return;
     locked = true;
@@ -583,8 +737,19 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
     try { window.sessionStorage.setItem(storageKey, url); }
     catch (error) { /* Navigation still works when storage is unavailable. */ }
 
+    var pageUrl;
+    try { pageUrl = new URL(url, window.location.href); }
+    catch (error) { pageUrl = null; }
+    var ready = pageUrl ? warmPage(pageUrl) : Promise.resolve();
     window.setTimeout(function () {
-      window.location.assign(url);
+      var navigated = false;
+      var finish = function () {
+        if (navigated) return;
+        navigated = true;
+        window.location.assign(url);
+      };
+      ready.then(finish, finish);
+      window.setTimeout(finish, 700);
     }, 1080);
   }
 
@@ -608,6 +773,12 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
   function bootNavigation() {
     createOverlay();
     document.addEventListener('click', onClick, true);
+    document.addEventListener('pointerover', onNavigationIntent, true);
+    document.addEventListener('pointerdown', onNavigationIntent, true);
+    document.addEventListener('focusin', onNavigationIntent, true);
+    document.addEventListener('touchstart', onNavigationIntent, { capture: true, passive: true });
+    document.addEventListener('pointerout', cancelNavigationIntent, true);
+    scheduleProjectPrefetch();
 
     var shouldReveal = arriving;
     try {

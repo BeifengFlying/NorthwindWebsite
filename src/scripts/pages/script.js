@@ -39,6 +39,23 @@ function syncHomepageNav() {
 window.addEventListener('scroll', syncHomepageNav, { passive: true });
 syncHomepageNav();
 
+function syncSolutionsAccessState() {
+  var passed = false;
+  try { passed = window.localStorage.getItem('northwind-solutions-ac-passed') === 'true'; } catch (error) {}
+  document.querySelectorAll('[data-solutions-status]').forEach(function (element) {
+    element.textContent = passed ? '恭喜通过' : '待 AC';
+    element.classList.toggle('is-passed', passed);
+  });
+  document.querySelectorAll('[data-solutions-title]').forEach(function (element) {
+    element.classList.toggle('is-passed', passed);
+  });
+  var solutionProject = document.querySelector('[data-project-id="solutions"]');
+  if (solutionProject) solutionProject.classList.toggle('is-solution-passed', passed);
+}
+
+syncSolutionsAccessState();
+window.addEventListener('storage', syncSolutionsAccessState);
+
 if (hasMotionLibraries) {
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -60,7 +77,9 @@ if (resetHomepageToTop) window.scrollTo(0, 0);
 gsap.registerPlugin(ScrollTrigger);
 
 const lenis = new Lenis({
-  duration: compactViewport ? 0.8 : 1.2,
+  // Keep the material glide, but reduce catch-up latency so fast scrolling
+  // reveals the next heading while the user is still reading that section.
+  duration: compactViewport ? 0.6 : 0.75,
   smoothWheel: !reduceMotion,
 });
 
@@ -255,20 +274,34 @@ ScrollTrigger.create({
 
 const sections = document.querySelectorAll('section[id]');
 const navLinksAll = document.querySelectorAll('.nav-link');
+let sectionRanges = [];
+let activeSectionId = '';
+function measureSectionRanges() {
+  sectionRanges = Array.from(sections, (section) => ({
+    id: section.id,
+    top: section.offsetTop,
+    bottom: section.offsetTop + section.offsetHeight
+  }));
+}
+measureSectionRanges();
+window.addEventListener('resize', measureSectionRanges, { passive: true });
+window.addEventListener('load', measureSectionRanges, { once: true });
 ScrollTrigger.create({
   trigger: 'body',
   start: 'top top',
   end: 'bottom bottom',
   onUpdate: (self) => {
     const scrollPos = self.scroll() + window.innerHeight / 3;
-    sections.forEach((sec) => {
-      const top = sec.offsetTop;
-      const bottom = top + sec.offsetHeight;
-      if (scrollPos >= top && scrollPos < bottom) {
+    sectionRanges.some((section) => {
+      if (scrollPos >= section.top && scrollPos < section.bottom) {
+        if (activeSectionId === section.id) return true;
+        activeSectionId = section.id;
         navLinksAll.forEach(l => l.classList.remove('active'));
-        const match = document.querySelector('.nav-link[href="#' + sec.id + '"]');
+        const match = document.querySelector('.nav-link[href="#' + section.id + '"]');
         if (match) match.classList.add('active');
+        return true;
       }
+      return false;
     });
   },
 });
@@ -314,6 +347,7 @@ if (!reduceMotion && !compactViewport) {
 (function setupCardShine() {
   const cards = document.querySelectorAll('.explore-card');
   if (!cards.length) return;
+  const exploreSection = document.getElementById('explore');
   const ns = 'http://www.w3.org/2000/svg';
 
   cards.forEach((card, idx) => {
@@ -402,7 +436,7 @@ if (!reduceMotion && !compactViewport) {
     card._shineGrad = grad;
   });
 
-  window.addEventListener('pointermove', function (e) {
+  exploreSection?.addEventListener('pointermove', function (e) {
     if (e.target && e.target.closest && e.target.closest('.option-wheel')) return;
     cards.forEach(function (card) {
       var svg = card.querySelector('.shine-svg');
@@ -587,22 +621,26 @@ if (complexityEls.length > 0) {
   algoTL.to('.complexity-o1', { opacity: 1, scale: 1, y: 0, duration: .5 }, '-=.3');
 }
 
-gsap.to('.algo-edge', {
-  strokeDashoffset: -80,
-  duration: 3,
-  repeat: -1,
-  ease: 'none',
-});
+if (document.querySelector('.algo-edge')) {
+  gsap.to('.algo-edge', {
+    strokeDashoffset: -80,
+    duration: 3,
+    repeat: -1,
+    ease: 'none',
+  });
+}
 
-gsap.to('.algo-node', {
-  scale: 1.2,
-  transformOrigin: 'center',
-  duration: 1.4,
-  stagger: .15,
-  repeat: -1,
-  yoyo: true,
-  ease: 'sine.inOut',
-});
+if (document.querySelector('.algo-node')) {
+  gsap.to('.algo-node', {
+    scale: 1.2,
+    transformOrigin: 'center',
+    duration: 1.4,
+    stagger: .15,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut',
+  });
+}
 
 if (!usesSectionMotion) gsap.utils.toArray('.now-item').forEach(function (item, i) {
   gsap.from(item, {
@@ -771,7 +809,6 @@ if (!hasMotionLibraries) {
   var activeCoverImages = Object.create(null);
   var coverDecodeHandle = null;
   var coverDecodeUsesIdleCallback = false;
-  var activeCoverLayer = 0;
 
   function cancelCoverDecode() {
     if (coverDecodeHandle === null) return;
@@ -869,35 +906,19 @@ if (!hasMotionLibraries) {
   function updateSongUI(s) {
     if (!s) return;
     currentSong = s;
-    var coverLayers = document.querySelectorAll('[data-music-cover-layer]');
-    if (coverLayers.length > 1) {
-      var requestId = ++coverRequestId;
-      var image = activeCoverImages[s.cover];
-      var showCover = function () {
-        if (requestId !== coverRequestId || !image || !image.naturalWidth) return;
-        var currentCover = coverLayers[activeCoverLayer];
-        if (currentCover.dataset.lastValidSrc === s.cover) {
-          currentCover.alt = s.title + ' 封面';
-          return;
-        }
-        var nextLayer = activeCoverLayer === 0 ? 1 : 0;
-        var nextCover = coverLayers[nextLayer];
-        nextCover.src = image.src;
-        nextCover.alt = s.title + ' 封面';
-        nextCover.dataset.lastValidSrc = s.cover;
-        requestAnimationFrame(function () {
-          if (requestId !== coverRequestId) return;
-          nextCover.classList.add('music-cover-image--active');
-          nextCover.removeAttribute('aria-hidden');
-          currentCover.classList.remove('music-cover-image--active');
-          currentCover.setAttribute('aria-hidden', 'true');
-          activeCoverLayer = nextLayer;
-        });
-      };
-      if (image) {
-        var ready = image.decode ? image.decode() : Promise.resolve();
-        Promise.resolve(ready).catch(function () {}).then(showCover);
-      }
+    var requestId = ++coverRequestId;
+    var image = activeCoverImages[s.cover];
+    var notifyMusicCard = function () {
+      if (requestId !== coverRequestId) return;
+      document.dispatchEvent(new CustomEvent('music:song-change', {
+        detail: { title:s.title, artist:s.artist, cover:s.cover },
+      }));
+    };
+    if (image) {
+      var ready = image.decode ? image.decode() : Promise.resolve();
+      Promise.resolve(ready).catch(function () {}).then(notifyMusicCard);
+    } else {
+      notifyMusicCard();
     }
     var setText = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
     setText('musicCurrentTitle', s.title);
