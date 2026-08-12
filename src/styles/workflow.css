@@ -23,7 +23,7 @@
 @media (min-width: 901px) {
   .hero-copy { min-width: 0; }
   .hero-copy h1 { width: min(100%, 550px); max-width: 100%; font-size: clamp(72px, 8vw, 110px); letter-spacing: -.08em; white-space: normal; }
-  .card-swap-stage { min-width: 0; }
+  .card-swap-stage { min-width: 0; translate: 0 88px; }
   .card-swap-container { right: -10%; }
 }
 
@@ -97,6 +97,10 @@ main { position: relative; z-index: 3; }
 /* Restore the card motifs as luminous system diagrams, with a jewel-tone
    accent per stage instead of the original flat color blocks. */
 .workflow-card { --card-accent: #75d4d0; }
+.workflow-card { transition: border-color .16s ease, box-shadow .16s ease; }
+.workflow-card:active { scale: .975; }
+.workflow-card:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.workflow-card[aria-hidden="true"] { pointer-events: none; }
 .card-learning { --card-accent: #e9c46a; background: linear-gradient(145deg, rgba(35,52,54,.94), rgba(10,24,29,.86)); }
 .card-solving { --card-accent: #c7a6ff; background: linear-gradient(145deg, rgba(47,42,69,.94), rgba(12,22,32,.86)); }
 .card-building { --card-accent: #70d8e1; background: linear-gradient(145deg, rgba(22,61,68,.94), rgba(8,26,32,.86)); }

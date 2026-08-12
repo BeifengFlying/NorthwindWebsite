@@ -244,6 +244,7 @@ function setupStepper() {
       indicator.classList.toggle('active', number === current);
       indicator.classList.toggle('complete', number < current);
       indicator.setAttribute('aria-selected', String(number === current));
+      indicator.tabIndex = number === current ? 0 : -1;
     });
     connectors.forEach((connector, index) => connector.classList.toggle('complete', index < current - 1));
     panels.forEach((panel) => {
@@ -263,10 +264,20 @@ function setupStepper() {
     complete.hidden = false;
   }
 
-  indicators.forEach((indicator) => indicator.addEventListener('click', () => {
-    const target = Number(indicator.dataset.stepTarget);
-    if (target !== current) render(target, target > current ? 1 : -1);
-  }));
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      const target = Number(indicator.dataset.stepTarget);
+      if (target !== current) render(target, target > current ? 1 : -1);
+    });
+    indicator.addEventListener('keydown', (event) => {
+      if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? total - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + total) % total;
+      const nextIndicator = indicators[nextIndex];
+      render(nextIndex + 1, nextIndex + 1 > current ? 1 : -1);
+      nextIndicator.focus();
+    });
+  });
   back.addEventListener('click', () => render(current - 1, -1));
   next.addEventListener('click', () => current === total ? finish() : render(current + 1, 1));
   $('#stepRestart').addEventListener('click', () => {

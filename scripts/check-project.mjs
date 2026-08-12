@@ -88,9 +88,12 @@ for (const file of files) {
   ) {
     failures.push(`Protected source asset published: ${relativePath}`);
   }
-  const maxAssetSize = relativePath === path.join('assets', 'scripts', 'pages', 'lanyard.js')
-    ? 4_000_000
-    : 1_500_000;
+  const maxAssetSizes = new Map([
+    [path.join('assets', 'scripts', 'pages', 'lanyard.js'), 4_000_000],
+    // The interactive lanyard's GLB is a runtime asset, not a source file.
+    [path.join('assets', 'lanyard', 'card.glb'), 2_500_000],
+  ]);
+  const maxAssetSize = maxAssetSizes.get(relativePath) ?? 1_500_000;
   if (fileStat.size > maxAssetSize) {
     failures.push(`Asset exceeds ${maxAssetSize / 1_000_000} MB: ${relativePath}`);
   }

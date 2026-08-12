@@ -722,7 +722,7 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
       overlay.className = 'page-wipe';
       document.documentElement.classList.remove('page-transition-active');
       locked = false;
-    }, 980);
+    }, 440);
   }
 
   function navigate(url) {
@@ -732,7 +732,7 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
     NorthwindSound.unlock();
     window.setTimeout(function () {
       NorthwindSound.playPageWhoosh(0);
-    }, 620);
+    }, 250);
 
     try { window.sessionStorage.setItem(storageKey, url); }
     catch (error) { /* Navigation still works when storage is unavailable. */ }
@@ -750,7 +750,7 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
       };
       ready.then(finish, finish);
       window.setTimeout(finish, 700);
-    }, 1080);
+    }, 460);
   }
 
   function onClick(event) {

@@ -185,7 +185,7 @@ html.page-transition-pending::before {
 
 .page-wipe.is-covering .page-wipe__field {
   clip-path: circle(165% at -8% 112%);
-  transition: clip-path 900ms cubic-bezier(.72, 0, .18, 1) 140ms;
+  transition: clip-path 380ms cubic-bezier(.23, 1, .32, 1) 40ms;
 }
 
 .page-wipe.is-revealing .page-wipe__field {
@@ -194,7 +194,7 @@ html.page-transition-pending::before {
 
 .page-wipe.is-revealing.is-leaving .page-wipe__field {
   clip-path: circle(0 at 108% -12%);
-  transition: clip-path 850ms cubic-bezier(.72, 0, .18, 1);
+  transition: clip-path 340ms cubic-bezier(.23, 1, .32, 1);
 }
 
 .page-wipe__band {
@@ -225,9 +225,9 @@ html.page-transition-pending::before {
 .page-wipe.is-covering .page-wipe__band {
   transform: translate3d(0, 0, 0) rotate(-32deg);
   transition-property: transform;
-  transition-duration: 980ms;
+  transition-duration: 420ms;
   transition-delay: 0ms;
-  transition-timing-function: cubic-bezier(.68, 0, .2, 1);
+  transition-timing-function: cubic-bezier(.23, 1, .32, 1);
 }
 
 .page-wipe.is-revealing .page-wipe__band {
@@ -237,9 +237,9 @@ html.page-transition-pending::before {
 .page-wipe.is-revealing.is-leaving .page-wipe__band {
   transform: translate3d(270vw, -170vh, 0) rotate(-32deg);
   transition-property: transform;
-  transition-duration: 850ms;
+  transition-duration: 360ms;
   transition-delay: 0ms;
-  transition-timing-function: cubic-bezier(.72, 0, .22, 1);
+  transition-timing-function: cubic-bezier(.23, 1, .32, 1);
 }
 
 .page-wipe__puzzle {
@@ -272,7 +272,7 @@ html.page-transition-pending::before {
 .page-wipe.is-covering .page-wipe__puzzle {
   transform: translate3d(-50%, -50%, 0) rotate(12deg) scale(1);
   opacity: 1;
-  transition: transform 760ms cubic-bezier(.2, .9, .24, 1) 190ms, opacity 180ms ease-out 190ms;
+  transition: transform 360ms cubic-bezier(.23, 1, .32, 1) 70ms, opacity 140ms ease-out 70ms;
 }
 
 .page-wipe.is-revealing .page-wipe__puzzle {
@@ -283,7 +283,7 @@ html.page-transition-pending::before {
 .page-wipe.is-revealing.is-leaving .page-wipe__puzzle {
   transform: translate3d(105vw, -75vh, 0) rotate(52deg) scale(.65);
   opacity: 0;
-  transition: transform 700ms cubic-bezier(.72, 0, .22, 1), opacity 480ms ease 120ms;
+  transition: transform 320ms cubic-bezier(.23, 1, .32, 1), opacity 180ms ease 50ms;
 }
 
 .page-wipe__spark {
@@ -292,7 +292,7 @@ html.page-transition-pending::before {
   left: 68%;
   width: clamp(34px, 4vw, 54px);
   aspect-ratio: 1;
-  transform: translate3d(-90vw, 60vh, 0) rotate(0) scale(0);
+  transform: translate3d(-90vw, 60vh, 0) rotate(0) scale(.8);
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -315,7 +315,7 @@ html.page-transition-pending::before {
 .page-wipe.is-covering .page-wipe__spark {
   transform: translate3d(0, 0, 0) rotate(28deg) scale(1);
   opacity: 1;
-  transition: transform 760ms cubic-bezier(.18, .9, .22, 1) 280ms, opacity 160ms ease-out 280ms;
+  transition: transform 340ms cubic-bezier(.23, 1, .32, 1) 100ms, opacity 140ms ease-out 100ms;
 }
 
 .page-wipe.is-revealing .page-wipe__spark {
@@ -326,7 +326,7 @@ html.page-transition-pending::before {
 .page-wipe.is-revealing.is-leaving .page-wipe__spark {
   transform: translate3d(75vw, -55vh, 0) rotate(118deg) scale(.2);
   opacity: 0;
-  transition: transform 650ms cubic-bezier(.72, 0, .22, 1) 60ms, opacity 420ms ease 120ms;
+  transition: transform 300ms cubic-bezier(.23, 1, .32, 1), opacity 160ms ease 40ms;
 }
 
 @media (max-width: 700px) {

@@ -1,20 +1,20 @@
 /* Shared motion layer. Elements are only hidden after JavaScript confirms it
    can reveal them, so content remains accessible when scripts are unavailable. */
 :root {
-  --motion-ease: cubic-bezier(.22, 1, .36, 1);
-  --motion-duration: 760ms;
+  --motion-ease: cubic-bezier(.23, 1, .32, 1);
+  --motion-duration: 300ms;
 }
 
 body.motion-ready [data-motion-reveal] {
   opacity: 0;
-  transform: translate3d(0, 32px, 0) scale(.985);
-  transition: opacity var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease), filter 700ms var(--motion-ease);
+  transform: translate3d(0, 16px, 0) scale(.99);
+  transition: opacity var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease), filter 240ms var(--motion-ease);
   transition-delay: var(--motion-delay, 0ms);
 }
 
-body.motion-ready [data-motion-reveal="heading"] { transform: translate3d(0, 40px, 0); }
-body.motion-ready [data-motion-reveal="image"] { filter: blur(9px); transform: translate3d(0, 24px, 0) scale(1.045); }
-body.motion-ready [data-motion-reveal="nav"] { transform: translate3d(0, -24px, 0); }
+body.motion-ready [data-motion-reveal="heading"] { transform: translate3d(0, 22px, 0); }
+body.motion-ready [data-motion-reveal="image"] { filter: blur(4px); transform: translate3d(0, 16px, 0) scale(1.02); }
+body.motion-ready [data-motion-reveal="nav"] { transform: translate3d(0, -12px, 0); }
 body.motion-ready [data-motion-reveal].is-motion-visible { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0) scale(1); will-change: auto; }
 
 /* Fixed navigation bars use translateX(-50%) for centering. Keep that layout
@@ -66,21 +66,21 @@ body.home-section-motion.motion-ready .explore-card[data-motion-reveal].is-motio
 body.home-section-motion.motion-ready .home-motion-item {
   --home-active-delay: 0ms;
   opacity: 0;
-  filter: blur(5px);
-  translate: 0 34px;
-  scale: .985;
-  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), filter 620ms var(--motion-ease) var(--home-active-delay);
+  filter: blur(2px);
+  translate: 0 18px;
+  scale: .99;
+  transition: opacity 300ms var(--motion-ease) var(--home-active-delay), translate 340ms var(--motion-ease) var(--home-active-delay), scale 340ms var(--motion-ease) var(--home-active-delay), filter 240ms var(--motion-ease) var(--home-active-delay);
 }
 
 body.home-section-motion.motion-ready .home-motion-item[data-home-motion="heading"] {
-  translate: 0 44px;
+  translate: 0 24px;
   scale: 1;
 }
 
 body.home-section-motion.motion-ready .home-motion-item[data-home-motion="image"] {
-  filter: blur(10px);
-  translate: 0 28px;
-  scale: 1.035;
+  filter: blur(4px);
+  translate: 0 16px;
+  scale: 1.02;
 }
 
 body.home-section-motion.motion-ready .home-motion-item.is-home-motion-visible {
@@ -96,17 +96,17 @@ body.home-section-motion.motion-ready .home-motion-item.is-home-motion-visible {
    delays apply only to opacity/translate/scale during viewport entry. */
 body.home-section-motion.motion-ready .explore-card.home-motion-item {
   filter: none;
-  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), transform .6s cubic-bezier(.25, .1, .25, 1), box-shadow .6s cubic-bezier(.25, .1, .25, 1);
+  transition: opacity 300ms var(--motion-ease) var(--home-active-delay), translate 340ms var(--motion-ease) var(--home-active-delay), scale 340ms var(--motion-ease) var(--home-active-delay), transform .22s var(--motion-ease), box-shadow .22s ease;
 }
 
 body.home-section-motion.motion-ready .project.home-motion-item {
   filter: none;
-  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), transform .5s var(--ease-out), background .4s ease, box-shadow .4s ease, border-color .4s ease;
+  transition: opacity 300ms var(--motion-ease) var(--home-active-delay), translate 340ms var(--motion-ease) var(--home-active-delay), scale 340ms var(--motion-ease) var(--home-active-delay), transform .2s var(--ease-out), background .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 
 body.home-section-motion.motion-ready .music-group-toggle.home-motion-item {
   filter: none;
-  transition: opacity 680ms var(--motion-ease) var(--home-active-delay), translate 760ms var(--motion-ease) var(--home-active-delay), scale 760ms var(--motion-ease) var(--home-active-delay), color .2s ease, background .2s ease, border-color .2s ease;
+  transition: opacity 300ms var(--motion-ease) var(--home-active-delay), translate 340ms var(--motion-ease) var(--home-active-delay), scale 340ms var(--motion-ease) var(--home-active-delay), color .16s ease, background .16s ease, border-color .16s ease;
 }
 
 body.home-section-motion.motion-ready #creative [data-motion-reveal="text-fade"],

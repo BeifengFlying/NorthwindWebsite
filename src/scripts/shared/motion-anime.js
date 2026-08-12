@@ -95,38 +95,38 @@ import { animate, createTimeline } from 'animejs';
     // Display headings are wayfinding, so they must resolve before a fast
     // scroll can carry the next section past them. Keep the softer pace for
     // secondary pages and use a short, critically-damped settle on the home.
-    const duration = isHomepageHeading ? (compactViewport ? 280 : 360) : (compactViewport ? 420 : 560);
+    const duration = isHomepageHeading ? (compactViewport ? 220 : 280) : (compactViewport ? 260 : 340);
     const headingDelay = isHomepageHeading ? Math.min(delay, compactViewport ? 24 : 36) : delay;
     const common = { opacity: [0, 1], duration, delay: headingDelay, ease: 'out(5)' };
 
     if (variant === 'hero-stretch') {
       timeline.add(element, {
         ...common,
-        y: [compactViewport ? 46 : 90, 0],
-        scaleX: [1.06, 1],
-        scaleY: [0.42, 1],
-        duration: isHomepageHeading ? (compactViewport ? 340 : 440) : (compactViewport ? 560 : 720),
+        y: [compactViewport ? 18 : 28, 0],
+        scaleX: [1.015, 1],
+        scaleY: [.96, 1],
+        duration: isHomepageHeading ? (compactViewport ? 240 : 300) : (compactViewport ? 280 : 360),
         ease: 'out(4)'
       });
       return;
     }
     if (variant === 'scale-reveal') {
-      timeline.add(element, { ...common, y: [compactViewport ? 28 : 44, 0], scaleX: [0.78, 1], scaleY: [1.16, 1], transformOrigin: 'left bottom' });
+      timeline.add(element, { ...common, y: [compactViewport ? 14 : 22, 0], scale: [.985, 1], transformOrigin: 'left bottom' });
       return;
     }
     if (variant === 'side-sweep') {
-      timeline.add(element, { ...common, x: [compactViewport ? -24 : -48, 0], skewX: [-5, 0], scaleX: [0.94, 1], transformOrigin: 'left center' });
+      timeline.add(element, { ...common, x: [compactViewport ? -12 : -20, 0], scaleX: [.99, 1], transformOrigin: 'left center' });
       return;
     }
     if (variant === 'tracking') {
-      timeline.add(element, { ...common, y: [compactViewport ? 20 : 32, 0], letterSpacing: ['0.055em', '0em'], scaleY: [0.86, 1] });
+      timeline.add(element, { ...common, y: [compactViewport ? 12 : 18, 0], scaleY: [.98, 1] });
       return;
     }
     if (variant === 'rise') {
-      timeline.add(element, { ...common, y: [compactViewport ? 28 : 54, 0], scaleY: [0.72, 1], scaleX: [1.025, 1], transformOrigin: 'center bottom' });
+      timeline.add(element, { ...common, y: [compactViewport ? 14 : 22, 0], scaleY: [.98, 1], scaleX: [1.01, 1], transformOrigin: 'center bottom' });
       return;
     }
-    timeline.add(element, { ...common, y: [compactViewport ? 18 : 30, 0], scale: [0.98, 1] });
+    timeline.add(element, { ...common, y: [compactViewport ? 10 : 16, 0], scale: [.99, 1] });
   }
 
   function setupHeroScrollStretch() {
@@ -135,10 +135,10 @@ import { animate, createTimeline } from 'animejs';
     if (!hero || !titleLines.length || reducedMotion) return;
 
     const scrollMotion = animate(titleLines, {
-      y: [0, compactViewport ? 28 : 64],
-      scaleY: [1, compactViewport ? 1.16 : 1.28],
-      scaleX: [1, compactViewport ? 0.98 : 0.94],
-      opacity: [1, 0.16],
+      y: [0, compactViewport ? 14 : 28],
+      scaleY: [1, compactViewport ? 1.05 : 1.1],
+      scaleX: [1, .985],
+      opacity: [1, .42],
       ease: 'linear',
       autoplay: false
     });
@@ -190,16 +190,16 @@ import { animate, createTimeline } from 'animejs';
       timeline.add(element, {
         opacity: [0, 1],
         filter: ['blur(4px)', 'blur(0px)'],
-        duration: compactViewport ? 420 : 560,
+        duration: compactViewport ? 220 : 300,
         delay
       });
     } else {
       timeline.add(element, {
         opacity: [0, 1],
-        y: [compactViewport ? 18 : 24, 0],
+        y: [compactViewport ? 12 : 18, 0],
         scale: type === 'image' ? [1.025, 1] : [0.99, 1],
-        filter: type === 'image' ? ['blur(8px)', 'blur(0px)'] : ['blur(4px)', 'blur(0px)'],
-        duration: compactViewport ? 420 : 560,
+        filter: type === 'image' ? ['blur(4px)', 'blur(0px)'] : ['blur(2px)', 'blur(0px)'],
+        duration: compactViewport ? 220 : 300,
         delay,
         // Anime temporarily owns transform during the reveal. Returning it
         // to CSS afterward restores the card's fan rotation and offsets.

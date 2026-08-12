@@ -66,28 +66,28 @@
         <div class="stepper-count"><span id="stepCurrent">01</span> / <span id="stepTotal">04</span></div>
       </div>
       <div class="step-indicators" role="tablist" aria-label="LM Studio 部署步骤">
-        <button class="step-indicator active" type="button" role="tab" aria-selected="true" aria-controls="stepPanel1" data-step-target="1"><span>01</span><b>环境配置</b></button>
+        <button class="step-indicator active" id="stepTab1" type="button" role="tab" aria-selected="true" aria-controls="stepPanel1" data-step-target="1"><span>01</span><b>环境配置</b></button>
         <span class="step-connector" aria-hidden="true"></span>
-        <button class="step-indicator" type="button" role="tab" aria-selected="false" aria-controls="stepPanel2" data-step-target="2"><span>02</span><b>下载模型</b></button>
+        <button class="step-indicator" id="stepTab2" type="button" role="tab" aria-selected="false" aria-controls="stepPanel2" data-step-target="2" tabindex="-1"><span>02</span><b>下载模型</b></button>
         <span class="step-connector" aria-hidden="true"></span>
-        <button class="step-indicator" type="button" role="tab" aria-selected="false" aria-controls="stepPanel3" data-step-target="3"><span>03</span><b>加载模型</b></button>
+        <button class="step-indicator" id="stepTab3" type="button" role="tab" aria-selected="false" aria-controls="stepPanel3" data-step-target="3" tabindex="-1"><span>03</span><b>加载模型</b></button>
         <span class="step-connector" aria-hidden="true"></span>
-        <button class="step-indicator" type="button" role="tab" aria-selected="false" aria-controls="stepPanel4" data-step-target="4"><span>04</span><b>参数调节</b></button>
+        <button class="step-indicator" id="stepTab4" type="button" role="tab" aria-selected="false" aria-controls="stepPanel4" data-step-target="4" tabindex="-1"><span>04</span><b>参数调节</b></button>
       </div>
       <div class="step-viewport">
-        <article class="step-panel active" id="stepPanel1" role="tabpanel" data-step-panel="1">
+        <article class="step-panel active" id="stepPanel1" role="tabpanel" aria-labelledby="stepTab1" data-step-panel="1">
           <div class="step-copy"><p class="step-kicker">步骤 01 / 先准备运行环境</p><h3>环境配置</h3><p>LM Studio 提供了一个可视化本地大模型运行环境，降低模型部署门槛，先确认硬件、运行时和模型格式，再开始下载，后面排查问题会轻松很多</p><div class="step-tags"><span>硬件</span><span>LM Studio</span><span>模型格式</span><span>运行环境</span></div></div>
           <div class="step-diagram"><div class="diagram-node"><b>01</b><span>硬件</span><small>先看内存</small></div><div class="diagram-arrow">→</div><div class="diagram-node"><b>02</b><span>运行环境</span><small>桌面应用</small></div><div class="diagram-arrow">→</div><div class="diagram-node diagram-node--accent"><b>03</b><span>准备完成</span><small>本地推理</small></div></div>
         </article>
-        <article class="step-panel" id="stepPanel2" role="tabpanel" data-step-panel="2" hidden>
+        <article class="step-panel" id="stepPanel2" role="tabpanel" aria-labelledby="stepTab2" data-step-panel="2" hidden>
           <div class="step-copy"><p class="step-kicker">步骤 02 / 选择模型权重</p><h3>下载模型</h3><p>从 HuggingFace 或 LM Studio 的模型目录选择模型和参数规模，再判断 GGUF、MLX 与量化版本，文件大小决定能否装下，量化等级决定速度和回答质量的平衡</p><div class="step-tags"><span>HuggingFace</span><span>GGUF</span><span>MLX</span><span>量化</span></div></div>
           <div class="download-checklist"><div><span>01</span><strong>选择模型</strong><small>先看任务，不先看参数</small></div><div><span>02</span><strong>选择规模</strong><small>7B 是容易起步的尺度</small></div><div><span>03</span><strong>选择量化</strong><small>Q4 / Q5 / Q8</small></div><div><span>04</span><strong>下载文件</strong><small>留出缓存空间</small></div></div>
         </article>
-        <article class="step-panel" id="stepPanel3" role="tabpanel" data-step-panel="3" hidden>
+        <article class="step-panel" id="stepPanel3" role="tabpanel" aria-labelledby="stepTab3" data-step-panel="3" hidden>
           <div class="step-copy"><p class="step-kicker">步骤 03 / 加载到内存</p><h3>加载模型</h3><p>加载模型本质是将模型权重放入内存或显存，让计算设备能够完成推理，GPU Offload 越充分，通常响应越快，但可用显存也会成为最先遇到的边界</p><div class="step-tags"><span>内存</span><span>GPU Offload</span><span>上下文</span></div></div>
           <div class="load-meter"><div class="meter-label"><span>模型权重</span><b>7.2 / 8 GB</b></div><div class="meter-track"><span></span></div><div class="load-stats"><span>CPU <b>18%</b></span><span>GPU <b>92%</b></span><span>状态 <b>就绪</b></span></div></div>
         </article>
-        <article class="step-panel" id="stepPanel4" role="tabpanel" data-step-panel="4" hidden>
+        <article class="step-panel" id="stepPanel4" role="tabpanel" aria-labelledby="stepTab4" data-step-panel="4" hidden>
           <div class="step-copy"><p class="step-kicker">步骤 04 / 调整使用体验</p><h3>参数调节</h3><p>参数没有一组永远正确的答案，先用稳定的默认值跑通，再针对任务调整，我的经验是先调 Temperature 和 Context Length，再处理采样细节</p><div class="step-tags"><span>Temperature</span><span>Context Length</span><span>Top-p</span><span>Repeat Penalty</span></div></div>
           <div class="parameter-list"><label><span>Temperature <b>0.30</b></span><input type="range" min="0" max="1" step="0.05" value="0.3" data-param="temperature"></label><label><span>Context Length <b>8K</b></span><input type="range" min="2" max="32" step="2" value="8" data-param="context"></label><label><span>Repeat Penalty <b>1.10</b></span><input type="range" min="1" max="1.3" step="0.01" value="1.1" data-param="repeat"></label></div>
         </article>
