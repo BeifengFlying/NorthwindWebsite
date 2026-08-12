@@ -4,6 +4,7 @@
   min-height: 700px;
   overflow: visible;
   isolation: isolate;
+  z-index: 20;
 }
 
 .lanyard-wrapper {
@@ -14,9 +15,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(1);
+  transform: translateX(22vw) scale(1);
   transform-origin: center;
-  overflow: visible;
 }
 
 .lanyard-wrapper canvas {
@@ -28,17 +28,18 @@
 
 .lanyard-scene__hint {
   position: absolute;
-  top: 205px;
-  right: 32px;
+  top: 214px;
+  right: clamp(18px, 3vw, 48px);
   z-index: 4;
   display: grid;
-  gap: 3px;
-  color: rgba(17, 17, 17, .48);
-  font: 10px/1.4 monospace;
-  letter-spacing: .1em;
+  gap: 4px;
+  color: rgba(17, 17, 17, .56);
+  font: 10px/1.35 monospace;
+  letter-spacing: .12em;
   pointer-events: none;
   text-align: right;
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .home-sticker-layer {
@@ -317,29 +318,6 @@
   filter: drop-shadow(0 5px 8px rgba(17, 17, 17, .12));
 }
 
-.profile-card-back-sticker {
-  position: absolute;
-  top: 35.5%;
-  left: 13%;
-  z-index: 3;
-}
-
-.profile-card-3d__face .profile-card-back-sticker--static {
-  position: absolute;
-  top: 35.5%;
-  left: 13%;
-  z-index: 3;
-  width: 74%;
-  height: auto;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-.detached-back-sticker {
-  z-index: 180;
-  pointer-events: auto;
-}
-
 .home-sticker-position {
   position: absolute;
   transform: translateZ(0);
@@ -407,9 +385,9 @@
 
 @media (max-width: 768px) {
   .lanyard-scene { min-height: 660px; }
-  .lanyard-wrapper { min-height: 660px; }
+  .lanyard-wrapper { min-height: 660px; transform: scale(1); }
   .lanyard-scene__hint {
-    top: 126px;
+    top: 132px;
     right: 24px;
     font-size: 9px;
   }

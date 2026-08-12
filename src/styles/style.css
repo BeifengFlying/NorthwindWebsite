@@ -686,8 +686,11 @@ body.language-switching footer { opacity: .18; }
    ABOUT / WHO I AM
    -------------------------------- */
 .about {
+  z-index: 30;
   min-height: 85vh;
   display: flex; align-items: center;
+  overflow: visible;
+  isolation: isolate;
   background: transparent;
   margin-top: clamp(120px, 14vh, 220px);
   padding: 40px 0;
@@ -727,7 +730,7 @@ body.language-switching footer { opacity: .18; }
   right: calc(50% - 50vw);
   bottom: auto;
   left: calc(50% - 50vw);
-  z-index: 2;
+  z-index: 20;
   width: auto;
   height: calc(100% + 100vh + 80px);
   min-width: 0;
@@ -913,6 +916,7 @@ body.language-switching footer { opacity: .18; }
    THE PATH BENEATH OUR FEET
    -------------------------------- */
 .path-section {
+  z-index: 1;
   min-height: 0;
   padding: 112px 0 140px;
   overflow: hidden;
@@ -1819,7 +1823,7 @@ body.language-switching footer { opacity: .18; }
   width: 100%;
   height: 80px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
 }
 
@@ -1929,11 +1933,12 @@ body.language-switching footer { opacity: .18; }
 
 
 
-  .about .grid { display: flex; flex-direction: column; gap: 40px; }
+  .about .grid { display: flex; min-height: 980px; flex-direction: column; gap: 40px; }
   .about-left { padding-top: 72px; }
   .about-right { transform: translateY(42px); }
   .about-right { padding-top: 0; }
-  .about { min-height: auto; margin-top: 96px; padding: 88px 0; }
+  .about { min-height: 1120px; margin-top: 96px; padding: 88px 0; }
+  .about-lanyard-mount { top: 150px; height: 970px; }
   .about-title { font-size: 14vw; }
   .about-card-intro { margin-bottom: 10px; }
 
