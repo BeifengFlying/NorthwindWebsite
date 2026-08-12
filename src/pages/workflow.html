@@ -14,13 +14,24 @@
 <link rel="stylesheet" href="assets/styles/motion-system.css">
 <link rel="stylesheet" href="assets/styles/legal.css">
 <link rel="stylesheet" href="assets/styles/i18n.css?v=responsive-20260801-1">
+<link rel="stylesheet" href="assets/scripts/shared/nav-glass.css?v=glasssurface-nav-20260812-1">
 <script src="assets/scripts/shared/i18n.js?v=nav-20260801-4" defer></script>
-<script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-6" defer></script>
-<script src="assets/scripts/shared/motion-system.js" defer></script>
+<script src="assets/scripts/shared/nav-glass.js?v=glasssurface-nav-20260812-1" defer></script>
+<script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-7" defer></script>
+<script src="assets/scripts/shared/motion-anime.js?v=anime-20260812-2" defer></script>
 </head>
 <body>
+  <div class="workflow-background" aria-hidden="true">
+    <div class="workflow-stars" aria-hidden="true">
+      <span class="workflow-stars-layer stars-near"></span>
+      <span class="workflow-stars-layer stars-mid"></span>
+      <span class="workflow-stars-layer stars-far"></span>
+    </div>
+    <div class="workflow-hyperspeed" id="workflowHyperspeed"></div>
+  </div>
   <div class="workflow-noise" aria-hidden="true"></div>
   <header class="workflow-nav">
+    <div class="nav__glass" data-nav-glass-root aria-hidden="true"></div>
     <a href="index.html#projects" class="workflow-logo">Flying<span>.</span></a>
     <nav class="workflow-nav-links" aria-label="工作流导航"><a href="#loop">闭环</a><a href="#process">流程</a><a href="#algorithm">题解</a><a href="#archive">资产</a></nav>
     <div class="workflow-nav-right"><a href="index.html#projects" class="workflow-back"><span>↙</span> 返回作品</a><a href="https://github.com/BeifengFlying" class="workflow-github" target="_blank" rel="noopener" aria-label="在 GitHub 打开作者主页"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.14.68-3.8-1.33-3.8-1.33-.5-1.27-1.22-1.61-1.22-1.61-1-.68.08-.67.08-.67 1.1.08 1.68 1.14 1.68 1.14.98 1.67 2.58 1.19 3.21.91.1-.71.38-1.2.7-1.48-2.51-.28-5.15-1.25-5.15-5.59 0-1.23.44-2.24 1.15-3.03-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.09 1.16a10.72 10.72 0 0 1 5.63 0c2.15-1.46 3.09-1.16 3.09-1.16.61 1.55.23 2.7.11 2.98.71.79 1.15 1.8 1.15 3.03 0 4.35-2.65 5.3-5.17 5.58.39.34.74 1.02.74 2.06v3.06c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/></svg> GitHub</a></div>
@@ -28,7 +39,6 @@
 
   <main>
     <section class="workflow-hero">
-      <div class="hero-rings" aria-hidden="true"></div>
       <div class="hero-inner page-width">
         <div class="hero-copy"><p class="kicker">个人系统 / 2026</p><h1>MY<br><em>WORKFLOW</em></h1><p class="hero-lead">从想法到作品，构建个人技术资产体系</p><p class="hero-intro">算法刷题、项目开发、技术学习、内容创作，<br>最后都沉淀成可以继续使用的个人资产</p><a class="scroll-cue" href="#loop"><span>↓</span> 查看工作闭环</a></div>
         <div class="card-swap-stage" aria-label="个人工作流循环">
@@ -60,6 +70,7 @@
   </main>
   <footer class="workflow-footer"><a href="index.html#projects" class="workflow-logo">Flying<span>.</span></a><span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span><a href="journey.html">查看 Web 项目开发旅程 ↗</a></footer>
   <script src="assets/scripts/shared/border-glow.js" defer></script>
+  <script src="assets/scripts/pages/workflow-hyperspeed-loader.js" defer></script>
   <script src="assets/scripts/pages/workflow.js" defer></script>
 </body>
 </html>

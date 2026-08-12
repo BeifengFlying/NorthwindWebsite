@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2048" viewBox="0 0 720 1024">
+  <defs>
+    <linearGradient id="front-paper-en" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset=".58" stop-color="#f5f4ee"/>
+      <stop offset="1" stop-color="#e7eef9"/>
+    </linearGradient>
+    <linearGradient id="front-band-en" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff70e8"/>
+      <stop offset=".48" stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ffd84d"/>
+    </linearGradient>
+    <pattern id="micro-grid-en" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#111" stroke-opacity=".035"/>
+    </pattern>
+  </defs>
+
+  <rect width="720" height="1024" rx="28" fill="url(#front-paper-en)"/>
+  <rect width="720" height="1024" rx="28" fill="url(#micro-grid-en)"/>
+  <rect width="720" height="18" fill="url(#front-band-en)"/>
+  <rect x="46" y="54" width="628" height="1" fill="#111" fill-opacity=".18"/>
+  <text x="48" y="94" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="4">NORTHWIND / PERSONAL ID</text>
+  <text x="672" y="94" text-anchor="end" fill="#111" fill-opacity=".42" font-family="monospace" font-size="17">NO. 01</text>
+
+  <text x="48" y="202" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="800">NORTHWIND</text>
+  <text x="52" y="252" fill="#111" fill-opacity=".74" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="650">Computer Science &amp; Technology</text>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#111">
+    <g transform="translate(48 293)"><rect width="112" height="34" rx="4" fill="#111" fill-opacity=".07" stroke="#111" stroke-opacity=".12"/><text x="56" y="23" text-anchor="middle">ALGORITHMS</text></g>
+    <g transform="translate(170 293)"><rect width="118" height="34" rx="4" fill="#111" fill-opacity=".07" stroke="#111" stroke-opacity=".12"/><text x="59" y="23" text-anchor="middle">WEB DEV</text></g>
+    <g transform="translate(298 293)"><rect width="164" height="34" rx="4" fill="#111" fill-opacity=".07" stroke="#111" stroke-opacity=".12"/><text x="82" y="23" text-anchor="middle">CREATIVE CODING</text></g>
+  </g>
+
+  <rect x="48" y="360" width="624" height="2" fill="#111" fill-opacity=".12"/>
+  <text x="48" y="401" fill="#111" fill-opacity=".46" font-family="monospace" font-size="15" font-weight="700" letter-spacing="3">CAPABILITIES</text>
+  <text x="380" y="401" fill="#111" fill-opacity=".46" font-family="monospace" font-size="15" font-weight="700" letter-spacing="3">LANGUAGES</text>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="600" fill="#111">
+    <text x="48" y="449">Algorithms</text>
+    <text x="48" y="501">Photography</text>
+    <text x="48" y="553">Video Editing</text>
+    <text x="380" y="449">C++</text>
+    <text x="380" y="501">Python</text>
+    <text x="380" y="553">HTML/CSS</text>
+    <text x="380" y="605">JavaScript</text>
+  </g>
+
+  <g fill="#111" transform="translate(222 431)">
+    <rect width="18" height="18"/><rect x="27" width="18" height="18" opacity=".13"/><rect x="54" width="18" height="18" opacity=".13"/><rect x="81" width="18" height="18" opacity=".13"/><rect x="108" width="18" height="18" opacity=".13"/>
+    <g transform="translate(0 52)"><rect width="18" height="18"/><rect x="27" width="18" height="18"/><rect x="54" width="18" height="18" opacity=".13"/><rect x="81" width="18" height="18" opacity=".13"/><rect x="108" width="18" height="18" opacity=".13"/></g>
+    <g transform="translate(0 104)"><rect width="18" height="18"/><rect x="27" width="18" height="18"/><rect x="54" width="18" height="18"/><rect x="81" width="18" height="18" opacity=".13"/><rect x="108" width="18" height="18" opacity=".13"/></g>
+  </g>
+
+  <g fill="#111" transform="translate(548 431)">
+    <rect width="18" height="18"/><rect x="27" width="18" height="18"/><rect x="54" width="18" height="18" opacity=".13"/><rect x="81" width="18" height="18" opacity=".13"/><rect x="108" width="18" height="18" opacity=".13"/>
+    <g transform="translate(0 52)"><rect width="18" height="18"/><rect x="27" width="18" height="18" opacity=".13"/><rect x="54" width="18" height="18" opacity=".13"/><rect x="81" width="18" height="18" opacity=".13"/><rect x="108" width="18" height="18" opacity=".13"/></g>
+    <g transform="translate(0 104)"><rect width="18" height="18"/><rect x="27" width="18" height="18" opacity=".13"/><rect x="54" width="18" height="18" opacity=".13"/><rect x="81" width="18" height="18" opacity=".13"/><rect x="108" width="18" height="18" opacity=".13"/></g>
+    <g transform="translate(0 156)"><rect width="18" height="18"/><rect x="27" width="18" height="18" opacity=".13"/><rect x="54" width="18" height="18" opacity=".13"/><rect x="81" width="18" height="18" opacity=".13"/><rect x="108" width="18" height="18" opacity=".13"/></g>
+  </g>
+
+  <rect x="48" y="660" width="624" height="2" fill="#111" fill-opacity=".12"/>
+  <text x="48" y="704" fill="#111" fill-opacity=".46" font-family="monospace" font-size="15" font-weight="700" letter-spacing="3">CURRENT EXPLORATION</text>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="600" fill="#111" fill-opacity=".72">
+    <text x="48" y="754">Competitive Programming</text>
+    <text x="48" y="790">Web Development · Digital Creation</text>
+  </g>
+  <circle cx="390" cy="784" r="5" fill="#ff70e8"/><circle cx="415" cy="784" r="5" fill="#ff8a3d"/><circle cx="440" cy="784" r="5" fill="#ffd84d"/>
+
+  <g transform="translate(48 846)" fill="#111">
+    <rect width="5" height="50"/><rect x="12" width="2" height="50"/><rect x="20" width="8" height="50"/><rect x="35" width="3" height="50"/><rect x="44" width="10" height="50"/><rect x="62" width="3" height="50"/><rect x="72" width="6" height="50"/><rect x="86" width="2" height="50"/><rect x="96" width="11" height="50"/><rect x="116" width="4" height="50"/><rect x="128" width="7" height="50"/><rect x="142" width="2" height="50"/><rect x="150" width="9" height="50"/><rect x="168" width="4" height="50"/><rect x="178" width="11" height="50"/><rect x="198" width="3" height="50"/><rect x="208" width="7" height="50"/><rect x="224" width="2" height="50"/><rect x="232" width="10" height="50"/><rect x="249" width="4" height="50"/><rect x="260" width="8" height="50"/><rect x="276" width="3" height="50"/><rect x="286" width="9" height="50"/>
+  </g>
+  <text x="48" y="950" fill="#111" fill-opacity=".5" font-family="monospace" font-size="16" letter-spacing="2">BE CURIOUS / KEEP MOVING</text>
+</svg>

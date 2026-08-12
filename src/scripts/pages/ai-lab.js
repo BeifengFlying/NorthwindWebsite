@@ -2,12 +2,160 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 document.body.classList.add('motion-ready');
 
+function setupHorizontalCanvas() {
+  const canvas = $('#labCanvas');
+  const scroller = document.scrollingElement || document.documentElement;
+  if (!canvas || !scroller) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) document.body.classList.add('reduce-motion');
+  let drag = null;
+  let inertiaFrame = 0;
+  let stretchFrame = 0;
+  let lastScrollLeft = scroller.scrollLeft;
+  let scrollVelocity = 0;
+  const stretchTargets = $$('.hero-copy h1, .section-heading h2, .future-layout h2');
+  stretchTargets.forEach(element => element.classList.add('lab-scroll-stretch-target'));
+
+  const getMaxScroll = () => Math.max(0, scroller.scrollWidth - window.innerWidth);
+  const clamp = value => Math.max(0, Math.min(getMaxScroll(), value));
+  const advanceHorizontal = delta => {
+    scroller.scrollLeft = clamp(scroller.scrollLeft + delta);
+  };
+  const rubberband = (value, dimension) => (value * dimension * 0.55) / (dimension + 0.55 * Math.abs(value));
+  const isInteractive = target => target.closest('a, button, input, textarea, select, .scroll-stack-scroller, [data-horizontal-ignore]');
+  const ignoresHorizontalWheel = target => target.closest('.scroll-stack-scroller, [data-horizontal-ignore]');
+  const getScrollablePanel = target => {
+    const panel = target.closest('.lab-panel:not(.lab-panel--hero)');
+    if (!panel || target.closest('.scroll-stack-scroller')) return null;
+    const maxScroll = panel.scrollHeight - panel.clientHeight;
+    return maxScroll > 1 ? { panel, maxScroll } : null;
+  };
+  const stopInertia = () => {
+    if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
+    inertiaFrame = 0;
+  };
+
+  const beginDrag = (event, pointerId) => {
+    if (isInteractive(event.target) || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    stopInertia();
+    if (pointerId !== null) canvas.setPointerCapture?.(pointerId);
+    drag = { pointerId, startX: event.clientX, startScroll: scroller.scrollLeft, history: [{ x: event.clientX, time: performance.now() }] };
+    document.body.classList.add('is-horizontal-dragging');
+  };
+
+  const moveDrag = event => {
+    if (!drag || drag.pointerId !== (event.pointerId ?? null)) return;
+    const raw = drag.startScroll - (event.clientX - drag.startX);
+    const max = getMaxScroll();
+    scroller.scrollLeft = raw < 0 ? rubberband(raw, window.innerWidth) : raw > max ? max + rubberband(raw - max, window.innerWidth) : raw;
+    const now = performance.now();
+    drag.history.push({ x: event.clientX, time: now });
+    if (drag.history.length > 5) drag.history.shift();
+  };
+
+  function startInertia(velocity) {
+    if (reducedMotion || Math.abs(velocity) < 0.08) return;
+    let currentVelocity = velocity;
+    const tick = () => {
+      currentVelocity *= 0.93;
+      const next = scroller.scrollLeft + currentVelocity;
+      const bounded = clamp(next);
+      scroller.scrollLeft = bounded;
+      if (Math.abs(currentVelocity) > 0.1 && bounded > 0 && bounded < getMaxScroll()) inertiaFrame = requestAnimationFrame(tick);
+      else inertiaFrame = 0;
+    };
+    inertiaFrame = requestAnimationFrame(tick);
+  }
+
+  function updateStretch() {
+    stretchFrame = 0;
+    scrollVelocity *= 0.78;
+    const amount = reducedMotion ? 0 : Math.min(0.065, Math.abs(scrollVelocity) / 1500);
+    stretchTargets.forEach(element => {
+      element.style.transform = amount > 0.002 ? `translateZ(0) scaleX(${(1 + amount).toFixed(3)})` : 'translateZ(0)';
+    });
+    if (Math.abs(scrollVelocity) > 0.1) stretchFrame = requestAnimationFrame(updateStretch);
+  }
+
+  scroller.addEventListener('scroll', () => {
+    const nextScrollLeft = scroller.scrollLeft;
+    scrollVelocity = nextScrollLeft - lastScrollLeft;
+    lastScrollLeft = nextScrollLeft;
+    if (!reducedMotion && !stretchFrame) stretchFrame = requestAnimationFrame(updateStretch);
+  }, { passive: true });
+
+  canvas.addEventListener('pointerdown', event => {
+    beginDrag(event, event.pointerId);
+  });
+
+  canvas.addEventListener('pointermove', moveDrag);
+  canvas.addEventListener('mousedown', event => { if (!drag) beginDrag(event, null); });
+  window.addEventListener('mousemove', event => { if (drag?.pointerId === null) moveDrag(event); });
+
+  const finishDrag = event => {
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    const history = drag.history;
+    const previous = history[Math.max(0, history.length - 2)] || history[0];
+    const latest = history[history.length - 1];
+    const elapsed = Math.max(1, latest.time - previous.time);
+    const velocity = (previous.x - latest.x) / elapsed * 16;
+    const target = clamp(scroller.scrollLeft);
+    scroller.scrollLeft = target;
+    startInertia(velocity);
+    drag = null;
+    document.body.classList.remove('is-horizontal-dragging');
+  };
+
+  canvas.addEventListener('pointerup', finishDrag);
+  canvas.addEventListener('pointercancel', finishDrag);
+  window.addEventListener('mouseup', event => { if (drag?.pointerId === null) finishDrag(event); });
+  window.addEventListener('wheel', event => {
+    if (event.ctrlKey || ignoresHorizontalWheel(event.target)) return;
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+
+    const panelState = getScrollablePanel(event.target);
+    if (panelState) {
+      const { panel, maxScroll } = panelState;
+      const currentPanelScroll = panel.scrollTop;
+      const nextPanelScroll = Math.max(0, Math.min(maxScroll, currentPanelScroll + event.deltaY));
+      const consumedDelta = nextPanelScroll - currentPanelScroll;
+      panel.scrollTop = nextPanelScroll;
+      const remainingDelta = event.deltaY - consumedDelta;
+      if (Math.abs(remainingDelta) > 0.5) advanceHorizontal(remainingDelta);
+      event.preventDefault();
+      return;
+    }
+
+    event.preventDefault();
+    advanceHorizontal(event.deltaY);
+  }, { passive: false });
+
+  const nav = $('.lab-nav');
+  nav?.addEventListener('pointermove', event => {
+    const rect = nav.getBoundingClientRect();
+    nav.style.setProperty('--nav-glass-x', `${((event.clientX - rect.left) / rect.width * 100).toFixed(1)}%`);
+    nav.style.setProperty('--nav-glass-y', `${((event.clientY - rect.top) / rect.height * 100).toFixed(1)}%`);
+  });
+
+  $$('a[href^="#"]', document.querySelector('.lab-nav')).forEach(link => {
+    link.addEventListener('click', event => {
+      const target = $(link.getAttribute('href'));
+      if (!target) return;
+      event.preventDefault();
+      scroller.scrollTo({ left: Math.max(0, target.offsetLeft - 24), behavior: reducedMotion ? 'auto' : 'smooth' });
+    });
+  });
+}
+
+setupHorizontalCanvas();
+
 const labSky = $('.lab-sky');
 if (labSky && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   let skyFrame = 0;
   const updateLabSky = () => {
     skyFrame = 0;
-    const shift = Math.max(-28, Math.min(28, window.scrollY * 0.02));
+    const shift = Math.max(-28, Math.min(28, (document.scrollingElement?.scrollLeft || 0) * 0.02));
     labSky.style.setProperty('--lab-shift', `${shift.toFixed(2)}px`);
   };
   const scheduleLabSky = () => {
@@ -17,28 +165,18 @@ if (labSky && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   updateLabSky();
 }
 
-let revealObserver;
-
 function setupRevealAnimations() {
   const targets = $$('.reveal-on-scroll:not([data-reveal-ready])');
   if (!targets.length) return;
-  if (!('IntersectionObserver' in window)) {
-    targets.forEach((element) => element.classList.add('is-visible'));
-    return;
-  }
-  if (!revealObserver) {
-    revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        revealObserver.unobserve(entry.target);
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-  }
   targets.forEach((element, index) => {
     element.dataset.revealReady = 'true';
     element.style.setProperty('--reveal-delay', `${Math.min(index * 55, 275)}ms`);
-    revealObserver.observe(element);
+    if (window.NorthwindMotion) {
+      window.NorthwindMotion.register(element.parentElement || document);
+      window.NorthwindMotion.observe(element);
+    } else {
+      element.classList.add('is-visible');
+    }
   });
 }
 

@@ -32,3 +32,57 @@ a { color: inherit; }
     justify-content: center;
   }
 }
+
+.journey-hero {
+  isolation: isolate;
+}
+
+.journey-grid-motion {
+  position: absolute;
+  inset: -24vh -18vw -12vh;
+  z-index: -3;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: .64;
+  filter: grayscale(1) contrast(1.08);
+}
+
+.journey-grid-motion .intro {
+  height: 100%;
+}
+
+.journey-grid-motion .gridMotion-container {
+  width: 150vw;
+  height: 150vh;
+}
+
+.journey-grid-motion .row__item-inner {
+  border-radius: 8px;
+}
+
+.journey-grid-motion .row__item-img {
+  opacity: .82;
+}
+
+.journey-grid-motion-scrim {
+  position: absolute;
+  inset: -24vh -18vw -12vh;
+  z-index: -2;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(247,245,238,.96) 0%, rgba(247,245,238,.66) 31%, rgba(247,245,238,.14) 62%, rgba(247,245,238,.72) 100%), linear-gradient(180deg, rgba(247,245,238,.8) 0%, rgba(247,245,238,.08) 48%, rgba(247,245,238,.86) 100%);
+}
+
+.journey-hero .scroll-cue {
+  z-index: 1;
+}
+
+@media (max-width: 760px) {
+  .journey-grid-motion,
+  .journey-grid-motion-scrim {
+    inset: -18vh -62vw -8vh;
+  }
+
+  .journey-grid-motion {
+    opacity: .55;
+  }
+}

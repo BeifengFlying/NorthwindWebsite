@@ -27,7 +27,16 @@ function resolveRequestPath(url = '/') {
 }
 
 const server = createServer(async (request, response) => {
-  let filePath = resolveRequestPath(request.url);
+  let filePath;
+  try {
+    filePath = resolveRequestPath(request.url);
+  } catch {
+    response.statusCode = 400;
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    response.setHeader('Cache-Control', 'no-store');
+    response.end('Bad Request');
+    return;
+  }
   try {
     if (!filePath || !(await stat(filePath)).isFile()) throw new Error('Not found');
   } catch {

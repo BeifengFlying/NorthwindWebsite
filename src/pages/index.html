@@ -3,25 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-6"></script>
+<script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-7"></script>
 <title>Northwind · 北风</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&amp;family=Noto+Serif+SC:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles/style.css?v=glass-20260731">
+<link rel="stylesheet" href="assets/styles/style.css?v=glass-20260812-1">
 <link rel="stylesheet" href="assets/styles/border-glow.css">
 <link rel="stylesheet" href="assets/styles/page-transition.css?v=sfx-20260731-2">
 <link rel="stylesheet" href="assets/styles/motion-system.css">
 <link rel="stylesheet" href="assets/styles/legal.css">
 <link rel="stylesheet" href="assets/styles/i18n.css?v=responsive-20260801-1">
+<link rel="stylesheet" href="assets/scripts/shared/nav-glass.css?v=glasssurface-nav-20260812-1">
+<link rel="stylesheet" href="assets/styles/lanyard.css?v=about-card-20260811">
+<link rel="stylesheet" href="assets/scripts/pages/sound-control.css?v=elastic-slider-20260812">
+<link rel="preload" href="assets/scripts/pages/lanyard.js?v=about-card-20260811" as="script">
+<link rel="preload" href="assets/lanyard/card.glb" as="fetch" type="model/gltf-binary" crossorigin>
 <script src="assets/scripts/shared/i18n.js?v=nav-20260801-4" defer></script>
-<script src="assets/scripts/shared/motion-system.js" defer></script>
+<script src="assets/scripts/shared/nav-glass.js?v=glasssurface-nav-20260812-1" defer></script>
+<script src="assets/scripts/shared/motion-anime.js?v=anime-20260812-5" defer></script>
 </head>
 <body class="home-section-motion">
 
 <div class="site-noise"></div>
+<div id="homeStickerLayer" class="home-sticker-layer"></div>
 
 <!-- Ambient shapes — page-level canvas, not per-section -->
 <div class="ambient-shapes">
@@ -34,6 +40,7 @@
      NAV
 ========================= -->
 <nav class="nav">
+  <div id="navGlassRoot" class="nav__glass" data-nav-glass-root aria-hidden="true"></div>
   <a href="#" class="nav-logo">Flying</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#about" class="nav-link active">关于</a></li>
@@ -49,15 +56,7 @@
   </button>
 </nav>
 
-<button type="button" class="sound-toggle" id="soundToggle" aria-label="开启声音" aria-pressed="false" title="开启声音">
-  <svg class="sound-toggle__off" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="m22 9-6 6"></path><path d="m16 9 6 6"></path>
-  </svg>
-  <svg class="sound-toggle__on" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-  </svg>
-  <span class="sound-toggle__label" aria-hidden="true">OFF</span>
-</button>
+<div id="soundControlRoot" class="sound-control" aria-label="音量控制"></div>
 
 <main>
 
@@ -109,84 +108,11 @@
         <h2 class="about-title">Who<br>I Am</h2>
       </div>
       <div class="about-right">
-        <div class="about-identity reveal-stagger">
-          <div class="about-name">北风</div>
-          <div class="about-role">计算机科学与技术</div>
-          <div class="about-direction">
-            <span>算法</span>
-            <span>网页开发</span>
-            <span>创意编程</span>
-          </div>
+        <div class="about-card-intro reveal-stagger">
+          <span>PERSONAL ARCHIVE / 2026</span>
+          <span>01 — IDENTITY</span>
         </div>
-
-        <div class="about-module-pair">
-        <!-- 能力方向 -->
-        <div class="about-module reveal-stagger">
-          <div class="about-module-title">能力方向</div>
-          <div class="about-bars">
-            <div class="about-bar">
-              <span class="about-bar-label">算法</span>
-              <span class="about-bar-track">
-                <span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span>
-              </span>
-            </div>
-            <div class="about-bar">
-              <span class="about-bar-label">摄影</span>
-              <span class="about-bar-track">
-                <span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span>
-              </span>
-            </div>
-            <div class="about-bar">
-              <span class="about-bar-label">视频剪辑</span>
-              <span class="about-bar-track">
-                <span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 编程语言 -->
-        <div class="about-module reveal-stagger">
-          <div class="about-module-title">编程语言</div>
-          <div class="about-bars">
-            <div class="about-bar">
-              <span class="about-bar-label">C++</span>
-              <span class="about-bar-track">
-                <span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span>
-              </span>
-            </div>
-            <div class="about-bar">
-              <span class="about-bar-label">Python</span>
-              <span class="about-bar-track">
-                <span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span>
-              </span>
-            </div>
-            <div class="about-bar">
-              <span class="about-bar-label">HTML/CSS</span>
-              <span class="about-bar-track">
-                <span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span>
-              </span>
-            </div>
-            <div class="about-bar">
-              <span class="about-bar-label">JavaScript</span>
-              <span class="about-bar-track">
-                <span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span><span class="about-bar-block"></span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        </div>
-
-        <!-- 当前探索 -->
-        <div class="about-module reveal-stagger">
-          <div class="about-module-title">当前探索</div>
-          <div class="about-explore-list">
-            <span>算法竞赛</span>
-            <span>网页开发</span>
-            <span>数字创作</span>
-          </div>
-        </div>
+        <div id="lanyardRoot" class="about-lanyard-mount" aria-label="北风的互动挂绳资料卡"></div>
       </div>
     </div>
   </div>
@@ -277,8 +203,13 @@
       <!-- 2. Album Cover -->
       <div class="music-cover-col">
         <div class="music-cover-card" data-border-glow data-border-glow-palette="warm" data-border-glow-radius="16">
-          <img id="musicCoverImg" class="music-cover-image music-cover-image--active" data-music-cover-layer src="assets/images/music/111/平凡之路.webp" width="480" height="480" alt="平凡之路专辑封面" decoding="async">
-          <img class="music-cover-image" data-music-cover-layer src="assets/images/music/111/平凡之路.webp" width="480" height="480" alt="" aria-hidden="true" decoding="async">
+          <div
+            id="musicCoverRoot"
+            class="music-card-root"
+            data-title="平凡之路"
+            data-artist="朴树"
+            data-cover="assets/images/music/111/平凡之路.webp"
+          ></div>
         </div>
       </div>
 
@@ -463,11 +394,11 @@
       <div class="project-inner">
         <div class="project-number">03</div>
         <div>
-          <div class="project-title">题解合集</div>
+          <div class="project-title" data-solutions-title>题解合集</div>
           <div class="project-meta">
             <span class="project-tag">算法竞赛</span>
             <span class="project-tag">解题记录</span>
-            <span class="project-tag">C++</span>
+            <span class="project-tag project-status-tag" data-solutions-status>待 AC</span>
           </div>
         </div>
         <div class="project-arrow">&#8599;</div>
@@ -623,22 +554,30 @@
 
   <div class="container">
     <div class="cta-inner">
-      <h2 class="cta-title">Let's<br>Build<br>Something.</h2>
-      <p class="cta-subtitle">持续探索算法、人工智能与开源世界。欢迎交流与合作。</p>
-      <div class="cta-buttons">
-        <a href="https://github.com/BeifengFlying" class="btn btn-primary" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          GitHub
-        </a>
-        <a href="https://github.com/BeifengFlying?tab=repositories" class="btn btn-secondary" target="_blank" rel="noopener">
-          查看项目
-        </a>
+      <div class="cta-copy">
+        <h2 class="cta-title">Let's<br>Build<br>Something.</h2>
+        <p class="cta-subtitle">持续探索算法、人工智能与开源世界。欢迎交流与合作。</p>
+        <div class="cta-buttons">
+          <a href="https://github.com/BeifengFlying" class="btn btn-primary" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+          <a href="https://github.com/BeifengFlying?tab=repositories" class="btn btn-secondary" target="_blank" rel="noopener">
+            查看项目
+          </a>
+        </div>
+        <div class="contact-info">
+          <span class="contact-item">
+            通过 GitHub 公开渠道联系
+          </span>
+        </div>
       </div>
-      <div class="contact-info">
-        <span class="contact-item">
-          通过 GitHub 公开渠道联系
+      <a class="contact-qr" href="https://github.com/BeifengFlying" target="_blank" rel="noopener" aria-label="在 GitHub 打开 Northwind 作者主页">
+        <span class="contact-qr__surface">
+          <img src="assets/images/github-qr.svg" alt="BeifengFlying GitHub 二维码">
         </span>
-      </div>
+        <span class="contact-qr__label">GITHUB / BEIFENGFLYING</span>
+      </a>
     </div>
   </div>
 </section>
@@ -653,10 +592,13 @@
   <span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+<script src="assets/vendor/gsap/gsap.min.js?v={{APP_VERSION}}" defer></script>
+<script src="assets/vendor/gsap/ScrollTrigger.min.js?v={{APP_VERSION}}" defer></script>
+<script src="assets/vendor/lenis/lenis.min.js?v={{APP_VERSION}}" defer></script>
 <script src="assets/scripts/shared/border-glow.js" defer></script>
 <script src="assets/scripts/pages/script.js?v=sfx-20260731-5" defer></script>
+<script src="assets/scripts/pages/music-card.js?v=tilted-card-20260812" defer></script>
+<script src="assets/scripts/pages/lanyard.js?v=about-card-20260811" defer></script>
+<script src="assets/scripts/pages/sound-control.js?v=elastic-slider-20260812-1" defer></script>
 </body>
 </html>

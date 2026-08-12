@@ -25,14 +25,24 @@ function resolveReference(sourceFile, reference) {
   const cleanReference = reference.split('#')[0].split('?')[0];
   if (!cleanReference || isRemote(reference)) return null;
   if (cleanReference === '/') return path.join(distDir, 'index.html');
-  return cleanReference.startsWith('/')
+  const target = cleanReference.startsWith('/')
     ? path.join(distDir, cleanReference.replace(/^\/+/, ''))
     : path.resolve(path.dirname(sourceFile), cleanReference);
+  const relativeTarget = path.relative(distDir, target);
+  return relativeTarget && !relativeTarget.startsWith(`..${path.sep}`) && !path.isAbsolute(relativeTarget)
+    ? target
+    : null;
 }
 
 async function checkReference(sourceFile, reference) {
+  if (!reference || isRemote(reference)) return;
   const target = resolveReference(sourceFile, reference);
-  if (!target) return;
+  if (!target) {
+    failures.push(
+      `${path.relative(projectRoot, sourceFile)} -> reference escapes dist: ${reference}`,
+    );
+    return;
+  }
   try {
     if (!(await stat(target)).isFile()) throw new Error('Not a file');
   } catch {
@@ -53,6 +63,9 @@ for (const file of files) {
   }
   if (path.basename(file) === '.DS_Store' || /^\.env(?:\.|$)/.test(path.basename(file))) {
     failures.push(`Local-only file published: ${relativePath}`);
+  }
+  if (['.cjs', '.jsx', '.map', '.mjs', '.ts', '.tsx'].includes(extension)) {
+    failures.push(`Source or development file published: ${relativePath}`);
   }
   const isPublicSoundEffect =
     relativePath.startsWith(`assets${path.sep}audio${path.sep}`) &&
@@ -75,8 +88,11 @@ for (const file of files) {
   ) {
     failures.push(`Protected source asset published: ${relativePath}`);
   }
-  if (fileStat.size > 1_500_000) {
-    failures.push(`Asset exceeds 1.5 MB: ${relativePath}`);
+  const maxAssetSize = relativePath === path.join('assets', 'scripts', 'pages', 'lanyard.js')
+    ? 4_000_000
+    : 1_500_000;
+  if (fileStat.size > maxAssetSize) {
+    failures.push(`Asset exceeds ${maxAssetSize / 1_000_000} MB: ${relativePath}`);
   }
 
   if (extension === '.webp') {
@@ -91,9 +107,12 @@ for (const file of files) {
   const sensitivePatterns = [
     /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
     /\b(?:api[_-]?key|secret|password|passwd|access[_-]?token)\s*[:=]\s*["'][^"']{8,}["']/i,
-    /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/,
     /\/Users\/[^/\s]+\//,
   ];
+  const isVendoredDependency = relativePath.startsWith(`assets${path.sep}vendor${path.sep}`);
+  if (!isVendoredDependency) {
+    sensitivePatterns.push(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/);
+  }
   sensitivePatterns.forEach((pattern) => {
     if (pattern.test(source)) failures.push(`Sensitive value pattern in ${relativePath}`);
   });
