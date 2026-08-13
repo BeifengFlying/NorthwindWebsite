@@ -127,18 +127,20 @@ function Band({
   const qrTex = useTexture(qrImage);
 
   const cardMap = useMemo(() => {
-    const baseMap = materials.base.map;
+    const baseMap = materials.base?.map || null;
     if (!frontImage && !backImage) return baseMap;
 
-    const baseImg = baseMap.image;
-    const W = baseImg.width;
-    const H = baseImg.height;
+    // Some Chromium/Cloudflare combinations reject the GLB's blob texture
+    // under a strict CSP. Keep the card renderable with the external faces.
+    const baseImg = baseMap?.image || null;
+    const W = baseImg?.width || 1024;
+    const H = baseImg?.height || 1024;
     const canvas = document.createElement('canvas');
     canvas.width = W;
     canvas.height = H;
     const ctx = canvas.getContext('2d');
     if (!ctx) return baseMap;
-    ctx.drawImage(baseImg, 0, 0, W, H);
+    if (baseImg) ctx.drawImage(baseImg, 0, 0, W, H);
 
     const drawFitted = (img, rect) => {
       const rx = rect.x * W;
@@ -171,11 +173,11 @@ function Band({
 
     const composite = new THREE.CanvasTexture(canvas);
     composite.colorSpace = THREE.SRGBColorSpace;
-    composite.flipY = baseMap.flipY;
+    composite.flipY = baseMap?.flipY ?? false;
     composite.anisotropy = 16;
     composite.needsUpdate = true;
     return composite;
-  }, [frontImage, backImage, imageFit, frontTex, backTex, qrTex, materials.base.map]);
+  }, [frontImage, backImage, imageFit, frontTex, backTex, qrTex, materials.base?.map]);
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
