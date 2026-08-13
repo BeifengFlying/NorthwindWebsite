@@ -1815,35 +1815,6 @@ body.language-switching footer { opacity: .18; }
 
 
 /* --------------------------------
-   ARC SECTION DIVIDERS
-   -------------------------------- */
-.arc-divider {
-  position: absolute;
-  bottom: -1px; left: 0;
-  width: 100%;
-  height: 80px;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.arc-divider svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.arc-divider path {
-  fill: var(--paper);
-}
-
-/* Invert — arc that curves upward (for dark sections) */
-.arc-divider--up {
-  top: -1px; bottom: auto;
-  transform: rotate(180deg);
-}
-
-/* --------------------------------
    RESPONSIVE
    -------------------------------- */
 @media (max-width: 1024px) {
