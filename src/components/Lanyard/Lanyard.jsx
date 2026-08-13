@@ -10,9 +10,12 @@ import * as THREE from 'three';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-const cardGLB = '/assets/lanyard/card.glb';
-const lanyard = '/assets/lanyard/lanyard.png';
-const qrImage = '/assets/images/github-qr.svg';
+// Resolve runtime assets from the page URL so Cloudflare preview/sub-path
+// deployments do not turn them into requests against the domain root.
+const assetUrl = (path) => new URL(path, document.baseURI).href;
+const cardGLB = assetUrl('assets/lanyard/card.glb');
+const lanyard = assetUrl('assets/lanyard/lanyard.png');
+const qrImage = assetUrl('assets/images/github-qr.svg');
 
 const BLANK_PIXEL =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';

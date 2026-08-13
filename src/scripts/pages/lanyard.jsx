@@ -6,8 +6,9 @@ import StickerPeel from '../../components/StickerPeel/StickerPeel.jsx';
 
 const mount = document.getElementById('lanyardRoot');
 const stickerLayer = document.getElementById('homeStickerLayer');
-const QR_IMAGE = 'assets/images/github-qr.svg';
-const FLOATING_CARD_BACK = '/assets/images/flying-card-back.svg';
+const assetUrl = path => new URL(path, document.baseURI).href;
+const QR_IMAGE = assetUrl('assets/images/github-qr.svg');
+const FLOATING_CARD_BACK = assetUrl('assets/images/flying-card-back.svg');
 const CARD_EDGE_LAYERS = [-2.6, -1.95, -1.3, -0.65, 0, 0.65, 1.3, 1.95, 2.6];
 const DESKTOP_TIP_STORAGE_KEY = 'northwind-desktop-tip-dismissed';
 const DESKTOP_TIP_SESSION_KEY = 'northwind-desktop-tip-seen';
@@ -153,7 +154,9 @@ function LanyardShowcase() {
   const [dontRemind, setDontRemind] = useState(false);
   const [locale, setLocale] = useState(() => window.NorthwindI18n?.getLocale?.() || (document.documentElement.lang.startsWith('en') ? 'en' : 'zh'));
   const stickerPosition = useMemo(initialStickerPosition, []);
-  const frontImage = locale === 'en' ? '/assets/images/flying-card-front-en.svg' : '/assets/images/flying-card-front.svg';
+  const frontImage = locale === 'en'
+    ? assetUrl('assets/images/flying-card-front-en.svg')
+    : assetUrl('assets/images/flying-card-front.svg');
 
   useEffect(() => {
     const isCompactDevice = window.matchMedia('(max-width: 1024px), (hover: none) and (pointer: coarse)').matches;
@@ -222,9 +225,9 @@ function LanyardShowcase() {
           position={[-3, 0, 12]}
           gravity={[0, -40, 0]}
           frontImage={frontImage}
-          backImage="/assets/images/flying-card-back.svg"
+          backImage={FLOATING_CARD_BACK}
           imageFit="cover"
-          lanyardImage="/assets/lanyard/flying-lanyard.svg"
+          lanyardImage={assetUrl('assets/lanyard/flying-lanyard.svg')}
           lanyardWidth={1}
           onCardDoubleClick={() => setExpanded(true)}
         />
@@ -236,7 +239,7 @@ function LanyardShowcase() {
       {stickerLayer && createPortal(
         <div className="home-sticker-position">
           <StickerPeel
-            imageSrc="/assets/images/flying-sticker.svg"
+            imageSrc={assetUrl('assets/images/flying-sticker.svg')}
             width={116}
             rotate={-11}
             peelBackHoverPct={20}
