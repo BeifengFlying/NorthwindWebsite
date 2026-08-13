@@ -2,6 +2,7 @@
 
 ## 2.0.1 - 2026-08-13
 
+- 双击展开卡片改用干净版 `flying-card-back-clean.svg` 作为背板，仅叠加可撕 Flying 贴纸；撕下后不残留背板字样。
 - 恢复双击展开资料卡背面的 Flying 贴纸撕取交互，撕下后贴纸会回到页面可继续拖拽。
 - 修复 Cloudflare Pages 等正式部署路径下首页关于我的 3D 挂绳卡片资源使用域名根路径，导致模型、挂绳和卡片贴图 404 不显示的问题。
 - 修复 Cloudflare CSP 阻止 Rapier WebAssembly 和 GLB 内嵌 `blob:` 纹理加载，恢复挂绳、双击卡片和 Hero 贴纸初始化。

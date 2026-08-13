@@ -8,7 +8,8 @@ const mount = document.getElementById('lanyardRoot');
 const stickerLayer = document.getElementById('homeStickerLayer');
 const assetUrl = path => new URL(path, document.baseURI).href;
 const QR_IMAGE = assetUrl('assets/images/github-qr.svg');
-const FLOATING_CARD_BACK = assetUrl('assets/images/flying-card-back.svg');
+const LANYARD_CARD_BACK = assetUrl('assets/images/flying-card-back.svg');
+const FLOATING_CARD_BACK = assetUrl('assets/images/flying-card-back-clean.svg');
 const BACK_STICKER = assetUrl('assets/images/flying-wordmark-sticker.svg');
 const CARD_EDGE_LAYERS = [-2.6, -1.95, -1.3, -0.65, 0, 0.65, 1.3, 1.95, 2.6];
 const DESKTOP_TIP_STORAGE_KEY = 'northwind-desktop-tip-dismissed';
@@ -247,7 +248,7 @@ function LanyardShowcase() {
           position={[-3, 0, 12]}
           gravity={[0, -40, 0]}
           frontImage={frontImage}
-          backImage={FLOATING_CARD_BACK}
+          backImage={LANYARD_CARD_BACK}
           imageFit="cover"
           lanyardImage={assetUrl('assets/lanyard/flying-lanyard.svg')}
           lanyardWidth={1}
