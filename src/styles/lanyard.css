@@ -318,6 +318,29 @@
   filter: drop-shadow(0 5px 8px rgba(17, 17, 17, .12));
 }
 
+.profile-card-back-sticker {
+  position: absolute;
+  top: 35.5%;
+  left: 13%;
+  z-index: 3;
+}
+
+.profile-card-3d__face .profile-card-back-sticker--static {
+  position: absolute;
+  top: 35.5%;
+  left: 13%;
+  z-index: 3;
+  width: 74%;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.detached-back-sticker {
+  z-index: 180;
+  pointer-events: auto;
+}
+
 .home-sticker-position {
   position: absolute;
   transform: translateZ(0);

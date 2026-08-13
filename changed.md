@@ -2,6 +2,7 @@
 
 ## 2.0.1 - 2026-08-13
 
+- 恢复双击展开资料卡背面的 Flying 贴纸撕取交互，撕下后贴纸会回到页面可继续拖拽。
 - 修复 Cloudflare Pages 等正式部署路径下首页关于我的 3D 挂绳卡片资源使用域名根路径，导致模型、挂绳和卡片贴图 404 不显示的问题。
 - 修复 Cloudflare CSP 阻止 Rapier WebAssembly 和 GLB 内嵌 `blob:` 纹理加载，恢复挂绳、双击卡片和 Hero 贴纸初始化。
 - 增加 GLB 内嵌 base texture 加载失败时的外部卡片贴图回退，避免材质为空导致挂绳 React 组件崩溃。

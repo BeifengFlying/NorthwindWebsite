@@ -9,6 +9,7 @@ const stickerLayer = document.getElementById('homeStickerLayer');
 const assetUrl = path => new URL(path, document.baseURI).href;
 const QR_IMAGE = assetUrl('assets/images/github-qr.svg');
 const FLOATING_CARD_BACK = assetUrl('assets/images/flying-card-back.svg');
+const BACK_STICKER = assetUrl('assets/images/flying-wordmark-sticker.svg');
 const CARD_EDGE_LAYERS = [-2.6, -1.95, -1.3, -0.65, 0, 0.65, 1.3, 1.95, 2.6];
 const DESKTOP_TIP_STORAGE_KEY = 'northwind-desktop-tip-dismissed';
 const DESKTOP_TIP_SESSION_KEY = 'northwind-desktop-tip-seen';
@@ -58,7 +59,7 @@ function saveStickerPosition(position) {
   } catch (error) {}
 }
 
-function FloatingProfileCard({ frontImage, locale, onClose, variant = 'default' }) {
+function FloatingProfileCard({ frontImage, locale, stickerDetached, onStickerDetach, onClose, variant = 'default', peelableSticker = true }) {
   const [rotation, setRotation] = useState({ x: -3, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef(null);
@@ -134,6 +135,26 @@ function FloatingProfileCard({ frontImage, locale, onClose, variant = 'default' 
         </div>
         <div className="profile-card-3d__face profile-card-3d__face--back">
           <img src={FLOATING_CARD_BACK} alt="北风个人资料卡背面" draggable="false" />
+          {!stickerDetached && peelableSticker && (
+            <StickerPeel
+              className="profile-card-back-sticker"
+              imageSrc={BACK_STICKER}
+              width="74%"
+              rotate={0}
+              peelBackHoverPct={24}
+              peelBackActivePct={56}
+              shadowIntensity={0.36}
+              lightingIntensity={0.06}
+              bounds={false}
+              stopPropagation
+              onDragRelease={sticker => {
+                if (sticker.distance > 18) onStickerDetach?.(sticker);
+              }}
+            />
+          )}
+          {!stickerDetached && !peelableSticker && (
+            <img className="profile-card-back-sticker profile-card-back-sticker--static" src={BACK_STICKER} alt="" draggable="false" />
+          )}
         </div>
         {CARD_EDGE_LAYERS.map(layer => (
           <div
@@ -152,6 +173,7 @@ function LanyardShowcase() {
   const [expanded, setExpanded] = useState(false);
   const [showDesktopTip, setShowDesktopTip] = useState(false);
   const [dontRemind, setDontRemind] = useState(false);
+  const [detachedBackSticker, setDetachedBackSticker] = useState(null);
   const [locale, setLocale] = useState(() => window.NorthwindI18n?.getLocale?.() || (document.documentElement.lang.startsWith('en') ? 'en' : 'zh'));
   const stickerPosition = useMemo(initialStickerPosition, []);
   const frontImage = locale === 'en'
@@ -253,10 +275,27 @@ function LanyardShowcase() {
         </div>,
         stickerLayer
       )}
+      {detachedBackSticker && stickerLayer && createPortal(
+        <StickerPeel
+          className="detached-back-sticker"
+          imageSrc={BACK_STICKER}
+          width={detachedBackSticker.width}
+          rotate={0}
+          peelBackHoverPct={20}
+          peelBackActivePct={45}
+          shadowIntensity={0.46}
+          lightingIntensity={0.06}
+          initialPosition={{ x: detachedBackSticker.x, y: detachedBackSticker.y }}
+          bounds={stickerLayer}
+        />,
+        stickerLayer
+      )}
       {expanded && createPortal(
         <FloatingProfileCard
           frontImage={frontImage}
           locale={locale}
+          stickerDetached={Boolean(detachedBackSticker)}
+          onStickerDetach={setDetachedBackSticker}
           onClose={() => setExpanded(false)}
         />,
         document.body
@@ -269,8 +308,11 @@ function LanyardShowcase() {
               <FloatingProfileCard
                 frontImage={frontImage}
                 locale={locale}
+                stickerDetached={Boolean(detachedBackSticker)}
+                onStickerDetach={setDetachedBackSticker}
                 onClose={closeDesktopTip}
                 variant="prompt"
+                peelableSticker={false}
               />
             </div>
             <div className="desktop-tip-modal__copy">
