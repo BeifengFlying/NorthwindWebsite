@@ -1,7 +1,7 @@
 @font-face {
-  font-family: 'Pinyon Script';
-  src: url('../fonts/pinyon-script-latin.woff2') format('woff2');
-  font-style: normal;
+  font-family: 'DM Serif Display';
+  src: url('../fonts/dm-serif-display-italic-latin.woff2') format('woff2');
+  font-style: italic;
   font-weight: 400;
   font-display: swap;
 }
@@ -628,27 +628,27 @@ summary:focus-visible {
   position: relative;
   isolation: isolate;
   width: fit-content;
-  margin: -22px 0 20px;
-  padding-right: 0.08em;
+  margin: 0 0 22px;
+  padding-right: 0.04em;
   color: #b44e36;
-  font-family: 'Pinyon Script', 'Snell Roundhand', 'Apple Chancery', cursive;
-  font-size: clamp(112px, 12vw, 184px);
+  font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  font-size: clamp(100px, 10vw, 160px);
+  font-style: italic;
   font-weight: 400;
-  line-height: 1.18;
-  letter-spacing: -0.045em;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
   white-space: nowrap;
 }
 .cw-faq h2::after {
   content: '';
   position: absolute;
   z-index: -1;
-  left: 12%;
-  right: 5%;
-  bottom: 0.16em;
-  height: 0.1em;
-  border-radius: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0.06em;
+  height: 0.08em;
+  border-radius: 2px;
   background: var(--cw-lime);
-  transform: rotate(-5deg);
 }
 .cw-faq-heading > .cw-text-link {
   gap: 40px;
@@ -1074,9 +1074,9 @@ summary:focus-visible {
     padding-block: 60px;
   }
   .cw-faq h2 {
-    margin-top: -16px;
+    margin-top: 0;
     margin-bottom: 4px;
-    font-size: clamp(104px, 24vw, 144px);
+    font-size: clamp(96px, 23vw, 128px);
   }
   .cw-faq-list summary {
     font-size: 13px;

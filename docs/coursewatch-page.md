@@ -10,7 +10,7 @@ GitHub API 不可用、限流或缺少对应附件时，按钮保留发布列表
 
 ## 展示资源
 
-Q&A 标题使用本地托管的 Pinyon Script 拉丁字体（SIL Open Font License 1.1），字体及许可位于 `public/assets/fonts/`，无需访问外部字体服务。
+Q&A 标题使用本地托管的 DM Serif Display 斜体拉丁字体（SIL Open Font License 1.1），保留清晰的独立字形；字体及许可位于 `public/assets/fonts/`，无需访问外部字体服务。
 
 `public/assets/images/coursewatch/` 中的 WebP 从 CourseWatch 项目资源生成，合计约 311 KiB，不包含安装包、原始 PNG、账号或数据库。
 
