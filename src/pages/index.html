@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="assets/scripts/shared/nav-glass.css?v=glasssurface-nav-20260812-1">
 <link rel="stylesheet" href="assets/styles/lanyard.css?v=about-card-20260811">
 <link rel="stylesheet" href="assets/scripts/pages/sound-control.css?v=elastic-slider-20260812">
-<link rel="stylesheet" href="assets/scripts/pages/music-card.css?v=album-rail-20261030">
+<link rel="stylesheet" href="assets/scripts/pages/music-card.css?v=tilted-card-20260812">
 <script src="assets/scripts/shared/i18n.js?v=nav-20260801-4" defer></script>
 <script src="assets/scripts/shared/nav-glass.js?v=glasssurface-nav-20260812-1" defer></script>
 <script src="assets/scripts/shared/motion-anime.js?v=anime-20260812-5" defer></script>
@@ -204,14 +204,21 @@
       <!-- 1. Title -->
       <div class="music-title-col">
         <div class="sec-label">02 / 音乐</div>
-        <h2 class="music-heading">Music <br>breathes <br>hope into <br>the soul</h2>
+        <h2 class="music-heading">Music<br>breathes<br>hope into<br>the soul</h2>
         <button type="button" class="music-group-toggle" id="musicGroupToggle" aria-label="切换另一组歌单">Another group</button>
       </div>
 
-      <!-- Original album-sleeve rail -->
+      <!-- 2. Album Cover -->
       <div class="music-cover-col">
-        <div id="musicCoverRoot" class="music-card-root"></div>
-        <noscript><p>平凡之路 · 朴树 — 请启用 JavaScript 浏览唱片架。</p></noscript>
+        <div class="music-cover-card" data-border-glow data-border-glow-palette="warm" data-border-glow-radius="16">
+          <div
+            id="musicCoverRoot"
+            class="music-card-root"
+            data-title="平凡之路"
+            data-artist="朴树"
+            data-cover="assets/images/music/111/平凡之路.webp"
+          ></div>
+        </div>
       </div>
 
       <!-- 3. Links -->
@@ -241,6 +248,10 @@
         </div>
       </div>
 
+      <!-- 4. OptionWheel -->
+      <div class="music-wheel-col">
+        <div class="option-wheel" id="optionWheel" data-lenis-prevent></div>
+      </div>
 
     </div>
   </div>
@@ -585,7 +596,7 @@
 <script src="assets/vendor/lenis/lenis.min.js?v={{APP_VERSION}}" defer></script>
 <script src="assets/scripts/shared/border-glow.js" defer></script>
 <script src="assets/scripts/pages/script.js?v=sfx-20260731-5" defer></script>
-<script src="assets/scripts/pages/music-card.js?v=album-rail-20261030" defer></script>
+<script src="assets/scripts/pages/music-card.js?v=tilted-card-20260812" defer></script>
 <script type="module" src="assets/scripts/pages/lanyard.js?v=about-card-20260811" defer></script>
 <script src="assets/scripts/pages/sound-control.js?v=elastic-slider-20260812-1" defer></script>
 </body>

@@ -1,28 +1,45 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import AlbumRail from '../../components/AlbumRail/AlbumRail.jsx';
-import songs from '../../config/music.json';
+import TiltedCard from '../../components/TiltedCard/TiltedCard.jsx';
 
 const root = document.getElementById('musicCoverRoot');
-const selections = { '111': 2, '222': 0 };
 
-function MusicCollection() {
-  const [group, setGroup] = useState('111');
-  const items = songs.filter(song => song.set === group);
-  const handleIndex = useCallback(index => {
-    selections[group] = index;
-    const song = songs.filter(item => item.set === group)[index];
-    if (song) document.dispatchEvent(new CustomEvent('music:song-change', { detail: song }));
-  }, [group]);
+const getInitialSong = element => ({
+  title: element?.dataset.title || '平凡之路',
+  artist: element?.dataset.artist || '朴树',
+  cover: element?.dataset.cover || 'assets/images/music/111/平凡之路.webp'
+});
+
+function MusicCard({ initialSong }) {
+  const [song, setSong] = useState(initialSong);
 
   useEffect(() => {
-    const button = document.getElementById('musicGroupToggle');
-    const toggle = () => setGroup(value => value === '111' ? '222' : '111');
-    button?.addEventListener('click', toggle);
-    return () => button?.removeEventListener('click', toggle);
+    const handleSongChange = event => {
+      const nextSong = event.detail;
+      if (!nextSong?.cover) return;
+      setSong(nextSong);
+    };
+
+    document.addEventListener('music:song-change', handleSongChange);
+    return () => document.removeEventListener('music:song-change', handleSongChange);
   }, []);
 
-  return <AlbumRail key={group} items={items} startIndex={selections[group]} onIndexChange={handleIndex} />;
+  return (
+    <TiltedCard
+      imageSrc={song.cover}
+      altText={`${song.title}专辑封面`}
+      captionText={`${song.title} · ${song.artist}`}
+      containerHeight="100%"
+      containerWidth="100%"
+      imageWidth="100%"
+      aspectRatio="1 / 1"
+      rotateAmplitude={12}
+      scaleOnHover={1.08}
+      showMobileWarning={false}
+      showTooltip={false}
+      displayOverlayContent={false}
+    />
+  );
 }
 
-if (root) createRoot(root).render(<MusicCollection />);
+if (root) createRoot(root).render(<MusicCard initialSong={getInitialSong(root)} />);
