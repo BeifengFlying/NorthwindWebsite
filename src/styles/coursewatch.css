@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Pinyon Script';
+  src: url('../fonts/pinyon-script-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
   --cw-paper: #f7f5ee;
@@ -363,8 +371,7 @@ summary:focus-visible {
   gap: 45px;
   margin-bottom: 48px;
 }
-.cw-section-heading h2,
-.cw-faq h2 {
+.cw-section-heading h2 {
   font-size: clamp(27px, 3vw, 42px);
   line-height: 1.45;
   letter-spacing: -0.04em;
@@ -609,15 +616,43 @@ summary:focus-visible {
 }
 .cw-faq {
   display: grid;
-  grid-template-columns: 1fr 1.25fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
   gap: 65px;
   padding-block: 95px;
 }
+.cw-faq-heading {
+  align-self: start;
+  padding-top: 4px;
+}
 .cw-faq h2 {
-  font-size: 28px;
-  max-width: 360px;
-  line-height: 1.6;
-  margin-bottom: 12px;
+  position: relative;
+  isolation: isolate;
+  width: fit-content;
+  margin: -22px 0 20px;
+  padding-right: 0.08em;
+  color: #b44e36;
+  font-family: 'Pinyon Script', 'Snell Roundhand', 'Apple Chancery', cursive;
+  font-size: clamp(112px, 12vw, 184px);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+.cw-faq h2::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 12%;
+  right: 5%;
+  bottom: 0.16em;
+  height: 0.1em;
+  border-radius: 50%;
+  background: var(--cw-lime);
+  transform: rotate(-5deg);
+}
+.cw-faq-heading > .cw-text-link {
+  gap: 40px;
+  color: var(--cw-green);
 }
 .cw-faq-list details {
   border-top: 1px solid var(--cw-line);
@@ -1039,8 +1074,9 @@ summary:focus-visible {
     padding-block: 60px;
   }
   .cw-faq h2 {
-    max-width: none;
-    font-size: 26px;
+    margin-top: -16px;
+    margin-bottom: 4px;
+    font-size: clamp(104px, 24vw, 144px);
   }
   .cw-faq-list summary {
     font-size: 13px;
