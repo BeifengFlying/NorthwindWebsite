@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CourseWatch 集中展示多个教学平台的作业、考试与截止时间，管理个人日程，按配置发送桌面、邮件、网页推送和 iCloud 日历提醒。免费下载 macOS 与 Windows 测试版。"
+    />
+    <meta name="theme-color" content="#f7f5ee" />
+    <meta property="og:title" content="CourseWatch · 课程、日程与截止提醒" />
+    <meta
+      property="og:description"
+      content="作业、考试、个人日程。截止时间，一处查看。适用于 macOS 与 Windows。"
+    />
+    <meta property="og:type" content="website" />
+    <title>CourseWatch · Northwind</title>
+    <link rel="icon" type="image/webp" href="assets/images/coursewatch/icon.webp" />
+    <link rel="stylesheet" href="assets/styles/coursewatch.css?v={{APP_VERSION}}" />
+    <link rel="stylesheet" href="assets/styles/page-transition.css?v={{APP_VERSION}}" />
+    <script src="assets/scripts/shared/i18n.js?v={{APP_VERSION}}" defer></script>
+    <script src="assets/scripts/shared/page-transition.js?v={{APP_VERSION}}" defer></script>
+    <script src="assets/scripts/pages/coursewatch.js?v={{APP_VERSION}}" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-i18n="cw_skip">跳到正文</a>
+    <header class="cw-header">
+      <nav class="cw-nav nav" aria-label="CourseWatch">
+        <a class="cw-brand" href="#"
+          ><img src="assets/images/coursewatch/icon.webp" width="38" height="38" alt="" /><span
+            >CourseWatch<span class="cw-brand-dot">.</span></span
+          ></a
+        >
+        <div class="cw-nav-links">
+          <a href="#features" data-i18n="cw_features">功能</a
+          ><a href="#platforms" data-i18n="cw_platforms">支持平台</a
+          ><a
+            href="https://github.com/BeifengFlying/CourseWatch"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub ↗</a
+          >
+        </div>
+        <a class="cw-nav-download" href="#download" data-i18n="cw_get">获取应用 ↗</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="cw-hero cw-container">
+        <div class="cw-hero-copy">
+          <div class="cw-eyebrow">
+            <span class="cw-status-dot"></span
+            ><span data-i18n="cw_eyebrow">为课程与日程而做的桌面应用</span
+            ><span class="cw-beta">BETA 0.2.34</span>
+          </div>
+          <h1>
+            <span data-i18n="cw_heading_1">作业、考试、日程。</span><br /><span
+              class="cw-heading-accent"
+              data-i18n="cw_heading_2"
+              >截止时间，一处查看。</span
+            >
+          </h1>
+          <div class="cw-hero-bottom">
+            <div>
+              <p class="cw-lead" data-i18n="cw_lead">
+                把分散在教学平台的任务汇总到桌面。选好课程、设好提醒，也给自己的安排留个位置。
+              </p>
+              <div class="cw-actions">
+                <a class="cw-button cw-button-dark" href="#download"
+                  ><span data-i18n="cw_free_download">免费下载</span
+                  ><span aria-hidden="true">↓</span></a
+                ><a class="cw-text-link" href="#preview"
+                  ><span data-i18n="cw_see_app">看看应用</span><span aria-hidden="true">↗</span></a
+                >
+              </div>
+              <p class="cw-system-note">
+                macOS 14+ <span>·</span> Windows 10+ x64 <span>·</span>
+                <span data-i18n="cw_free">完全免费</span>
+              </p>
+            </div>
+            <div class="cw-hero-aside" aria-hidden="true">
+              <span>LESS SWITCHING.</span><span>MORE CLARITY.</span
+              ><svg viewBox="0 0 100 80" fill="none">
+                <path
+                  d="M8 9c46-18 89 6 70 35-10 16-36 3-26-10 11-15 39 3 33 35m-12-9 12 11 9-14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <figure class="cw-hero-figure" id="preview">
+          <div class="cw-screen-topline">
+            <span><span class="cw-status-dot"></span> COURSEWATCH / DESKTOP</span
+            ><span>01 — OVERVIEW</span>
+          </div>
+          <a href="assets/images/coursewatch/overview-1920.webp" class="cw-image-link" data-lightbox
+            ><img
+              src="assets/images/coursewatch/overview-1280.webp"
+              srcset="
+                assets/images/coursewatch/overview-800.webp   800w,
+                assets/images/coursewatch/overview-1280.webp 1280w,
+                assets/images/coursewatch/overview-1920.webp 1920w
+              "
+              sizes="(max-width: 760px) 94vw, 88vw"
+              width="2800"
+              height="1820"
+              fetchpriority="high"
+              alt="CourseWatch macOS 待办界面，展示模拟课程作业、截止时间和筛选"
+              data-i18n-alt="CourseWatch macOS 待办界面，展示模拟课程作业、截止时间和筛选"
+          /></a>
+          <figcaption>
+            <span data-i18n="cw_screenshot_note">macOS 原生应用实拍 · 课程与任务均为模拟数据</span
+            ><span data-i18n="cw_enlarge">点击图片放大 ↗</span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="cw-platforms cw-container" id="platforms" aria-labelledby="platform-title">
+        <div class="cw-platform-label">
+          <span class="cw-kicker">CONNECTED PLATFORMS</span>
+          <h2 id="platform-title" data-i18n="cw_platform_title">你的课程，来自这些平台。</h2>
+        </div>
+        <div class="cw-platform-list">
+          <span
+            ><img
+              src="assets/images/coursewatch/yuketang.webp"
+              width="30"
+              height="30"
+              alt=""
+            /><span data-i18n="cw_yuketang">雨课堂</span></span
+          ><span
+            ><img
+              src="assets/images/coursewatch/chaoxing.webp"
+              width="30"
+              height="30"
+              alt=""
+            /><span data-i18n="cw_chaoxing">超星学习通</span></span
+          ><span
+            ><img src="assets/images/coursewatch/unipus.webp" width="30" height="30" alt="" /><span
+              data-i18n="cw_unipus"
+              >U校园 AI 版</span
+            ></span
+          ><span
+            ><img src="assets/images/coursewatch/renwei.webp" width="30" height="30" alt="" /><span
+              data-i18n="cw_renwei"
+              >人卫题库</span
+            ></span
+          ><span
+            ><img src="assets/images/coursewatch/ynjy.webp" width="30" height="30" alt="" /><span
+              data-i18n="cw_jsjks"
+              >云南计算机等级考试</span
+            ></span
+          >
+        </div>
+        <p class="cw-caption" data-i18n="cw_platform_note">
+          按所选课程同步；具体适配范围随学校、课程和任务类型而异。
+        </p>
+      </section>
+
+      <section class="cw-features cw-container" id="features" aria-labelledby="features-title">
+        <div class="cw-section-heading">
+          <div>
+            <span class="cw-kicker">01 / A CLEARER OVERVIEW</span>
+            <h2 id="features-title">
+              <span data-i18n="cw_feature_heading_1">少切换几个页面。</span><br /><span
+                data-i18n="cw_feature_heading_2"
+                >多看清一件待办。</span
+              >
+            </h2>
+          </div>
+          <p data-i18n="cw_feature_intro">
+            从课程任务到个人安排，用同一份列表查看，再按自己的节奏处理。
+          </p>
+        </div>
+        <div class="cw-feature-grid">
+          <article>
+            <div class="cw-feature-icon" aria-hidden="true">⌘</div>
+            <span class="cw-feature-num">01</span>
+            <h3 data-i18n="cw_tasks_title">任务集中，轻重有序</h3>
+            <p data-i18n="cw_tasks_desc">
+              汇总作业与考试，按课程、任务类型和完成状态筛选。临近截止的事项优先展示，新任务和时间变化按设置提醒。
+            </p>
+          </article>
+          <article>
+            <div class="cw-feature-icon" aria-hidden="true">↗</div>
+            <span class="cw-feature-num">02</span>
+            <h3 data-i18n="cw_reminders_title">提醒不止在桌面</h3>
+            <p data-i18n="cw_reminders_desc">
+              桌面通知、邮件、网页推送和 iCloud
+              日历按需配置。为不同任务设置提前提醒时间，查看已发送的通知记录。
+            </p>
+          </article>
+          <article>
+            <div class="cw-feature-icon" aria-hidden="true">＋</div>
+            <span class="cw-feature-num">03</span>
+            <h3 data-i18n="cw_schedule_title">也放得下自己的安排</h3>
+            <p data-i18n="cw_schedule_desc">
+              给个人日程添加备注、星标与多个提醒。无需绑定课程账号即可使用，完成标记支持撤销。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cw-showcase" aria-labelledby="showcase-title">
+        <div class="cw-container">
+          <div class="cw-section-heading">
+            <div>
+              <span class="cw-kicker">02 / MADE FOR YOUR DESKTOP</span>
+              <h2 id="showcase-title" data-i18n="cw_showcase_heading">从课程，到你的一整天。</h2>
+            </div>
+            <p data-i18n="cw_showcase_intro">
+              选课、安排日程、设置通知。打开应用，看清每一项安排。
+            </p>
+          </div>
+          <div class="cw-viewer-controls" role="group" aria-label="界面预览">
+            <button
+              type="button"
+              class="is-active"
+              data-view="courses"
+              aria-pressed="true"
+              data-i18n="cw_view_courses"
+            >
+              选择课程</button
+            ><button
+              type="button"
+              data-view="schedules"
+              aria-pressed="false"
+              data-i18n="cw_view_schedules"
+            >
+              个人日程</button
+            ><button
+              type="button"
+              data-view="notifications"
+              aria-pressed="false"
+              data-i18n="cw_view_notifications"
+            >
+              通知设置
+            </button>
+          </div>
+          <figure class="cw-viewer">
+            <a
+              href="assets/images/coursewatch/courses.webp"
+              class="cw-image-link"
+              data-lightbox
+              id="cwViewLink"
+              ><img
+                id="cwViewImage"
+                src="assets/images/coursewatch/courses.webp"
+                width="1600"
+                height="1040"
+                loading="lazy"
+                alt="课程管理界面，展示模拟课程选择"
+            /></a>
+            <figcaption id="cwViewCaption" aria-live="polite" data-i18n="cw_caption_courses">
+              只同步你选择的课程，移除后也可以重新添加。
+            </figcaption>
+          </figure>
+          <div class="cw-background-note">
+            <span class="cw-status-dot"></span>
+            <p data-i18n="cw_background">
+              关闭 Mac 主窗口，仍在菜单栏接收提醒；Windows
+              可选择保留在系统托盘。退出应用后停止后台任务。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cw-start cw-container" aria-labelledby="start-title">
+        <div class="cw-section-heading">
+          <div>
+            <span class="cw-kicker">03 / GET STARTED</span>
+            <h2 id="start-title" data-i18n="cw_start_heading">三步，把任务放到桌面。</h2>
+          </div>
+          <a
+            class="cw-text-link"
+            href="https://github.com/BeifengFlying/CourseWatch#安装"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span data-i18n="cw_guide">查看完整使用说明</span><span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <ol class="cw-steps">
+          <li>
+            <span>01</span>
+            <h3 data-i18n="cw_step_1_title">安装应用</h3>
+            <p data-i18n="cw_step_1_desc">
+              选择对应系统的安装包。同步课程前，安装 Chrome 或 Edge。
+            </p>
+          </li>
+          <li>
+            <span>02</span>
+            <h3 data-i18n="cw_step_2_title">登录并选择课程</h3>
+            <p data-i18n="cw_step_2_desc">
+              在应用打开的独立浏览器中自行登录，勾选需要同步的课程并保存。
+            </p>
+          </li>
+          <li>
+            <span>03</span>
+            <h3 data-i18n="cw_step_3_title">设置你的提醒</h3>
+            <p data-i18n="cw_step_3_desc">开启系统通知，配置提前提醒时间。还可以添加自己的日程。</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="cw-download" id="download" aria-labelledby="download-title">
+        <div class="cw-container">
+          <div class="cw-download-heading">
+            <img src="assets/images/coursewatch/icon.webp" width="84" height="84" alt="" /><span
+              class="cw-kicker"
+              >COURSEWATCH / 0.2.34 BETA</span
+            >
+            <h2 id="download-title" data-i18n="cw_download_heading">下一项安排，从这里开始。</h2>
+            <p data-i18n="cw_download_intro">选择你的桌面版本。完全免费，仅限非商业使用。</p>
+          </div>
+          <div class="cw-download-grid">
+            <article class="cw-download-card">
+              <div class="cw-os">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="30"
+                  height="30"
+                  aria-hidden="true"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M16.8 12.9c0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.4.8-3 .8-.7 0-1.7-.8-2.8-.8-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.5 2.2 2.6 2.1 1 0 1.5-.7 2.8-.7s1.7.7 2.8.7 1.8-1 2.5-2.1c.9-1.2 1.2-2.5 1.2-2.5-.1 0-2.3-.9-2.3-4zm-2-6.1c.6-.8 1.1-1.9 1-3-.9 0-2 .6-2.6 1.3-.6.7-1.2 1.8-1.1 2.9 1 .1 2.1-.5 2.7-1.2z"
+                  />
+                </svg>
+                <h3>macOS</h3>
+                <span>14+</span>
+              </div>
+              <p data-i18n="cw_mac_desc">支持 Apple Silicon 与 Intel Mac。</p>
+              <a
+                class="cw-button cw-button-lime"
+                href="https://github.com/BeifengFlying/CourseWatch/releases/download/v0.2.34-desktop/CourseWatch-0.2.34-mac-arm64.dmg"
+                ><span data-i18n="cw_mac_arm">下载 Apple Silicon 版</span
+                ><span aria-hidden="true">↓</span></a
+              ><a
+                class="cw-download-secondary"
+                href="https://github.com/BeifengFlying/CourseWatch/releases/download/v0.2.34-desktop/CourseWatch-0.2.34-mac-x64.dmg"
+                ><span data-i18n="cw_mac_intel">下载 Intel 版</span> ↗</a
+              >
+              <p class="cw-download-footnote" data-i18n="cw_mac_note">
+                临时签名，尚未通过 Apple 公证。Intel Mac 实机界面待验证。
+              </p>
+            </article>
+            <article class="cw-download-card">
+              <div class="cw-os">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  aria-hidden="true"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M2 4.5 11 3v8H2zm10-1.7L22 1v10H12zM2 12h9v8l-9-1.5zm10 0h10v11l-10-1.8z"
+                  />
+                </svg>
+                <h3>Windows</h3>
+                <span>x64</span>
+              </div>
+              <p data-i18n="cw_win_desc">Windows 10 2004 及以上，支持 Windows 11。</p>
+              <a
+                class="cw-button cw-button-white"
+                href="https://github.com/BeifengFlying/CourseWatch/releases/download/v0.2.34-desktop/CourseWatch-0.2.34-win-x64-setup.exe"
+                ><span data-i18n="cw_win_setup">下载 Windows 安装程序</span
+                ><span aria-hidden="true">↓</span></a
+              ><a
+                class="cw-download-secondary"
+                href="https://github.com/BeifengFlying/CourseWatch/releases/download/v0.2.34-desktop/CourseWatch-0.2.34-win-x64.zip"
+                ><span data-i18n="cw_win_zip">下载便携 ZIP 版</span> ↗</a
+              >
+              <p class="cw-download-footnote" data-i18n="cw_win_note">
+                已检查 Windows 11 部分原生界面；完整安装、升级及真实通知仍待实测。
+              </p>
+            </article>
+          </div>
+          <div class="cw-release-links">
+            <a
+              href="https://github.com/BeifengFlying/CourseWatch/releases/tag/v0.2.34-desktop"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="cw_release"
+              >发布说明与 SHA-256 校验 ↗</a
+            ><span>·</span
+            ><a
+              href="https://github.com/BeifengFlying/CourseWatch/blob/main/docs/guides/BUILD_HISTORY.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="cw_history"
+              >更新记录 ↗</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="cw-faq cw-container" aria-labelledby="faq-title">
+        <div>
+          <span class="cw-kicker">GOOD TO KNOW</span>
+          <h2 id="faq-title" data-i18n="cw_faq_heading">使用前，你可能想了解。</h2>
+          <a
+            class="cw-text-link"
+            href="https://github.com/BeifengFlying/CourseWatch/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span data-i18n="cw_feedback">反馈问题</span><span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="cw-faq-list">
+          <details>
+            <summary data-i18n="cw_faq_1_q">不登录教学平台也能使用吗？</summary>
+            <p data-i18n="cw_faq_1_a">
+              可以。个人日程和本地提醒可以独立使用，无需课程账号，也不需要浏览器。同步教学平台课程时，才需要安装
+              Chrome 或 Edge 并自行登录。
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="cw_faq_2_q">电脑休眠或关机后还能提醒吗？</summary>
+            <p data-i18n="cw_faq_2_a">
+              邮件和网页推送需要电脑保持运行、联网。休眠或关机后不会发送新消息；已经同步到 iCloud
+              的事件仍可由手机日历提醒。跨设备投递受网络和系统设置影响。
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="cw_faq_3_q">账号和任务数据存在哪里？</summary>
+            <p data-i18n="cw_faq_3_a">
+              任务数据库与浏览器资料保存在本机。会话快照与通知密钥使用系统凭据保护，数据库和浏览器目录未整体加密。启用邮件、网页推送等渠道时，相关服务会处理通知所需数据。
+            </p>
+            <a
+              href="https://github.com/BeifengFlying/CourseWatch/blob/main/PRIVACY.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="cw_privacy"
+              >查看隐私说明 ↗</a
+            >
+          </details>
+          <details>
+            <summary data-i18n="cw_faq_4_q">应用收费吗？有什么使用限制？</summary>
+            <p data-i18n="cw_faq_4_a">
+              应用完全免费，仅限非商业使用。当前为测试版，平台适配与提醒可能存在遗漏，作业和考试请同时核对学校、教师与平台通知。实验学习功能的用途与边界以项目协议为准。
+            </p>
+            <a
+              href="https://github.com/BeifengFlying/CourseWatch/blob/main/TERMS.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="cw_terms"
+              >阅读项目协议 ↗</a
+            >
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer class="cw-footer cw-container">
+      <a href="index.html#projects" class="cw-back"
+        ><span aria-hidden="true">↙</span> <span data-i18n="cw_back">返回 Northwind 作品集</span></a
+      ><span
+        >CourseWatch <span class="cw-brand-dot">.</span>
+        <span class="cw-footer-by">BY FLYING</span></span
+      ><a
+        href="https://github.com/BeifengFlying/CourseWatch"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub ↗</a
+      >
+    </footer>
+    <dialog class="cw-lightbox" id="cwLightbox" aria-label="应用界面大图">
+      <button type="button" class="cw-lightbox-close" aria-label="关闭大图">×</button
+      ><img width="1920" height="1248" alt="" />
+    </dialog>
+  </body>
+</html>
