@@ -199,6 +199,8 @@
     "cw_history": "Version history ↗",
     "cw_faq_heading": "Q&A",
     "cw_feedback": "Report an issue",
+    "cw_star_prompt": "Enjoying my project?",
+    "cw_star_link": "Give it a 🌟 on GitHub",
     "cw_faq_1_q": "Can I use it without a course account?",
     "cw_faq_1_a": "Yes. Personal plans and local reminders work independently, without a course account or browser. Install Chrome or Edge and sign in yourself when you want to sync teaching platforms.",
     "cw_faq_2_q": "Do reminders work while my computer is asleep or off?",

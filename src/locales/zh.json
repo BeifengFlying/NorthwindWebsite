@@ -197,6 +197,8 @@
     "cw_history": "更新记录 ↗",
     "cw_faq_heading": "Q&A",
     "cw_feedback": "反馈问题",
+    "cw_star_prompt": "如果喜欢我的项目，欢迎",
+    "cw_star_link": "去 GitHub 点一个 🌟",
     "cw_faq_1_q": "不登录教学平台也能使用吗？",
     "cw_faq_1_a": "可以。个人日程和本地提醒可以独立使用，无需课程账号，也不需要浏览器。同步教学平台课程时，才需要安装 Chrome 或 Edge 并自行登录。",
     "cw_faq_2_q": "电脑休眠或关机后还能提醒吗？",

@@ -654,6 +654,19 @@ summary:focus-visible {
   gap: 40px;
   color: var(--cw-green);
 }
+.cw-star-note {
+  max-width: 30ch;
+  margin: 28px 0 0;
+  color: var(--cw-muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
+.cw-star-note a {
+  display: inline-block;
+  color: #b44e36;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .cw-faq-list details {
   border-top: 1px solid var(--cw-line);
   padding-block: 20px;
