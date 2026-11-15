@@ -89,11 +89,14 @@ for (const file of files) {
     failures.push(`Protected source asset published: ${relativePath}`);
   }
   const maxAssetSizes = new Map([
-    [path.join('assets', 'scripts', 'pages', 'lanyard.js'), 4_000_000],
+    [path.join('assets', 'scripts', 'pages', 'lanyard.js'), 400_000],
     // The interactive lanyard's GLB is a runtime asset, not a source file.
     [path.join('assets', 'lanyard', 'card.glb'), 2_500_000],
   ]);
-  const maxAssetSize = maxAssetSizes.get(relativePath) ?? 1_500_000;
+  // Rapier embeds its WASM in a deferred chunk. Keep the initial entry small
+  // while enforcing a separate budget for those optional runtime chunks.
+  const isLanyardChunk = relativePath.startsWith(path.join('assets', 'scripts', 'pages', 'chunks') + path.sep);
+  const maxAssetSize = maxAssetSizes.get(relativePath) ?? (isLanyardChunk ? 2_400_000 : 1_500_000);
   if (fileStat.size > maxAssetSize) {
     failures.push(`Asset exceeds ${maxAssetSize / 1_000_000} MB: ${relativePath}`);
   }

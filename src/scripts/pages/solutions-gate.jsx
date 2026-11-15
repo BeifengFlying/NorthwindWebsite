@@ -290,7 +290,7 @@ function CodeEditor({ language, code, onChange, onLanguageChange, onReset, activ
           <div ref={highlightRef} className="gate-code-highlight" aria-hidden="true"><pre>{highlightCode(code, language)}</pre></div>
           <textarea
             aria-label={`${selected.label} 代码编辑器`}
-            placeholder="从空白文件开始编写你的解法…"
+            placeholder="输入你的代码…"
             spellCheck="false"
             value={code}
             onChange={(event) => onChange(event.target.value)}
@@ -382,7 +382,7 @@ function Gate({ onUnlock }) {
         <section className="gate-intro">
           <div className="gate-kicker"><span className="gate-kicker-mark">01</span> 题解仓库 · 访问考核</div>
           <h1><Shuffle text="AC // GATE" tag="span" className="gate-shuffle" shuffleDirection="right" duration={0.45} shuffleTimes={2} scrambleCharset="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" triggerOnHover={false} textAlign="left" /></h1>
-          <p className="gate-lead">先让一道题通过，再打开全部题解</p>
+          <p className="gate-lead">先通过，再查看题解</p>
           <div className="gate-signal"><span className="gate-signal-line" /><SignalText /></div>
           <div className="gate-intro-notes">
             <span>题目会话 <b>P1102</b></span>

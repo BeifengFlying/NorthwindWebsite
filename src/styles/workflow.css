@@ -116,3 +116,18 @@ main { position: relative; z-index: 3; }
 @media (max-width: 600px) {
   .workflow-background .workflow-hyperspeed { opacity: .82; }
 }
+
+/* Large scrolling cards do not need to resample a moving full-screen canvas. */
+.loop-card, .phase-card, .stream-panel, .archive-item, .archive-root, .assistant-box {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.workflow-scrolling .workflow-nav,
+.workflow-scrolling .workflow-nav .glass-surface {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.workflow-scrolling .workflow-nav { background: rgba(5,13,17,.94); }
+.workflow-scrolling .workflow-noise { visibility: hidden; }
+.workflow-scrolling .workflow-hyperspeed canvas { filter: none; }
+.workflow-background { height: 100vh; height: 100svh; }

@@ -7,6 +7,7 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function loadHyperspeed() {
+    if (window.NorthwindPerformance?.lite || !window.NorthwindPerformance?.supportsWebGL2()) return;
     if (loaded || reduceMotion || document.documentElement.classList.contains('workflow-scrolling')) return;
     loaded = true;
 

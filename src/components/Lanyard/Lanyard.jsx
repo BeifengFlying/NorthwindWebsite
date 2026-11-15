@@ -1,8 +1,11 @@
 /* eslint-disable react/no-unknown-property */
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, extend, useFrame } from '@react-three/fiber';
-import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Canvas, extend, useFrame, useThree } from '@react-three/fiber';
+import { useGLTF } from '@react-three/drei/core/Gltf.js';
+import { useTexture } from '@react-three/drei/core/Texture.js';
+import { Environment } from '@react-three/drei/core/Environment.js';
+import { Lightformer } from '@react-three/drei/core/Lightformer.js';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
@@ -33,7 +36,10 @@ export default function Lanyard({
   imageFit = 'cover',
   lanyardImage = null,
   lanyardWidth = 1,
-  onCardDoubleClick = null
+  onCardDoubleClick = null,
+  active = true,
+  onReady,
+  onError
 }) {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
@@ -47,13 +53,16 @@ export default function Lanyard({
     <div className="lanyard-wrapper">
       <Canvas
         camera={{ position: isMobile ? [0, 0, 12] : position, fov: fov }}
-        dpr={[1, isMobile ? 1.5 : 2]}
-        gl={{ alpha: transparent }}
+        dpr={[1, 1.5]}
+        frameloop={active ? 'always' : 'never'}
+        gl={{ alpha: transparent, antialias: false, powerPreference: 'low-power' }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+        <SceneLifecycle onError={onError} />
+        <Physics gravity={gravity} paused={!active} timeStep={1 / 60}>
           <Band
+            onReady={onReady}
             isMobile={isMobile}
             frontImage={frontImage}
             backImage={backImage}
@@ -63,7 +72,7 @@ export default function Lanyard({
             onCardDoubleClick={onCardDoubleClick}
           />
         </Physics>
-        <Environment blur={0.75}>
+        <Environment blur={0.75} resolution={128}>
           <Lightformer
             intensity={2}
             color="white"
@@ -98,7 +107,18 @@ export default function Lanyard({
   );
 }
 
+function SceneLifecycle({ onError }) {
+  const gl = useThree(state => state.gl);
+  useEffect(() => {
+    const lost = event => { event.preventDefault(); onError?.(); };
+    gl.domElement.addEventListener('webglcontextlost', lost);
+    return () => gl.domElement.removeEventListener('webglcontextlost', lost);
+  }, [gl, onError]);
+  return null;
+}
+
 function Band({
+  onReady,
   maxSpeed = 50,
   minSpeed = 0,
   isMobile = false,
@@ -115,12 +135,15 @@ function Band({
     j2 = useRef(),
     j3 = useRef(),
     card = useRef();
-  const vec = new THREE.Vector3(),
-    ang = new THREE.Vector3(),
-    rot = new THREE.Vector3(),
-    dir = new THREE.Vector3();
+  const [vec, ang, rot, dir] = useMemo(() => Array.from({ length: 4 }, () => new THREE.Vector3()), []);
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
-  const { nodes, materials } = useGLTF(cardGLB);
+  const { nodes, materials } = useGLTF(cardGLB, false, false, loader => {
+    // HTMLImageElement avoids ImageBitmap/blob-fetch differences under CSP.
+    loader.register(parser => {
+      parser.textureLoader = new THREE.TextureLoader(parser.options.manager);
+      return { name: 'local-texture-loader' };
+    });
+  });
   const texture = useTexture(lanyardImage || lanyard);
   const frontTex = useTexture(frontImage || BLANK_PIXEL);
   const backTex = useTexture(backImage || BLANK_PIXEL);
@@ -174,10 +197,14 @@ function Band({
     const composite = new THREE.CanvasTexture(canvas);
     composite.colorSpace = THREE.SRGBColorSpace;
     composite.flipY = baseMap?.flipY ?? false;
-    composite.anisotropy = 16;
+    composite.anisotropy = 4;
     composite.needsUpdate = true;
     return composite;
   }, [frontImage, backImage, imageFit, frontTex, backTex, qrTex, materials.base?.map]);
+  useEffect(() => () => {
+    if (cardMap && cardMap !== materials.base?.map) cardMap.dispose();
+  }, [cardMap, materials.base?.map]);
+  useLayoutEffect(() => { onReady?.(); }, [onReady]);
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
@@ -208,13 +235,14 @@ function Band({
       [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
       card.current?.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z });
     }
-    if (fixed.current) {
+    if (fixed.current && j1.current && j2.current && j3.current && card.current && band.current) {
+      delta = Math.min(delta, 1 / 30);
       [j1, j2].forEach(ref => {
         if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
         const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
         ref.current.lerped.lerp(
           ref.current.translation(),
-          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
+          Math.min(1, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)))
         );
       });
       curve.points[0].copy(j3.current.translation());
@@ -252,6 +280,7 @@ function Band({
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={e => (e.target.releasePointerCapture(e.pointerId), drag(false))}
+            onPointerCancel={() => drag(false)}
             onPointerDown={e => (
               e.target.setPointerCapture(e.pointerId),
               drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())))
@@ -264,7 +293,7 @@ function Band({
             <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
                 map={cardMap}
-                map-anisotropy={16}
+                map-anisotropy={4}
                 clearcoat={isMobile ? 0 : 1}
                 clearcoatRoughness={0.15}
                 roughness={0.9}
@@ -291,5 +320,3 @@ function Band({
     </>
   );
 }
-
-useGLTF.preload(cardGLB);

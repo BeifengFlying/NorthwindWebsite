@@ -55,7 +55,6 @@ await build({
     path.join(projectRoot, 'src/scripts/pages/journey-menu.jsx'),
     path.join(projectRoot, 'src/scripts/pages/photography-gallery.jsx'),
     path.join(projectRoot, 'src/scripts/pages/ai-lab-components.jsx'),
-    path.join(projectRoot, 'src/scripts/pages/lanyard.jsx'),
     path.join(projectRoot, 'src/scripts/pages/music-card.jsx'),
     path.join(projectRoot, 'src/scripts/pages/sound-control.jsx'),
     path.join(projectRoot, 'src/scripts/pages/solutions-gate.jsx'),
@@ -67,6 +66,20 @@ await build({
   sourcemap: false,
   outdir: path.join(distDir, 'assets/scripts/pages'),
   format: 'iife',
+  target: ['es2020'],
+  jsx: 'automatic',
+  legalComments: 'none',
+});
+
+// Keep WebGL, physics and model loaders outside the lightweight profile entry.
+await build({
+  entryPoints: [path.join(projectRoot, 'src/scripts/pages/lanyard.jsx')],
+  bundle: true,
+  splitting: true,
+  minify: true,
+  outdir: path.join(distDir, 'assets/scripts/pages'),
+  chunkNames: 'chunks/[name]-[hash]',
+  format: 'esm',
   target: ['es2020'],
   jsx: 'automatic',
   legalComments: 'none',

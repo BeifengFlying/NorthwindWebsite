@@ -1,6 +1,5 @@
 import { animate, motion, useMotionValue, useMotionValueEvent, useTransform } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
-import { Icon } from '@chakra-ui/react';
 import { RiVolumeDownFill, RiVolumeUpFill } from 'react-icons/ri';
 
 import './ElasticSlider.css';
@@ -14,14 +13,16 @@ export default function ElasticSlider({
   className = '',
   isStepped = false,
   stepSize = 1,
-  leftIcon = <Icon as={RiVolumeDownFill} />,
-  rightIcon = <Icon as={RiVolumeUpFill} />,
+  leftIcon = <RiVolumeDownFill />,
+  rightIcon = <RiVolumeUpFill />,
   onChange,
+  disabled = false,
   valueFormatter = value => Math.round(value)
 }) {
   return (
     <div className={`slider-container ${className}`}>
       <Slider
+        disabled={disabled}
         defaultValue={defaultValue}
         startingValue={startingValue}
         maxValue={maxValue}
@@ -36,7 +37,7 @@ export default function ElasticSlider({
   );
 }
 
-function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, leftIcon, rightIcon, onChange, valueFormatter }) {
+function Slider({ disabled, defaultValue, startingValue, maxValue, isStepped, stepSize, leftIcon, rightIcon, onChange, valueFormatter }) {
   const [value, setValue] = useState(defaultValue);
   const sliderRef = useRef(null);
   const [region, setRegion] = useState('middle');
@@ -155,10 +156,12 @@ function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, le
           onLostPointerCapture={handlePointerUp}
           onKeyDown={handleKeyDown}
           role="slider"
+          aria-label="音效音量"
+          aria-disabled={disabled}
           aria-valuemin={startingValue}
           aria-valuemax={maxValue}
           aria-valuenow={value}
-          tabIndex={0}
+          tabIndex={disabled ? -1 : 0}
         >
           <motion.div
             style={{

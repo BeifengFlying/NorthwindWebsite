@@ -1,7 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { useEffect, useState } from 'react';
-import { ChakraProvider, Icon, defaultSystem } from '@chakra-ui/react';
-import { RiCloseLine, RiVolumeDownFill, RiVolumeUpFill } from 'react-icons/ri';
+import { RiCloseLine, RiVolumeDownFill, RiVolumeUpFill, RiVolumeMuteFill } from 'react-icons/ri';
 import ElasticSlider from '../../components/ElasticSlider/ElasticSlider.jsx';
 import GlassSurface from '../../components/GlassSurface/GlassSurface.jsx';
 
@@ -36,6 +35,21 @@ const volumeProblems = Array.from({ length: 101 }, (_, answer) => {
 
 function SoundControl() {
   const [isOpen, setIsOpen] = useState(false);
+  const [muted, setMuted] = useState(() => window.NorthwindSound?.isMuted?.() ?? true);
+  const [volume, setVolume] = useState(initialVolume);
+  const [soundState, setSoundState] = useState(() => window.NorthwindSound?.getState?.() || 'locked');
+  useEffect(() => {
+    const sync = () => {
+      setMuted(window.NorthwindSound?.isMuted?.() ?? true);
+      setVolume(window.NorthwindSound?.getVolume?.() ?? .75);
+      setSoundState(window.NorthwindSound?.getState?.() || 'locked');
+    };
+    const onKey = event => { if (event.key === 'Escape') setIsOpen(false); };
+    window.addEventListener('northwind:sound-change', sync);
+    document.addEventListener('keydown', onKey);
+    sync();
+    return () => { window.removeEventListener('northwind:sound-change', sync); document.removeEventListener('keydown', onKey); };
+  }, []);
   const [isAtBottom, setIsAtBottom] = useState(false);
 
   useEffect(() => {
@@ -95,13 +109,14 @@ function SoundControl() {
         <button
           type="button"
           className="sound-control__trigger"
-          aria-label="打开音量控制"
+          aria-label={soundState === 'ready' ? '打开音量控制' : '点击开启音效并打开音量控制'}
           aria-expanded={isOpen}
-          title="打开音量控制"
+          title={soundState === 'ready' ? '音量控制' : '点击开启音效'}
           tabIndex={isOpen || isAtBottom ? -1 : 0}
-          onClick={() => setIsOpen(true)}
+          onClick={() => { window.NorthwindSound?.enable?.(); setIsOpen(true); }}
         >
-          <Icon as={RiVolumeUpFill} aria-hidden="true" />
+          {muted ? <RiVolumeMuteFill aria-hidden="true" /> : <RiVolumeUpFill aria-hidden="true" />}
+          {soundState === 'locked' && <span className="sound-control__activation">点击开启</span>}
         </button>
       </div>
 
@@ -114,14 +129,15 @@ function SoundControl() {
           tabIndex={isOpen && !isAtBottom ? 0 : -1}
           onClick={() => setIsOpen(false)}
         >
-          <Icon as={RiCloseLine} aria-hidden="true" />
+          <RiCloseLine aria-hidden="true" />
         </button>
         <ElasticSlider
           className="sound-control__slider"
-          leftIcon={<Icon as={RiVolumeDownFill} aria-hidden="true" />}
-          rightIcon={<Icon as={RiVolumeUpFill} aria-hidden="true" />}
+          disabled={!isOpen || isAtBottom}
+          leftIcon={<button type="button" className="sound-control__mute" aria-label={muted ? '开启音效' : '静音'} aria-pressed={muted} tabIndex={isOpen && !isAtBottom ? 0 : -1} onClick={() => window.NorthwindSound?.toggle?.()}>{muted ? <RiVolumeMuteFill /> : <RiVolumeDownFill />}</button>}
+          rightIcon={<RiVolumeUpFill aria-hidden="true" />}
           startingValue={0}
-          defaultValue={Math.round(initialVolume * 100)}
+          defaultValue={Math.round(volume * 100)}
           maxValue={100}
           isStepped
           stepSize={1}
@@ -135,8 +151,6 @@ function SoundControl() {
 
 if (root) {
   createRoot(root).render(
-    <ChakraProvider value={defaultSystem}>
-      <SoundControl />
-    </ChakraProvider>
+    <SoundControl />
   );
 }

@@ -7,7 +7,8 @@ function setupHorizontalCanvas() {
   const scroller = document.scrollingElement || document.documentElement;
   if (!canvas || !scroller) return;
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = window.NorthwindPerformance?.lite || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const verticalLayout = () => window.matchMedia('(max-width: 1024px), (hover: none) and (pointer: coarse)').matches;
   if (reducedMotion) document.body.classList.add('reduce-motion');
   let drag = null;
   let inertiaFrame = 0;
@@ -37,7 +38,7 @@ function setupHorizontalCanvas() {
   };
 
   const beginDrag = (event, pointerId) => {
-    if (isInteractive(event.target) || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    if (verticalLayout() || isInteractive(event.target) || (event.pointerType === 'mouse' && event.button !== 0)) return;
     stopInertia();
     if (pointerId !== null) canvas.setPointerCapture?.(pointerId);
     drag = { pointerId, startX: event.clientX, startScroll: scroller.scrollLeft, history: [{ x: event.clientX, time: performance.now() }] };
@@ -45,7 +46,7 @@ function setupHorizontalCanvas() {
   };
 
   const moveDrag = event => {
-    if (!drag || drag.pointerId !== (event.pointerId ?? null)) return;
+    if (verticalLayout() || !drag || drag.pointerId !== (event.pointerId ?? null)) return;
     const raw = drag.startScroll - (event.clientX - drag.startX);
     const max = getMaxScroll();
     scroller.scrollLeft = raw < 0 ? rubberband(raw, window.innerWidth) : raw > max ? max + rubberband(raw - max, window.innerWidth) : raw;
@@ -58,6 +59,7 @@ function setupHorizontalCanvas() {
     if (reducedMotion || Math.abs(velocity) < 0.08) return;
     let currentVelocity = velocity;
     const tick = () => {
+      if (verticalLayout()) { stopInertia(); return; }
       currentVelocity *= 0.93;
       const next = scroller.scrollLeft + currentVelocity;
       const bounded = clamp(next);
@@ -111,7 +113,7 @@ function setupHorizontalCanvas() {
   canvas.addEventListener('pointercancel', finishDrag);
   window.addEventListener('mouseup', event => { if (drag?.pointerId === null) finishDrag(event); });
   window.addEventListener('wheel', event => {
-    if (event.ctrlKey || ignoresHorizontalWheel(event.target)) return;
+    if (verticalLayout() || event.ctrlKey || ignoresHorizontalWheel(event.target)) return;
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
 
     const panelState = getScrollablePanel(event.target);
@@ -181,7 +183,7 @@ function setupRevealAnimations() {
 }
 
 const stepData = {
-  1: '先确认硬件，再决定模型规模',
+  1: '先看硬件，再选规模',
   2: '量化版本决定了文件大小和一部分推理体验',
   3: '让模型尽可能进入 GPU，但不要牺牲系统稳定性',
   4: '先跑通，再根据任务逐项调参'
@@ -192,7 +194,7 @@ const stepData = {
 // assets/data/timeline.json as the source of truth.
 const fallbackTimeline = [
   { date: '2018.06', model: 'GPT-1', company: 'OpenAI', technology: 'Transformer Decoder / 117M', description: '证明语言模型可以先学习通用知识，再迁移到不同任务，基础模型范式开始发芽。', era: 'pretraining' },
-  { date: '2019.02', model: 'GPT-2', company: 'OpenAI', technology: '1.5B / Zero-shot', description: '长文本生成与零样本能力让行业开始相信，规模会带来新的智能能力。', era: 'pretraining' },
+  { date: '2019.02', model: 'GPT-2', company: 'OpenAI', technology: '1.5B / Zero-shot', description: '长文本与零样本能力推动规模化。', era: 'pretraining' },
   { date: '2020.06', model: 'GPT-3', company: 'OpenAI', technology: '175B / In-context Learning', description: 'Prompt 即可完成任务，催生提示工程、Agent 雏形和大模型创业潮。', era: 'pretraining' },
   { date: '2022.11', model: 'ChatGPT', company: 'OpenAI', technology: 'GPT-3.5 / RLHF', description: '模型从“会生成文字”变成“像助手一样交流”，两个月破亿用户。', era: 'chat' },
   { date: '2023.03', model: 'GPT-4', company: 'OpenAI', technology: '推理 / 图像 / 编程', description: '行业标准从语言模型提升到通用智能模型，能力门槛被重新定义。', era: 'multimodal' },
@@ -205,20 +207,20 @@ const fallbackTimeline = [
   { date: '2024', model: 'Kimi', company: 'Moonshot AI', technology: '超长上下文 / 中文长文', description: '把长文理解和中文场景带到大众视野，形成面向真实阅读任务的分枝。', era: 'efficiency' },
   { date: '2024', model: 'GLM-4', company: '智谱 AI', technology: '中文 / 企业 / Agent', description: '国产通用模型向企业服务和 Agent 能力延展。', era: 'efficiency' },
   { date: '2024', model: 'Qwen2.5', company: '阿里通义千问', technology: '多尺寸 / 商业部署', description: '兼顾中文能力、开源生态和商业部署，成为重要的国产开源分枝。', era: 'efficiency' },
-  { date: '2024.12', model: 'DeepSeek-V3', company: 'DeepSeek', technology: 'MoE 优化 / 训练效率', description: '训练效率与开源能力的突破，让全球重新关注中国大模型路线。', era: 'efficiency' },
-  { date: '2025.01', model: 'DeepSeek-R1', company: 'DeepSeek', technology: 'GRPO / 推理强化学习', description: '模型从预测下一个 token，开始主动思考；开源推理模型进入主舞台。', era: 'reasoning' },
-  { date: '2025', model: 'OpenAI o3 / GPT-5 系列', company: 'OpenAI', technology: '推理 / 工具调用 / Agent', description: '模型不只回答问题，也开始分析、调用工具并完成连续任务。', era: 'reasoning' },
-  { date: '2025', model: 'Claude 4 / Opus', company: 'Anthropic', technology: '代码 Agent', description: '长链路的软件工程任务成为重点，模型开始参与更完整的开发流程。', era: 'reasoning' },
-  { date: '2025', model: 'Gemini 2.5', company: 'Google', technology: '长上下文 / 推理 / Agent', description: '超长上下文与推理能力结合，进一步扩大复杂任务的可执行范围。', era: 'reasoning' },
-  { date: '2025', model: 'Grok 3 / 4', company: 'xAI', technology: '实时数据 / 数学推理', description: '大规模训练与实时世界数据结合，继续探索推理的上限。', era: 'reasoning' },
-  { date: '2026', model: 'GPT-5.5', company: 'OpenAI', technology: 'Agentic Coding / 长任务', description: '面向实际工作流，强调代码、科研辅助与更长程的任务执行。', era: 'agent' },
-  { date: '2026', model: 'Claude 5', company: 'Anthropic', technology: '长时间 Agent / 企业工作流', description: '把软件开发与企业流程作为长期 Agent 的核心场景。', era: 'agent' },
+  { date: '2024.12', model: 'DeepSeek-V3', company: 'DeepSeek', technology: 'MoE 优化 / 训练效率', description: '训练效率与开源能力提升关注度。', era: 'efficiency' },
+  { date: '2025.01', model: 'DeepSeek-R1', company: 'DeepSeek', technology: 'GRPO / 推理强化学习', description: '推理模型进入主流。', era: 'reasoning' },
+  { date: '2025', model: 'OpenAI o3 / GPT-5 系列', company: 'OpenAI', technology: '推理 / 工具调用 / Agent', description: '模型开始调用工具。', era: 'reasoning' },
+  { date: '2025', model: 'Claude 4 / Opus', company: 'Anthropic', technology: '代码 Agent', description: '软件工程成为重点场景。', era: 'reasoning' },
+  { date: '2025', model: 'Gemini 2.5', company: 'Google', technology: '长上下文 / 推理 / Agent', description: '长上下文与推理结合。', era: 'reasoning' },
+  { date: '2025', model: 'Grok 3 / 4', company: 'xAI', technology: '实时数据 / 数学推理', description: '实时数据加入推理。', era: 'reasoning' },
+  { date: '2026', model: 'GPT-5.5', company: 'OpenAI', technology: 'Agentic Coding / 长任务', description: '代码、科研与长任务。', era: 'agent' },
+  { date: '2026', model: 'Claude 5', company: 'Anthropic', technology: '长时间 Agent / 企业工作流', description: '软件开发与企业流程。', era: 'agent' },
   { date: '2026', model: 'Gemini 3.5', company: 'Google DeepMind', technology: 'Agent / 多模态理解', description: '进一步聚焦复杂任务执行和跨模态理解。', era: 'agent' },
-  { date: '2026', model: 'DeepSeek-V4', company: 'DeepSeek', technology: 'MoE / 推理效率 / 开源', description: 'V2、V3、R1 到 V4 的技术路线，持续强化高效推理和开源生态。', era: 'agent' },
-  { date: '2026', model: 'Qwen3.7', company: '阿里通义千问', technology: '多模态 / 企业应用', description: '从中文模型走向全球开源生态竞争者，面向企业级任务执行。', era: 'agent' },
-  { date: '2026', model: 'Kimi K2.7', company: 'Moonshot AI', technology: 'Agent Coding / 长任务', description: '将长任务软件开发作为 Agent 能力的关键落点。', era: 'agent' },
-  { date: '2026', model: 'GLM-5.2', company: '智谱 AI', technology: '百万级上下文 / 推理', description: '围绕长上下文、推理与企业应用继续扩展。', era: 'agent' },
-  { date: '2026', model: 'Grok 4.x', company: 'xAI', technology: '实时世界模型 / X 生态', description: '沿着实时信息、社交生态与推理能力继续生长。', era: 'agent' }
+  { date: '2026', model: 'DeepSeek-V4', company: 'DeepSeek', technology: 'MoE / 推理效率 / 开源', description: '高效推理与开源生态。', era: 'agent' },
+  { date: '2026', model: 'Qwen3.7', company: '阿里通义千问', technology: '多模态 / 企业应用', description: '中文模型与企业任务。', era: 'agent' },
+  { date: '2026', model: 'Kimi K2.7', company: 'Moonshot AI', technology: 'Agent Coding / 长任务', description: '长任务软件开发。', era: 'agent' },
+  { date: '2026', model: 'GLM-5.2', company: '智谱 AI', technology: '百万级上下文 / 推理', description: '长上下文、推理与企业应用。', era: 'agent' },
+  { date: '2026', model: 'Grok 4.x', company: 'xAI', technology: '实时世界模型 / X 生态', description: '实时信息与推理。', era: 'agent' }
 ];
 
 function setupStepper() {
@@ -295,13 +297,13 @@ function renderModels(models) {
   const grid = $('#modelsGrid');
   grid.innerHTML = models.map((model, index) => `
     <article class="model-card reveal-on-scroll">
-      <div class="model-card-top"><span class="model-number">${String(index + 1).padStart(2, '0')}</span><span>模型记录 / 0${index + 1}</span></div>
+      <div class="model-card-top"><span class="model-number">${String(index + 1).padStart(2, '0')}</span><span>模型 / 0${index + 1}</span></div>
       <h3 class="model-name">${model.name}</h3>
       <p class="model-architecture">${model.architecture} / ${model.tags.join(' / ')}</p>
       <p class="model-description">${model.description}</p>
       <div class="model-columns"><div><h4>优势</h4><ul>${model.advantages.map((item) => `<li>${item}</li>`).join('')}</ul></div><div><h4>限制</h4><ul class="limits">${model.limitations.map((item) => `<li>${item}</li>`).join('')}</ul></div></div>
       <div class="model-bottom">${model.scenarios.map((item) => `<span>${item}</span>`).join('')}</div>
-      <p class="model-experience">部署记录 / ${model.experience}</p>
+      <p class="model-experience">运行记录 / ${model.experience}</p>
     </article>`).join('');
   setupRevealAnimations();
 }
@@ -309,7 +311,7 @@ function renderModels(models) {
 function renderTimeline(entries) {
   const eras = [
     { id: 'pretraining', range: '2018 - 2020', title: '训练一个大脑', note: 'Transformer 预训练时代' },
-    { id: 'chat', range: '2022', title: '让大众使用 AI', note: 'RLHF / 对话革命' },
+    { id: 'chat', range: '2022', title: 'AI 进入大众视野', note: 'RLHF / 对话革命' },
     { id: 'multimodal', range: '2023', title: '能力开始分枝', note: '多模态 / 开源 / 安全' },
     { id: 'efficiency', range: '2024', title: '树冠快速展开', note: '实时交互 / MoE / 长上下文' },
     { id: 'reasoning', range: '2025', title: '模型学会思考', note: '推理 / 工具调用 / 代码 Agent' },
@@ -362,11 +364,11 @@ function renderTimeline(entries) {
 
 function setupSizeExplorer() {
   const sizes = [
-    ['1B', '轻量 / 端侧友好', '响应快、资源占用低，适合做功能验证和简单任务'],
-    ['7B', '实用的起点', '速度、质量和硬件要求之间比较容易取得平衡，适合先验证一条本地工作流'],
-    ['14B', '更完整的能力', '知识和复杂任务能力更稳，但需要更严格地管理显存、上下文和量化'],
+    ['1B', '轻量 / 端侧友好', '响应快，资源占用低。'],
+    ['7B', '实用的起点', '速度与质量较均衡。'],
+    ['14B', '更完整的能力', '能力更稳，资源要求更高。'],
     ['32B', '开始有重量', '复杂任务的上限更高，加载时间和硬件成本也会明显增加'],
-    ['70B+', '部署的边界', '更多时候需要多卡、极致量化或云端资源，本地体验不再轻松']
+    ['70B+', '部署上限', '通常需要多卡或云端。']
   ];
   const range = $('#sizeRange');
   const buttons = $$('.size-scale button');

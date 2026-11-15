@@ -4,12 +4,11 @@ var NorthwindSound = window.NorthwindSound || (function () {
 
   var AudioContextClass = window.AudioContext || window.webkitAudioContext;
   var context;
-  var resumePromise;
   var contextPrimed = false;
   var masterGain;
   var muteStorageKey = 'northwind-sound-muted';
   var volumeStorageKey = 'northwind-sound-volume';
-  var soundMuted = true;
+  var soundMuted = false;
   var soundVolume = .75;
   var lastWindAt = -Infinity;
   var volumePersistTimer = 0;
@@ -18,22 +17,30 @@ var NorthwindSound = window.NorthwindSound || (function () {
   var assetBuffers = Object.create(null);
   var assetPromises = Object.create(null);
   var assetUrls = {
-    tick: '/assets/audio/wheel-tick.wav?v=sfx-20260731-5',
-    wind: '/assets/audio/paper-plane-wind.wav?v=sfx-20260731-5'
+    tick: 'assets/audio/wheel-tick.wav?v=sfx-20260731-5',
+    wind: 'assets/audio/paper-plane-wind.wav?v=sfx-20260731-5'
   };
 
   try {
     var storedMuteState = window.localStorage.getItem(muteStorageKey);
-    soundMuted = storedMuteState === null ? true : storedMuteState === 'true';
-    var storedVolume = Number(window.localStorage.getItem(volumeStorageKey));
+    soundMuted = storedMuteState === 'true';
+    var rawVolume = window.localStorage.getItem(volumeStorageKey);
+    var storedVolume = rawVolume === null ? NaN : Number(rawVolume);
     if (Number.isFinite(storedVolume)) soundVolume = Math.min(Math.max(storedVolume, 0), 1);
   }
   catch (error) { /* Sound still works when storage is unavailable. */ }
 
+  function getState() {
+    if (!AudioContextClass) return 'unsupported';
+    if (soundMuted || soundVolume === 0) return 'muted';
+    return context?.state === 'running' ? 'ready' : 'locked';
+  }
+
   function reflectSoundState() {
+    window.dispatchEvent(new CustomEvent('northwind:sound-change', { detail: { muted: soundMuted, volume: soundVolume, state: getState() } }));
     var toggle = document.getElementById('soundToggle');
     if (!toggle) return;
-    var enabled = !soundMuted;
+    var enabled = getState() === 'ready';
     var i18n = window.NorthwindI18n;
     var label = enabled ? (i18n ? i18n.t('disable_sound', '关闭声音') : '关闭声音') : (i18n ? i18n.t('enable_sound', '开启声音') : '开启声音');
     toggle.classList.toggle('is-enabled', enabled);
@@ -54,6 +61,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
       catch (fallbackError) { context = null; }
     }
     if (context && !context._northwindStateListener) {
+      contextPrimed = false;
       masterGain = context.createGain();
       masterGain.gain.value = soundMuted ? 0 : soundVolume;
       masterGain.connect(context.destination);
@@ -119,17 +127,14 @@ var NorthwindSound = window.NorthwindSound || (function () {
     primeContext(audioContext);
     if (!audioContext || audioContext.state === 'running') return Promise.resolve(audioContext);
     if (audioContext.state === 'closed') return Promise.resolve(null);
-    if (!resumePromise) {
-      resumePromise = audioContext.resume().then(function () {
-        resumePromise = null;
+    // A resume requested before user activation may never settle. Always
+    // retry inside a new gesture instead of reusing that pending promise.
+    try {
+      return audioContext.resume().then(function () {
         reflectSoundState();
-        return audioContext;
-      }).catch(function () {
-        resumePromise = null;
-        return null;
-      });
-    }
-    return resumePromise;
+        return audioContext.state === 'running' ? audioContext : null;
+      }).catch(function () { return null; });
+    } catch (error) { return Promise.resolve(null); }
   }
 
   function createNoise(audioContext, duration) {
@@ -262,11 +267,14 @@ var NorthwindSound = window.NorthwindSound || (function () {
 
   function preparePageAssets(decode) {
     var prepare = decode ? loadAsset : fetchAssetData;
-    if (document.getElementById('optionWheel')) prepare('tick');
-    if (document.getElementById('hero') && document.getElementById('about')) prepare('wind');
+    var pending = [];
+    if (document.getElementById('optionWheel')) pending.push(prepare('tick'));
+    if (document.getElementById('hero') && document.getElementById('about')) pending.push(prepare('wind'));
+    return Promise.all(pending);
   }
 
   function unlockFromGesture(event) {
+    if (event.isTrusted === false) return;
     if (event.target && event.target.closest && event.target.closest('#soundToggle')) return;
     if (soundMuted) return;
     unlock().then(function (audioContext) {
@@ -277,6 +285,7 @@ var NorthwindSound = window.NorthwindSound || (function () {
 
   function toggleSound() {
     var shouldEnable = soundMuted;
+    if (shouldEnable && soundVolume === 0) setVolume(.75);
     setSoundMuted(!shouldEnable);
     if (!shouldEnable) return;
     unlock().then(function (audioContext) {
@@ -298,17 +307,30 @@ var NorthwindSound = window.NorthwindSound || (function () {
     toggleSound();
   });
   document.addEventListener('pointerdown', unlockFromGesture, { capture: true });
-  document.addEventListener('touchstart', unlockFromGesture, { capture: true, passive: true });
+  document.addEventListener('pointerup', unlockFromGesture, { capture: true });
+  document.addEventListener('click', unlockFromGesture, { capture: true });
+  document.addEventListener('touchend', unlockFromGesture, { capture: true, passive: true });
   document.addEventListener('keydown', unlockFromGesture, { capture: true });
-  window.addEventListener('wheel', unlockFromGesture, { capture: true, passive: true });
 
   function finishSoundBoot() {
     reflectSoundState();
-    preparePageAssets(false);
+    // Decoding works while the context is suspended; finish it before the
+    // first wheel tick or paper-plane transition, even with an empty cache.
+    preparePageAssets(true);
+  }
+
+  function enableSound() {
+    if (soundVolume === 0) setVolume(.75);
+    setSoundMuted(false);
+    return unlock().then(function (audioContext) {
+      if (!audioContext) return;
+      return preparePageAssets(true).then(function () { playTick(.35); });
+    });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', finishSoundBoot);
   else finishSoundBoot();
+  window.addEventListener('pageshow', finishSoundBoot);
 
   return {
     playPageWhoosh: playPageWhoosh,
@@ -316,6 +338,10 @@ var NorthwindSound = window.NorthwindSound || (function () {
     playWind: playWind,
     setVolume: setVolume,
     getVolume: getVolume,
+    isMuted: function () { return soundMuted; },
+    toggle: toggleSound,
+    getState: getState,
+    enable: enableSound,
     unlock: unlock
   };
 }());
@@ -325,7 +351,7 @@ window.NorthwindSound = NorthwindSound;
 (function () {
   'use strict';
 
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reducedMotion = window.NorthwindPerformance?.lite || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var frame;
   var previousScroll = window.scrollY;
   var previousTime = performance.now();
@@ -537,7 +563,7 @@ if (initialCraftedWorksState && (currentPagePath === '/' || /\/index\.html$/i.te
   'use strict';
 
   var storageKey = 'northwind-page-transition';
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reducedMotion = window.NorthwindPerformance?.lite || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var locked = false;
   var overlay;
   var arriving = false;

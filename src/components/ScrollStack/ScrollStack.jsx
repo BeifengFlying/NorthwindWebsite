@@ -249,7 +249,7 @@ const ScrollStack = ({
 
   useLayoutEffect(() => {
     const scroller = scrollerRef.current;
-    if (!scroller) return;
+    if (!scroller || window.NorthwindPerformance?.lite) return;
 
     const cards = Array.from(
       useWindowScroll

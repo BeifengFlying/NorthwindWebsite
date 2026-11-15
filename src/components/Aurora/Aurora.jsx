@@ -118,13 +118,15 @@ export default function Aurora(props) {
 
   useEffect(() => {
     const ctn = ctnDom.current;
-    if (!ctn) return;
+    if (!ctn || window.NorthwindPerformance?.lite || !window.NorthwindPerformance?.supportsWebGL2()) return;
 
-    const renderer = new Renderer({
+    let renderer;
+    try { renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
-      antialias: true
-    });
+      antialias: false,
+      dpr: 1
+    }); } catch { return; }
     const gl = renderer.gl;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     gl.clearColor(0, 0, 0, 0);

@@ -21,16 +21,16 @@ const fallbackNotes = [
   {
     index: '01',
     label: 'FIELD NOTE / 01',
-    title: '先让模型跑起来',
-    body: '本地部署的第一步不是追逐最大的参数量，而是把硬件、格式与运行时的边界摸清。一次成功的推理，比一张参数表更有价值。',
+    title: '先运行模型',
+    body: '先确认硬件、格式与运行环境。',
     meta: 'HARDWARE / RUNTIME',
     tone: 'green'
   },
   {
     index: '02',
     label: 'FIELD NOTE / 02',
-    title: '量化是取舍，不是妥协',
-    body: 'Q4、Q5、Q8 让同一个模型在不同机器上拥有不同的节奏。文件变小以后，真正需要观察的是回答质量与响应速度的平衡。',
+    title: '量化等级',
+    body: 'Q4、Q5、Q8：文件大小、速度与质量。',
     meta: 'GGUF / MLX / Q4',
     tone: 'violet'
   },
@@ -38,15 +38,15 @@ const fallbackNotes = [
     index: '03',
     label: 'FIELD NOTE / 03',
     title: '把观察写进工作流',
-    body: '记录上下文长度、GPU Offload、首 token 延迟和真实任务表现。模型只有进入工作流，才会从“能用”变成“值得留下”。',
+    body: '记录上下文长度、GPU Offload、首 token 延迟和真实任务表现。记录实际使用。',
     meta: 'OBSERVE / MEASURE',
     tone: 'orange'
   },
   {
     index: '04',
     label: 'FIELD NOTE / 04',
-    title: '下一步是行动能力',
-    body: '从回答问题到调用工具，再到完成长任务，本地模型的下一条边界不只是更聪明，而是更稳定地参与真实工作。',
+    title: '行动能力',
+    body: '回答、调用、完成任务。',
     meta: 'AGENT / LONG TASK',
     tone: 'cyan'
   }

@@ -123,6 +123,7 @@ const GlassSurface = ({
   }, []);
 
   const supportsSVGFilters = () => {
+    if (window.NorthwindPerformance?.lite) return false;
     if (typeof window === 'undefined' || typeof document === 'undefined') return false;
 
     const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);

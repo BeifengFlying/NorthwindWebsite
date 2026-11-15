@@ -11,9 +11,10 @@
     "dev": "npm run build && node scripts/serve.mjs --port 4173",
     "generate:sfx": "node scripts/generate-sfx.mjs",
     "preview": "node scripts/serve.mjs --port 4173",
-    "check": "npm run build && node scripts/check-project.mjs",
+    "check": "npm run build && node scripts/check-project.mjs && npm run test:runtime",
     "optimize:images": "node scripts/optimize-images.cjs",
-    "prepare": "node scripts/install-git-hooks.mjs"
+    "prepare": "node scripts/install-git-hooks.mjs",
+    "test:runtime": "node --test scripts/test-runtime.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.28.1",

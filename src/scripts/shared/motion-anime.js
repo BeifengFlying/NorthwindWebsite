@@ -4,7 +4,7 @@ import { animate, createTimeline } from 'animejs';
 (function initNorthwindMotion() {
   'use strict';
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = window.NorthwindPerformance?.lite || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const compactViewport = window.matchMedia('(max-width: 768px)').matches;
   const revealSelector = [
     '.solutions-hero > *', '.workflow-hero .hero-copy', '.workflow-hero .card-swap-stage',
@@ -47,7 +47,7 @@ import { animate, createTimeline } from 'animejs';
       // Keep motion on wayfinding and visual modules. Reading copy remains
       // available immediately so sections can be scanned while scrolling.
       '.hero-title-line',
-      '#about .about-title, #about .about-lanyard-mount',
+      '#about .about-title',
       '#path .path-title',
       '#music .music-heading, #music .music-cover-col',
       '#explore .explore-title, #explore .explore-card, #explore .explore-card-title',
@@ -198,7 +198,7 @@ import { animate, createTimeline } from 'animejs';
         opacity: [0, 1],
         y: [compactViewport ? 12 : 18, 0],
         scale: type === 'image' ? [1.025, 1] : [0.99, 1],
-        filter: type === 'image' ? ['blur(4px)', 'blur(0px)'] : ['blur(2px)', 'blur(0px)'],
+
         duration: compactViewport ? 220 : 300,
         delay,
         // Anime temporarily owns transform during the reveal. Returning it
@@ -243,7 +243,16 @@ import { animate, createTimeline } from 'animejs';
     }) : null;
     document.querySelectorAll('[data-motion-reveal]').forEach(observe);
     setupHeroScrollStretch();
-    new MutationObserver((records) => records.forEach((record) => record.addedNodes.forEach((node) => { if (node.nodeType === Node.ELEMENT_NODE) { register(node.parentElement || document); document.querySelectorAll('[data-motion-reveal]').forEach(observe); } }))).observe(document.body, { childList: true, subtree: true });
+    new MutationObserver((records) => {
+      const scopes = new Set();
+      records.forEach(record => {
+        if (Array.from(record.addedNodes).some(node => node.nodeType === Node.ELEMENT_NODE)) scopes.add(record.target);
+      });
+      scopes.forEach(scope => {
+        register(scope);
+        scope.querySelectorAll('[data-motion-reveal]').forEach(observe);
+      });
+    }).observe(document.body, { childList: true, subtree: true });
   }
 
   window.NorthwindMotion = { register, observe, reveal };

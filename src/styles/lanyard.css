@@ -450,3 +450,42 @@
   .sticker-main, .sticker-flap { transition-duration: .01ms; }
   .profile-card-3d { transition-duration: .01ms; }
 }
+
+/* The fallback is real content, also present before JavaScript initializes. */
+.lanyard-fallback {
+  position: absolute;
+  top: 0;
+  left: 72%;
+  width: min(380px, 40vw);
+  height: min(760px, 100vh);
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+.lanyard-fallback__strap {
+  position: absolute;
+  top: 0;
+  bottom: 50%;
+  width: 24px;
+  background: #121212 url('../lanyard/flying-lanyard.svg') center / 100% auto repeat-y;
+}
+.lanyard-fallback__card {
+  position: relative;
+  display: block;
+  width: min(300px, 100%);
+  padding: 0;
+  border: 1px solid #ddd8ce;
+  border-radius: 14px;
+  background: #f7f5ee;
+  box-shadow: 0 14px 32px #1112;
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.lanyard-fallback__card > img:first-child { display: block; width: 100%; height: auto; }
+.lanyard-fallback__card .lanyard-fallback__qr { position: absolute; left: 63%; top: 77%; width: 28.5%; height: 22%; }
+.lanyard-fallback__card:focus-visible { outline: 3px solid #111; outline-offset: 5px; }
+.lanyard-scene__hint { pointer-events: auto; border: 0; background: transparent; cursor: pointer; padding: 12px; min-height: 44px; }
+.lanyard-scene[data-scene-ready="false"] .lanyard-wrapper { opacity: 0; pointer-events: none; }

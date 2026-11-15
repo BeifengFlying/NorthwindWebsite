@@ -1,0 +1,46 @@
+.album-rail { position: relative; width: 100%; min-width: 0; color: var(--ink); }
+.album-rail__stage { position: relative; height: 400px; overflow: hidden; perspective: 1100px; isolation: isolate; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; border-radius: 18px; }
+.album-rail.is-dragging .album-rail__stage, .album-rail.is-dragging .album-rail__sleeve { cursor: grabbing; }
+.album-rail__floor { position: absolute; width: 76%; height: 48px; left: 12%; bottom: 28px; background: radial-gradient(ellipse, rgba(58,43,30,.13), transparent 68%); pointer-events: none; }
+.album-rail__sleeve { position: absolute; left: 50%; top: 46%; padding: 0; border: 0; border-radius: 10px; background: transparent; cursor: pointer; transform-style: preserve-3d; outline-offset: 7px; }
+.album-rail__jacket { position: absolute; inset: 0; display: block; overflow: hidden; border-radius: inherit; background: var(--paper-2); box-shadow: 0 18px 30px -16px rgba(29,21,15,.6), 0 2px 5px rgba(29,21,15,.14); transform: translateZ(2px); }
+.album-rail__jacket::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255,255,255,.24), inset 3px 0 5px rgba(0,0,0,.1); background: linear-gradient(115deg, rgba(255,255,255,.12), transparent 35%, rgba(0,0,0,.04)); pointer-events: none; }
+.album-rail__jacket img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.album-rail__record { position: absolute; inset: 3%; display: block; border-radius: 50%; transform: translate3d(5%,0,0); transition: transform 280ms var(--ease-out); box-shadow: 8px 12px 24px rgba(18,16,14,.2); }
+.album-rail__disc { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; border-radius: 50%; background: repeating-radial-gradient(circle at center, transparent 0 2px, rgba(255,255,255,.085) 2.5px 3px, transparent 3.5px 5px), conic-gradient(from 20deg, #111113, #303034 22%, #101012 36%, #29292d 49%, #111113 63%, #343438 80%, #111113); box-shadow: inset 0 0 0 2px #171719, inset 0 0 0 5px rgba(255,255,255,.08); animation: album-rail-spin 1.82s linear infinite; }
+.album-rail__label { width: 32%; height: 32%; border-radius: 50%; object-fit: cover; pointer-events: none; }
+.album-rail__disc::after { content: ''; position: absolute; width: 3%; height: 3%; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 4px rgba(0,0,0,.55); }
+.album-rail__sleeve[data-expanded="true"] .album-rail__record { transform: translate3d(48%,-7%,0); }
+.album-rail__controls { display: flex; align-items: center; justify-content: center; gap: 18px; max-width: 440px; margin: 0 auto; }
+.album-rail__arrow { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: transparent; font: 22px/1 var(--mono); cursor: pointer; transition: background 160ms ease, color 160ms ease; }
+.album-rail__ruler { display: flex; justify-content: center; min-width: 0; flex: 1; }
+.album-rail__tick { display: grid; place-items: center; flex: 1; max-width: 20px; min-width: 10px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.album-rail__tick span { width: 2px; height: 12px; border-radius: 2px; background: var(--ink); opacity: .2; transform: scaleY(1); transition: transform 180ms var(--ease-out), opacity 180ms ease; }
+.album-rail__tick:nth-child(4n + 1) span { height: 19px; }
+.album-rail__tick[data-active="true"] span { background: #bc582e; opacity: 1; transform: scaleY(1.6); }
+.album-rail__footnote { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 20px 24px 0; color: var(--muted); }
+.album-rail__count { flex-shrink: 0; font: 12px/1 var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.album-rail__count > span { opacity: .4; }
+.album-rail__hint { font-size: 11px; letter-spacing: .03em; text-align: center; }
+.album-rail__vinyl-toggle { display: flex; align-items: center; gap: 7px; border: 0; padding: 10px 0 10px 8px; background: transparent; color: var(--muted); font: 11px/1 var(--mono); cursor: pointer; white-space: nowrap; }
+.album-rail__mini-record { width: 14px; height: 14px; border-radius: 50%; border: 5px solid var(--ink); background: var(--paper); }
+.album-rail button:focus-visible, .album-rail__stage:focus-visible { outline: 2px solid #bc582e; outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  .album-rail__sleeve[data-active="true"]:hover .album-rail__record { transform: translate3d(16%,-2%,0); }
+  .album-rail__sleeve[data-expanded="true"]:hover .album-rail__record { transform: translate3d(48%,-7%,0); }
+  .album-rail__arrow:hover { color: var(--paper); background: var(--ink); }
+  .album-rail__tick:hover span { opacity: .7; }
+  .album-rail__vinyl-toggle:hover { color: var(--ink); }
+}
+@media (max-width: 640px) {
+  .album-rail__stage { height: 310px; overflow: clip; }
+  .album-rail__controls { gap: 12px; padding-inline: 4px; }
+  .album-rail__footnote { margin: 14px 4px 0; gap: 8px; }
+  .album-rail__hint { font-size: 10px; letter-spacing: 0; }
+  .album-rail__vinyl-toggle { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .album-rail__record, .album-rail__tick span { transition: opacity 160ms ease; }
+  .album-rail__disc { animation: none; }
+}
+@keyframes album-rail-spin { to { transform: rotate(360deg); } }

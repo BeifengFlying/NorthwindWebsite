@@ -1,6 +1,30 @@
 (function () {
   'use strict';
 
+  // Publish scroll activity before the next expensive background frame.
+  var scrollTimer = 0;
+  var scrolling = false;
+  function setScrolling(next) {
+    if (scrolling === next) return;
+    scrolling = next;
+    document.documentElement.classList.toggle('workflow-scrolling', next);
+    window.dispatchEvent(new CustomEvent('northwind:workflow-scroll', { detail: next }));
+  }
+  function noteScroll() {
+    setScrolling(true);
+    window.clearTimeout(scrollTimer);
+    scrollTimer = window.setTimeout(function () { setScrolling(false); }, 180);
+  }
+  window.addEventListener('scroll', noteScroll, { passive: true });
+  window.addEventListener('wheel', function (event) {
+    if (!event.ctrlKey && (event.deltaX || event.deltaY)) noteScroll();
+  }, { passive: true });
+  window.addEventListener('touchmove', noteScroll, { passive: true });
+  window.addEventListener('pageshow', function () {
+    window.clearTimeout(scrollTimer);
+    setScrolling(false);
+  });
+
   var container = document.getElementById('workflowCardSwap');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.workflow-card'));
   var nav = document.querySelector('.workflow-nav');

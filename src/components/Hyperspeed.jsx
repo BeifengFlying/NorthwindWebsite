@@ -1,10 +1,12 @@
-import { BloomEffect, EffectComposer, EffectPass, RenderPass, SMAAEffect, SMAAPreset } from 'postprocessing';
+import { BloomEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 import './Hyperspeed.css';
 
 const DEFAULT_EFFECT_OPTIONS = {
+  maxDpr: 1.25,
+  frameRate: 30,
   onSpeedUp: () => {},
   onSlowDown: () => {},
   distortion: 'turbulentDistortion',
@@ -361,7 +363,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
           alpha: true
         });
         this.renderer.setSize(initW, initH, false);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, options.maxDpr));
         this.composer = new EffectComposer(this.renderer);
         container.append(this.renderer.domElement);
 
@@ -379,7 +381,11 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
           fogNear: { value: fog.near },
           fogFar: { value: fog.far }
         };
-        this.clock = new THREE.Clock();
+        this.elapsedTime = 0;
+        this.lastRender = 0;
+        this.frameInterval = 1000 / options.frameRate;
+        this.width = initW;
+        this.height = initH;
         this.assets = {};
         this.disposed = false;
 
@@ -406,8 +412,24 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
         this.timeOffset = 0;
 
         this.tick = this.tick.bind(this);
+        this.frame = 0;
+        this.scrolling = document.documentElement.classList.contains('workflow-scrolling');
+        this.syncPlayback = () => {
+          if (document.hidden || this.scrolling) {
+            cancelAnimationFrame(this.frame);
+            this.frame = 0;
+            this.lastRender = 0;
+          } else if (!this.disposed && this.initialized && this.hasValidSize && !this.frame) {
+            this.frame = requestAnimationFrame(this.tick);
+          }
+        };
+        this.onScrollState = event => {
+          this.scrolling = event.detail;
+          this.syncPlayback();
+        };
+        document.addEventListener('visibilitychange', this.syncPlayback);
+        window.addEventListener('northwind:workflow-scroll', this.onScrollState);
         this.init = this.init.bind(this);
-        this.setSize = this.setSize.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
 
@@ -417,6 +439,8 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
 
         this.onWindowResize = this.onWindowResize.bind(this);
         window.addEventListener('resize', this.onWindowResize);
+        this.resizeObserver = new ResizeObserver(this.onWindowResize);
+        this.resizeObserver.observe(container);
 
         if (container.offsetWidth > 0 && container.offsetHeight > 0) {
           this.hasValidSize = true;
@@ -432,11 +456,14 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
           return;
         }
 
-        this.renderer.setSize(width, height);
+        if (width === this.width && height === this.height) return;
+        this.width = width; this.height = height;
+        this.renderer.setSize(width, height, false);
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
-        this.composer.setSize(width, height);
+        this.composer.setSize(width, height, false);
         this.hasValidSize = true;
+        this.syncPlayback();
       }
 
       initPasses() {
@@ -446,52 +473,19 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
           new BloomEffect({
             luminanceThreshold: 0.2,
             luminanceSmoothing: 0,
-            resolutionScale: 1
+            resolutionScale: 0.5
           })
         );
 
-        const smaaPass = new EffectPass(
-          this.camera,
-          new SMAAEffect({
-            preset: SMAAPreset.MEDIUM,
-            searchImage: SMAAEffect.searchImageDataURL,
-            areaImage: SMAAEffect.areaImageDataURL
-          })
-        );
         this.renderPass.renderToScreen = false;
-        this.bloomPass.renderToScreen = false;
-        smaaPass.renderToScreen = true;
+        this.bloomPass.renderToScreen = true;
         this.composer.addPass(this.renderPass);
         this.composer.addPass(this.bloomPass);
-        this.composer.addPass(smaaPass);
-      }
-
-      loadAssets() {
-        const assets = this.assets;
-        return new Promise(resolve => {
-          const manager = new THREE.LoadingManager(resolve);
-
-          const searchImage = new Image();
-          const areaImage = new Image();
-          assets.smaa = {};
-          searchImage.addEventListener('load', function () {
-            assets.smaa.search = this;
-            manager.itemEnd('smaa-search');
-          });
-
-          areaImage.addEventListener('load', function () {
-            assets.smaa.area = this;
-            manager.itemEnd('smaa-area');
-          });
-          manager.itemStart('smaa-search');
-          manager.itemStart('smaa-area');
-
-          searchImage.src = SMAAEffect.searchImageDataURL;
-          areaImage.src = SMAAEffect.areaImageDataURL;
-        });
       }
 
       init() {
+        if (this.disposed) return;
+        this.initialized = true;
         this.initPasses();
         const options = this.options;
         this.road.init();
@@ -513,7 +507,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
 
         this.container.addEventListener('contextmenu', this.onContextMenu);
 
-        this.tick();
+        this.syncPlayback();
       }
 
       onMouseDown(ev) {
@@ -549,7 +543,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
         this.speedUp += lerp(this.speedUp, this.speedUpTarget, lerpPercentage, 0.00001);
         this.timeOffset += this.speedUp * delta;
 
-        let time = this.clock.elapsedTime + this.timeOffset;
+        let time = this.elapsedTime + this.timeOffset;
 
         this.rightCarLights.update(time);
         this.leftCarLights.update(time);
@@ -586,6 +580,10 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
 
       dispose() {
         this.disposed = true;
+        cancelAnimationFrame(this.frame);
+        document.removeEventListener('visibilitychange', this.syncPlayback);
+        window.removeEventListener('northwind:workflow-scroll', this.onScrollState);
+        this.resizeObserver?.disconnect();
 
         if (this.scene) {
           this.scene.traverse(object => {
@@ -629,48 +627,17 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
         }
       }
 
-      setSize(width, height, updateStyles) {
-        if (width <= 0 || height <= 0) {
-          this.hasValidSize = false;
-          return;
-        }
-        this.composer.setSize(width, height, updateStyles);
-        this.hasValidSize = true;
-      }
-
-      tick() {
-        if (this.disposed) return;
-
-        if (!this.hasValidSize) {
-          const w = this.container.offsetWidth;
-          const h = this.container.offsetHeight;
-          if (w > 0 && h > 0) {
-            this.renderer.setSize(w, h, false);
-            this.camera.aspect = w / h;
-            this.camera.updateProjectionMatrix();
-            this.composer.setSize(w, h);
-            this.hasValidSize = true;
-          } else {
-            requestAnimationFrame(this.tick);
-            return;
-          }
-        }
-
-        if (resizeRendererToDisplaySize(this.renderer, this.setSize)) {
-          const canvas = this.renderer.domElement;
-          if (this.hasValidSize) {
-            this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            this.camera.updateProjectionMatrix();
-          }
-        }
-
-        if (this.hasValidSize) {
-          const delta = this.clock.getDelta();
-          this.render(delta);
+      tick(now) {
+        this.frame = 0;
+        if (this.disposed || document.hidden || this.scrolling || !this.hasValidSize) return;
+        if (!this.lastRender || now - this.lastRender >= this.frameInterval - 1) {
+          const delta = this.lastRender ? Math.min((now - this.lastRender) / 1000, 1 / 15) : 1 / this.options.frameRate;
+          this.lastRender = now;
+          this.elapsedTime += delta;
           this.update(delta);
+          this.render(delta);
         }
-
-        requestAnimationFrame(this.tick);
+        this.frame = requestAnimationFrame(this.tick);
       }
     }
 
@@ -1143,18 +1110,6 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
       }
     `;
 
-    function resizeRendererToDisplaySize(renderer, setSize) {
-      const canvas = renderer.domElement;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-      if (width <= 0 || height <= 0) return false;
-      const needResize = canvas.width !== width || canvas.height !== height;
-      if (needResize) {
-        setSize(width, height, false);
-      }
-      return needResize;
-    }
-
     const container = hyperspeed.current;
     if (!container) return;
 
@@ -1165,9 +1120,10 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
     };
     options.distortion = distortions[options.distortion];
 
-    const myApp = new App(container, options);
+    let myApp;
+    try { myApp = new App(container, options); } catch { return; }
     appRef.current = myApp;
-    myApp.loadAssets().then(myApp.init);
+    try { myApp.init(); } catch { myApp.dispose(); }
 
     return () => {
       if (appRef.current) {

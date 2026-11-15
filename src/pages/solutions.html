@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="assets/scripts/shared/performance.js"></script>
 <meta name="description" content="BeifengFlying 的算法题解">
 <title>Algorithm Solutions · Flying</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +21,7 @@
 <script src="assets/scripts/shared/nav-glass.js?v=glasssurface-nav-20260812-1" defer></script>
 <script src="assets/scripts/shared/page-transition.js?v=sfx-20260731-7" defer></script>
 <script src="assets/scripts/shared/motion-anime.js?v=anime-20260812-2" defer></script>
+<link rel="stylesheet" href="assets/styles/performance.css">
 </head>
 <body class="solutions-gate-locked">
 <div class="grid-field" aria-hidden="true"></div>
@@ -45,7 +47,7 @@
       <div class="hero-rule"></div>
       <div class="hero-bottomline">
         <span>BeifengFlying / solutions</span>
-        <span class="live-state" id="syncState"><i></i> 正在同步仓库</span>
+        <span class="live-state" id="syncState"><i></i> 读取仓库</span>
       </div>
     </div>
 
@@ -66,13 +68,13 @@
   <section class="gate-counter-board" id="gateSkipBoard" hidden aria-live="polite">
     <div class="counter-tech-label" id="counterTechText"></div>
     <div class="counter-number"><span id="gateSkipCount" class="counter-number-mount"></span><span>SKIPS</span></div>
-    <div class="counter-copy"><span>跳过考核次数</span><p>每次绕过考核都会留在本地记录里</p></div>
+    <div class="counter-copy"><span>跳过考核次数</span><p>跳过次数，保存在本地</p></div>
     <div class="counter-status"><i></i><span>FRONTEND MEMORY / ACTIVE</span></div>
   </section>
 
   <section class="gate-success-board" id="gateSuccessBoard" hidden aria-live="polite">
     <div class="success-tech-label"><i></i> PASS STATUS / ACCESS GRANTED</div>
-    <div class="success-copy"><strong>恭喜 AC</strong><span>题解已解锁 · SOLUTIONS UNLOCKED</span></div>
+    <div class="success-copy"><strong>恭喜 AC</strong><span>题解已解锁</span></div>
     <div class="success-status"><i></i><span>FRONTEND MEMORY / COMPLETE</span></div>
     <div id="gateSuccessAction" class="success-action"></div>
   </section>
@@ -98,7 +100,7 @@
 </main>
 
 <footer class="solutions-footer">
-  <span class="rights-notice">&copy; 2026 BeifengFlying. Source code available for reference. Original creative assets are protected.</span>
+  <span class="rights-notice">&copy; 2026 BeifengFlying · All rights reserved.</span>
   <span>源码公开 / GitHub 同步</span>
 </footer>
 

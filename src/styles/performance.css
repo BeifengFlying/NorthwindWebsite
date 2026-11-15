@@ -1,0 +1,80 @@
+/* Keep meaningful surfaces usable without WebGL or expensive backdrop filters. */
+html[data-performance="lite"] .ambient-blob,
+html[data-performance="lite"] .glow { display: none; }
+html[data-performance="lite"] .home-section-motion main::before { display: none; }
+html[data-performance="lite"] .shape,
+html[data-performance="lite"] .path-star,
+html[data-performance="lite"] .lab-sky { animation: none !important; }
+html[data-performance="lite"] [data-motion-reveal],
+html[data-performance="lite"] .reveal,
+html[data-performance="lite"] .reveal-stagger {
+  opacity: 1 !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+html[data-performance="lite"] .glass-surface {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(248, 247, 242, .96);
+}
+html[data-performance="lite"] .scroll-stack-scroller { scroll-behavior: auto; overscroll-behavior: auto; }
+html[data-performance="lite"] .scroll-stack-inner { padding: 24px 16px; min-height: 0; }
+html[data-performance="lite"] .scroll-stack-card {
+  height: auto;
+  min-height: 260px;
+  margin: 0 0 24px;
+  padding: 24px;
+  transform: none !important;
+  filter: none !important;
+  will-change: auto;
+}
+html[data-performance="lite"] .aurora-container {
+  background: radial-gradient(ellipse at 35% 0, #7cff6740, transparent 60%), radial-gradient(ellipse at 75% 0, #b497cf50, transparent 65%);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .nav__glass, .sound-control { background: rgba(248, 247, 242, .96); border-radius: 40px; }
+}
+@media (max-width: 1024px), (hover: none) and (pointer: coarse) {
+  .about { display: flex; flex-direction: column; min-height: 0; margin-top: 48px; padding: 48px 0; }
+  .about > .container { order: 0; }
+  .about .grid { display: block; min-height: 0; }
+  .about-left { padding-top: 0; }
+  .about-right { padding-top: 24px; transform: none; }
+  .about-lanyard-mount { order: 1; position: relative; inset: auto; width: 100%; height: 520px; }
+  .about .lanyard-scene { height: 100%; min-height: 0; overflow: hidden; }
+  .about .lanyard-fallback { left: 50%; top: 0; height: 100%; width: 100%; }
+  .about .lanyard-fallback__card { width: min(260px, 65vw); }
+  .about .lanyard-scene__hint { top: auto; bottom: 0; right: 50%; transform: translateX(50%); text-align: center; }
+  .home-sticker-layer { display: none; }
+  .profile-card-float:not(.profile-card-float--prompt) {
+    top: 50%; right: 50%; transform: translate(50%, -50%);
+    width: min(76vw, 330px, calc((100vh - 140px) * .703));
+    width: min(76vw, 330px, calc((100svh - 140px) * .703));
+  }
+  .sound-control { max-width: calc(100vw - 28px); }
+}
+@media (max-width: 380px) {
+  .hero-title-line:last-child { padding-left: 12vw; }
+  .about-lanyard-mount { height: 480px; }
+}
+.sound-control__initial { width: 100%; height: 52px; border-radius: 36px; background: #f8f7f2; box-shadow: 0 4px 16px #1112; }
+.sound-control__mute { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: transparent; color: inherit; cursor: pointer; }
+html[data-performance="lite"] .ai-lab-page .glass-surface { background: rgba(16, 20, 23, .96); }
+html[data-performance="lite"] .lab-stack-frame,
+html[data-performance="lite"] .model-card,
+html[data-performance="lite"] .hardware-card,
+html[data-performance="lite"] .stepper { backdrop-filter: none; -webkit-backdrop-filter: none; }
+@media (max-width: 1024px), (hover: none) and (pointer: coarse) {
+  html:has(.ai-lab-page) { overflow-x: hidden; overflow-y: auto; scroll-snap-type: none; }
+  body.ai-lab-page, body.ai-lab-page main, .ai-lab-page .lab-canvas { width: 100%; height: auto; min-height: 100vh; }
+  .ai-lab-page .lab-canvas { display: block; }
+  .ai-lab-page .lab-panel.page-width { width: 100% !important; height: auto; min-height: 0; overflow: visible; padding: 56px 22px; }
+  .ai-lab-page .lab-panel--hero { display: block; padding-top: 140px !important; }
+  .ai-lab-page .lab-canvas > .lab-panel { border-left: 0; border-top: 1px solid rgba(255,255,255,.08); }
+  .ai-lab-page .lab-stack-frame, .ai-lab-page .lab-stack-mount, .ai-lab-page .lab-stack-scroller { height: auto; min-height: 0; overflow: visible; }
+  .ai-lab-page .lab-stack-scroller .scroll-stack-inner { padding: 70px 12px 12px; }
+  .ai-lab-page .lab-stack-scroller .scroll-stack-card { padding: 0; }
+  .ai-lab-page .lab-stack-card__body { height: auto; gap: 24px; }
+  .ai-lab-page .lab-panel { scroll-margin-top: 92px; }
+}

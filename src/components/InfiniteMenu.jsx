@@ -155,12 +155,14 @@ export default function InfiniteMenu({ items = [], scale = 1 }) {
     const canvas = canvasRef.current;
     if (!canvas || !items.length) return undefined;
     const context = canvas.getContext('2d', { alpha: true });
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!context) return;
+    const reduceMotion = window.NorthwindPerformance?.lite || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const points = makeSpherePoints(POINT_COUNT);
     const orientation = quat.setAxisAngle(quat.create(), [1, 0, 0], Math.PI / 2);
     const rotated = vec3.create();
     const correction = quat.create();
     let frame = 0;
+    let visible = false;
     let previousTime = performance.now();
     let pointerDown = false;
     let dragged = false;
@@ -172,10 +174,11 @@ export default function InfiniteMenu({ items = [], scale = 1 }) {
     let movementState = false;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, reduceMotion ? 1 : 1.5);
       canvas.width = Math.round(canvas.clientWidth * dpr);
       canvas.height = Math.round(canvas.clientHeight * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      requestRender();
     };
 
     const rotate = (xAngle, yAngle) => {
@@ -193,7 +196,12 @@ export default function InfiniteMenu({ items = [], scale = 1 }) {
       }
     };
 
+    const requestRender = () => {
+      if (!frame && visible && !document.hidden) frame = requestAnimationFrame(render);
+    };
     const render = (time) => {
+      frame = 0;
+      if (!visible || document.hidden) return;
       const delta = Math.min(32, time - previousTime);
       previousTime = time;
       const width = canvas.clientWidth;
@@ -244,7 +252,7 @@ export default function InfiniteMenu({ items = [], scale = 1 }) {
         quat.multiply(orientation, correction, orientation);
       }
       if (!pointerDown && Math.abs(velocityX) + Math.abs(velocityY) < 0.00008 && !reduceMotion) velocityX = 0.00004;
-      frame = window.requestAnimationFrame(render);
+      if (!reduceMotion) requestRender();
     };
 
     const pointerStart = (event) => {
@@ -266,10 +274,13 @@ export default function InfiniteMenu({ items = [], scale = 1 }) {
       velocityY = (deltaY / Math.max(180, canvas.clientHeight)) * 0.11;
       lastX = event.clientX;
       lastY = event.clientY;
+      requestRender();
     };
     const pointerEnd = (event) => {
       pointerDown = false;
-      canvas.releasePointerCapture?.(event.pointerId);
+      if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+      if (reduceMotion) { velocityX = 0; velocityY = 0; }
+      requestRender();
     };
     const focusItem = (nextIndex) => {
       const normalizedIndex = (nextIndex + itemsRef.current.length) % itemsRef.current.length;
@@ -282,6 +293,7 @@ export default function InfiniteMenu({ items = [], scale = 1 }) {
       currentActive = normalizedIndex;
       setActiveIndex(normalizedIndex);
       updateMovement(false);
+      requestRender();
     };
     const keyDown = (event) => {
       if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') focusItem(currentActive - 1);
@@ -301,11 +313,23 @@ export default function InfiniteMenu({ items = [], scale = 1 }) {
     canvas.addEventListener('pointercancel', pointerEnd);
     canvas.addEventListener('keydown', keyDown);
     canvas.addEventListener('click', click);
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) { previousTime = performance.now(); requestRender(); }
+      else { cancelAnimationFrame(frame); frame = 0; }
+    });
+    const onVisibility = () => {
+      if (document.hidden) { cancelAnimationFrame(frame); frame = 0; }
+      else { previousTime = performance.now(); requestRender(); }
+    };
+    observer.observe(canvas);
+    document.addEventListener('visibilitychange', onVisibility);
     resize();
-    frame = window.requestAnimationFrame(render);
 
     return () => {
       window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('resize', resize);
       canvas.removeEventListener('pointerdown', pointerStart);
       canvas.removeEventListener('pointermove', pointerMove);
